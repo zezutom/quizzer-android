@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Mutibo</string>
+    <string name="title_sign_in">Sign in</string>
+    <string name="title_sign_out">Sign out</string>
+    <string name="title_play_single">Play a Single Game</string>
+    <string name="title_play_challenge">Challenge a Friend</string>
+    <string name="title_stats_score">My Score</string>
+    <string name="title_stats_rating">Quiz Ratings</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+
+</resources>
