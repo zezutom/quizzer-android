@@ -24,6 +24,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
+import org.zezutom.capstone.android.fragment.ChallengeAFriendFragment;
+import org.zezutom.capstone.android.fragment.MyScoreFragment;
+import org.zezutom.capstone.android.fragment.NavigationDrawerFragment;
+import org.zezutom.capstone.android.fragment.QuizRatingFragment;
+import org.zezutom.capstone.android.fragment.SingleGameFragment;
 import org.zezutom.capstone.android.model.NavigationItem;
 
 public class MainActivity extends Activity implements
@@ -144,18 +149,24 @@ public class MainActivity extends Activity implements
 
     public void onSectionAttached(int number) {
         final NavigationItem item = mNavigationDrawerFragment.getNavigationItem(number - 1);
+
+        Fragment fragment = null;
         switch (item.getId()) {
             case R.string.title_play_single:
                 mTitle = getString(R.string.title_play_single);
+                fragment = new SingleGameFragment();
                 break;
             case R.string.title_play_challenge:
                 mTitle = getString(R.string.title_play_challenge);
+                fragment = new ChallengeAFriendFragment();
                 break;
             case R.string.title_stats_score:
                 mTitle = getString(R.string.title_stats_score);
+                fragment = new MyScoreFragment();
                 break;
             case R.string.title_stats_rating:
                 mTitle = getString(R.string.title_stats_rating);
+                fragment = new QuizRatingFragment();
                 break;
             case R.string.title_sign_in:
                 mTitle = getString(R.string.title_sign_in);
@@ -163,7 +174,12 @@ public class MainActivity extends Activity implements
             case R.string.title_sign_out:
                 mTitle = getString(R.string.title_sign_out);
                 break;
+        }
 
+        if (fragment != null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment).commit();
         }
     }
 

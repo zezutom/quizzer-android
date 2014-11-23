@@ -1,4 +1,4 @@
-package org.zezutom.capstone.android;
+package org.zezutom.capstone.android.fragment;
 
 
 import android.app.ActionBar;
@@ -21,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.zezutom.capstone.android.R;
+import org.zezutom.capstone.android.adapter.MenuItemAdapter;
 import org.zezutom.capstone.android.model.NavigationItem;
 
 import java.util.ArrayList;
@@ -122,7 +124,7 @@ public class NavigationDrawerFragment extends Fragment {
         return mDrawerListView;
     }
 
-    protected void setMenu(NavigationItem userItem) {
+    public void setMenu(NavigationItem userItem) {
 
         initNavigationItems();
         if (userItem != null) {
@@ -139,7 +141,7 @@ public class NavigationDrawerFragment extends Fragment {
         return new NavigationItem(itemId, getString(itemId));
     }
 
-    protected NavigationItem getNavigationItem(int position) {
+    public NavigationItem getNavigationItem(int position) {
         if (mNavigationItems == null) {
             throw new IllegalStateException("The drawer is empty!");
         }

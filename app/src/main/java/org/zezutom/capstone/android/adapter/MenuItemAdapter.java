@@ -1,4 +1,4 @@
-package org.zezutom.capstone.android;
+package org.zezutom.capstone.android.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -14,6 +14,8 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
 
+import org.zezutom.capstone.android.util.BitmapCache;
+import org.zezutom.capstone.android.R;
 import org.zezutom.capstone.android.model.NavigationItem;
 
 import java.util.List;

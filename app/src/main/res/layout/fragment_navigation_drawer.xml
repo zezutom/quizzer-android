@@ -3,4 +3,4 @@
     android:layout_height="match_parent" android:choiceMode="singleChoice"
     android:divider="@android:color/transparent" android:dividerHeight="0dp"
     android:background="#cccc"
-    tools:context="org.zezutom.capstone.android.NavigationDrawerFragment" />
+    tools:context="org.zezutom.capstone.android.fragment.NavigationDrawerFragment" />

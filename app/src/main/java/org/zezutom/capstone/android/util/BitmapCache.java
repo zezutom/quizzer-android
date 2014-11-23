@@ -1,4 +1,4 @@
-package org.zezutom.capstone.android;
+package org.zezutom.capstone.android.util;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;
