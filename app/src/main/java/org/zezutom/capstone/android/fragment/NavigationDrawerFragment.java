@@ -22,7 +22,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import org.zezutom.capstone.android.R;
-import org.zezutom.capstone.android.adapter.MenuItemAdapter;
+import org.zezutom.capstone.android.adapter.NavigationItemAdapter;
 import org.zezutom.capstone.android.model.NavigationItem;
 
 import java.util.ArrayList;
@@ -134,7 +134,7 @@ public class NavigationDrawerFragment extends Fragment {
             mNavigationItems.add(mNavigationItems.size(), createNavigationItem(R.string.title_sign_in));
         }
 
-        mDrawerListView.setAdapter(new MenuItemAdapter(this.getActivity(), mNavigationItems));
+        mDrawerListView.setAdapter(new NavigationItemAdapter(this.getActivity(), mNavigationItems));
     }
 
     private NavigationItem createNavigationItem(int itemId) {

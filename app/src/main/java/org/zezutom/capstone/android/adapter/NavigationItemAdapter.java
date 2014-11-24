@@ -20,7 +20,7 @@ import org.zezutom.capstone.android.model.NavigationItem;
 
 import java.util.List;
 
-public class MenuItemAdapter extends ArrayAdapter<NavigationItem> {
+public class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 
     private List<NavigationItem> navigationItems;
 
@@ -28,7 +28,7 @@ public class MenuItemAdapter extends ArrayAdapter<NavigationItem> {
 
     private ImageLoader imageLoader;
 
-    public MenuItemAdapter(Context context, List<NavigationItem> navigationItems) {
+    public NavigationItemAdapter(Context context, List<NavigationItem> navigationItems) {
         super(context, (navigationItems == null) ? 0 : navigationItems.size());
         this.navigationItems = navigationItems;
         this.requestQueue = Volley.newRequestQueue(context);
