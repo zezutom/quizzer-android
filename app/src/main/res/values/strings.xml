@@ -14,5 +14,7 @@
     <string name="action_settings">Settings</string>
     <string name="label_round">Round</string>
     <string name="label_score">Score</string>
+    <string name="label_remaining_attempts">Attempts</string>
+    <string name="label_power_ups">Power-ups</string>
 
 </resources>

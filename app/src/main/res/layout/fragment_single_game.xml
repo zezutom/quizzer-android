@@ -4,19 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TableLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
-        <TableRow>
-            <TextView android:padding="5dp" android:text="@string/label_round"/>
-            <TextView android:padding="5dp" android:text="@string/label_score"/>
-        </TableRow>
-        <TableRow>
-            <TextView android:gravity="center" android:id="@+id/round"/>
-            <TextView android:gravity="center" android:id="@+id/score"/>
-        </TableRow>
-    </TableLayout>
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <TableRow>
+                <TextView android:padding="5dp" android:text="@string/label_round"/>
+                <TextView android:padding="5dp" android:text="@string/label_score"/>
+                <TextView android:padding="5dp" android:text="@string/label_remaining_attempts"/>
+                <TextView android:padding="5dp" android:text="@string/label_power_ups"/>
+            </TableRow>
+            <TableRow>
+                <TextView android:gravity="center" android:id="@+id/round"/>
+                <TextView android:gravity="center" android:id="@+id/score"/>
+                <TextView android:gravity="center" android:id="@+id/remaining_attempts"/>
+                <TextView android:gravity="center" android:id="@+id/power_ups"/>
+            </TableRow>
+        </TableLayout>
+        <Button
+            android:id="@+id/next_quiz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Next"
+            android:visibility="gone"/>
+    </LinearLayout>
 
     <ListView
         android:id="@+id/list_movies"
