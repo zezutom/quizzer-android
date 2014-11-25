@@ -1,6 +1,7 @@
 package org.zezutom.capstone.android.fragment;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -58,6 +59,10 @@ public class SingleGameFragment extends Fragment implements QuizLoadListener, Ad
 
     private SingleGame game;
 
+    private FragmentManager fragmentManager;
+
+    private SingleGameSolutionDialog dialog;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,6 +78,8 @@ public class SingleGameFragment extends Fragment implements QuizLoadListener, Ad
 
         nextQuizButton = (Button) mainView.findViewById(R.id.next_quiz);
         nextQuizButton.setOnClickListener(this);
+
+        fragmentManager = getFragmentManager();
 
         loadGame();
 
@@ -165,6 +172,10 @@ public class SingleGameFragment extends Fragment implements QuizLoadListener, Ad
         }
     }
 
+    private Quiz getCurrentQuiz() {
+        return quizzes.get(game.getRound());
+    }
+
     @Override
     public void onSuccess(List<Quiz> quizzes) {
         this.quizzes = quizzes;
@@ -197,6 +208,7 @@ public class SingleGameFragment extends Fragment implements QuizLoadListener, Ad
         // Quiz answers are 1-based, whereas the index is 0-based
         if ((i + 1) == quiz.getAnswer()) {
             game.score();
+            displayExplanatoryPopup();
             nextQuiz();
         } else {
             game.subtractAttempt();
@@ -213,13 +225,42 @@ public class SingleGameFragment extends Fragment implements QuizLoadListener, Ad
 
     @Override
     public void onClick(View view) {
-       switch (view.getId()) {
+        final int viewId = view.getId();
+        switch (viewId) {
            case R.id.next_quiz:
                game.subtractPowerUps();
-               nextQuiz();
+               break;
+           case R.id.voteUp:
+           case R.id.voteDown:
+           case R.id.closeDialog:
+                if (viewId != R.id.closeDialog) {
+                    rateQuiz(viewId == R.id.voteUp);
+                }
+                if (dialog != null) {
+                    dialog.getDialog().cancel();
+                }
                break;
        }
+       nextQuiz();
     }
+
+    private void rateQuiz(boolean voteUp) {
+        Quiz quiz = getCurrentQuiz();
+        // TODO call the api
+        Toast.makeText(this.getActivity(), "Thanks for your vote", Toast.LENGTH_SHORT).show();
+    }
+
+    private void displayExplanatoryPopup() {
+        dialog = new SingleGameSolutionDialog();
+        dialog.setOnClickListener(this);
+
+        Bundle args = new Bundle();
+        args.putString("explanation", getCurrentQuiz().getExplanation());
+        dialog.setArguments(args);
+        dialog.show(fragmentManager, null);
+    }
+
+
 
     private void endGame() {
         toast("Game over");
