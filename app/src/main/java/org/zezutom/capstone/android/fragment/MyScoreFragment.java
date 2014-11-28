@@ -9,7 +9,11 @@ import android.view.ViewGroup;
 
 import org.zezutom.capstone.android.R;
 
+import zezutom.org.statsService.StatsService;
+
 public class MyScoreFragment extends Fragment {
+
+    private StatsService.StatsServiceImpl statsService;
 
     @Nullable
     @Override

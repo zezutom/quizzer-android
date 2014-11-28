@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,13 +58,13 @@ public class QuizDataSource {
         values.put(QuizDataHelper.COLUMN_MOVIE_4, quiz.getMovieFour());
         values.put(QuizDataHelper.COLUMN_DIFFICULTY, quiz.getDifficulty());
 
-        db.insert(QuizDataHelper.TABLE_QUIZZES, null, values);
+        db.insert(QuizDataHelper.TABLE_NAME, null, values);
     }
 
     public List<Quiz> getAll() {
         List<Quiz> quizzes = new ArrayList<>();
         if (db == null) open();
-        Cursor cursor = db.query(QuizDataHelper.TABLE_QUIZZES, columns,
+        Cursor cursor = db.query(QuizDataHelper.TABLE_NAME, columns,
                 null, null, null, null, null);
 
         cursor.moveToFirst();

@@ -16,16 +16,17 @@ import android.widget.Toast;
 
 import org.zezutom.capstone.android.R;
 import org.zezutom.capstone.android.adapter.MovieItemAdapter;
+import org.zezutom.capstone.android.api.QuizApi;
 import org.zezutom.capstone.android.model.SingleGame;
-import org.zezutom.capstone.android.util.QuizLoadListener;
-import org.zezutom.capstone.android.util.QuizProvider;
+import org.zezutom.capstone.android.util.QuizListener;
 
 import java.util.Arrays;
 import java.util.List;
 
 import zezutom.org.quizService.model.Quiz;
+import zezutom.org.quizService.model.QuizRating;
 
-public class SingleGameFragment extends Fragment implements QuizLoadListener, AdapterView.OnItemClickListener, View.OnClickListener {
+public class GameFragment extends Fragment implements QuizListener, AdapterView.OnItemClickListener, View.OnClickListener {
 
     public static final String NUMBER_FORMAT = "%03d";
 
@@ -61,11 +62,16 @@ public class SingleGameFragment extends Fragment implements QuizLoadListener, Ad
 
     private FragmentManager fragmentManager;
 
-    private SingleGameSolutionDialog dialog;
+    private GameSolutionDialog dialog;
+
+    private QuizApi quizApi;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        quizApi = new QuizApi(getActivity(), this);
+
         mainView = inflater.inflate(R.layout.fragment_single_game, container, false);
 
         moviesView = (ListView) mainView.findViewById(R.id.list_movies);
@@ -143,8 +149,7 @@ public class SingleGameFragment extends Fragment implements QuizLoadListener, Ad
         if (quizzes != null && quizzes.size() > round) {
             loadQuiz(quizzes.get(round));
         } else {
-            QuizProvider quizProvider = new QuizProvider(getActivity(), this);
-            quizProvider.loadQuizzes();
+            quizApi.loadQuizzes();
         }
     }
 
@@ -177,13 +182,23 @@ public class SingleGameFragment extends Fragment implements QuizLoadListener, Ad
     }
 
     @Override
-    public void onSuccess(List<Quiz> quizzes) {
+    public void onGetAllSuccess(List<Quiz> quizzes) {
         this.quizzes = quizzes;
         loadQuiz(quizzes.get(0));
     }
 
     @Override
-    public void onError() {
+    public void onGetAllError(Exception ex) {
+        // TODO
+    }
+
+    @Override
+    public void onRateSuccess(QuizRating quizRating) {
+        // TODO persist the rating
+    }
+
+    @Override
+    public void onRateError(Exception ex) {
         // TODO
     }
 
@@ -244,14 +259,14 @@ public class SingleGameFragment extends Fragment implements QuizLoadListener, Ad
        nextQuiz();
     }
 
-    private void rateQuiz(boolean voteUp) {
+    private void rateQuiz(boolean liked) {
         Quiz quiz = getCurrentQuiz();
-        // TODO call the api
+        quizApi.rateQuiz(liked, quiz.getId());
         Toast.makeText(this.getActivity(), "Thanks for your vote", Toast.LENGTH_SHORT).show();
     }
 
     private void displayExplanatoryPopup() {
-        dialog = new SingleGameSolutionDialog();
+        dialog = new GameSolutionDialog();
         dialog.setOnClickListener(this);
 
         Bundle args = new Bundle();

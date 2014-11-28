@@ -1,21 +1,10 @@
 package org.zezutom.capstone.android.dao;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-public class QuizDataHelper extends SQLiteOpenHelper {
+public class QuizDataHelper extends BaseDataHelper {
 
-    public static final String TAG = QuizDataHelper.class.getSimpleName();
-
-    public static final String DB_NAME = "quizzes.db";
-
-    public static final int DB_VERSION = 6;
-
-    public static final String TABLE_QUIZZES = "quizzes";
-
-    public static final String COLUMN_ID = "id";
+    public static final String TABLE_NAME = "quizzes";
 
     public static final String COLUMN_QUIZ_ID = "quiz_id";
 
@@ -35,34 +24,27 @@ public class QuizDataHelper extends SQLiteOpenHelper {
 
     public static final String COLUMN_DIFFICULTY = "difficulty";
 
-    public static final String DB_CREATE = "create table " + TABLE_QUIZZES +
-            "(" + COLUMN_ID + " integer primary key autoincrement" +
-            "," + COLUMN_QUIZ_ID + " text not null" +
-            "," + COLUMN_TITLE + " text not null" +
-            "," + COLUMN_EXPLANATION + " text not null" +
-            "," + COLUMN_ANSWER + " integer not null" +
-            "," + COLUMN_MOVIE_1 + " text not null" +
-            "," + COLUMN_MOVIE_2 + " text not null" +
-            "," + COLUMN_MOVIE_3 + " text not null" +
-            "," + COLUMN_MOVIE_4 + " text not null" +
-            "," + COLUMN_DIFFICULTY + " integer not null);";
-
-    public static final String DB_DROP = "drop table if exists " + TABLE_QUIZZES;
-
     public QuizDataHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+        super(context, "quizzes.db");
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DB_CREATE);
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(TAG, "Upgrading db from version " + oldVersion +
-                " to " + newVersion + ". Saved data will be lost.");
-        db.execSQL(DB_DROP);
-        onCreate(db);
+    protected String dbCreate() {
+        return "create table " + TABLE_NAME +
+                "(" + COLUMN_ID + " integer primary key autoincrement" +
+                "," + COLUMN_QUIZ_ID + " text not null" +
+                "," + COLUMN_TITLE + " text not null" +
+                "," + COLUMN_EXPLANATION + " text not null" +
+                "," + COLUMN_ANSWER + " integer not null" +
+                "," + COLUMN_MOVIE_1 + " text not null" +
+                "," + COLUMN_MOVIE_2 + " text not null" +
+                "," + COLUMN_MOVIE_3 + " text not null" +
+                "," + COLUMN_MOVIE_4 + " text not null" +
+                "," + COLUMN_DIFFICULTY + " integer not null);";
     }
 }

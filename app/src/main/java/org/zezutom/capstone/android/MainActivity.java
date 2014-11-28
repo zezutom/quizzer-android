@@ -25,10 +25,10 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
 import org.zezutom.capstone.android.fragment.ChallengeAFriendFragment;
+import org.zezutom.capstone.android.fragment.GameFragment;
 import org.zezutom.capstone.android.fragment.MyScoreFragment;
 import org.zezutom.capstone.android.fragment.NavigationDrawerFragment;
 import org.zezutom.capstone.android.fragment.QuizRatingFragment;
-import org.zezutom.capstone.android.fragment.SingleGameFragment;
 import org.zezutom.capstone.android.model.NavigationItem;
 
 public class MainActivity extends Activity implements
@@ -154,7 +154,7 @@ public class MainActivity extends Activity implements
         switch (item.getId()) {
             case R.string.title_play_single:
                 mTitle = getString(R.string.title_play_single);
-                fragment = new SingleGameFragment();
+                fragment = new GameFragment();
                 break;
             case R.string.title_play_challenge:
                 mTitle = getString(R.string.title_play_challenge);

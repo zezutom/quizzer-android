@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import org.zezutom.capstone.android.R;
 
-public class SingleGameSolutionDialog extends DialogFragment {
+public class GameSolutionDialog extends DialogFragment {
 
     public static final String EXPLANATION_KEY = "explanation";
 
