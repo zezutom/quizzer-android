@@ -9,7 +9,7 @@ public abstract class BaseDataHelper extends SQLiteOpenHelper {
 
     public static final String TAG = BaseDataHelper.class.getSimpleName();
 
-    protected static final int DB_VERSION = 10;
+    protected static final int DB_VERSION = 11;
 
     protected static final String DB_SCHEMA = "mutibo";
 
@@ -26,6 +26,8 @@ public abstract class BaseDataHelper extends SQLiteOpenHelper {
     protected abstract String dbCreate();
 
     protected abstract String getTableName();
+
+    protected abstract String[] getColumns();
 
     @Override
     public void onCreate(SQLiteDatabase db) {

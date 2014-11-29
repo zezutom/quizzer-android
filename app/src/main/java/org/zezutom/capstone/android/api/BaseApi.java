@@ -7,60 +7,50 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.json.AbstractGoogleJsonClientRequest;
 import com.google.api.client.http.HttpRequest;
 
 import org.json.JSONObject;
-import org.zezutom.capstone.android.dao.QuizDataSource;
-import org.zezutom.capstone.android.dao.QuizRatingDataSource;
+import org.zezutom.capstone.android.dao.BaseDataSource;
 import org.zezutom.capstone.android.util.HttpClient;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import zezutom.org.gameService.GameService;
-import zezutom.org.quizService.QuizService;
-import zezutom.org.statsService.StatsService;
-
-public abstract class BaseApi {
+public abstract class BaseApi<T extends BaseDataSource> {
 
     public static final String TAG = BaseApi.class.getName();
 
     protected HttpClient httpClient;
 
-    protected QuizDataSource quizDataSource;
-
-    protected QuizRatingDataSource quizRatingDataSource;
-
-    protected GameService.GameServiceImpl gameService;
-
-    protected QuizService.QuizServiceImpl quizService;
-
-    protected StatsService.StatsServiceImpl statsService;
-
+    private List<T> dataSources;
 
     public BaseApi(Context context) {
 
         // System services: network access and a database
         httpClient = new HttpClient(context);
-        quizDataSource = new QuizDataSource(context);
-        quizRatingDataSource = new QuizRatingDataSource(context);
+        dataSources = new ArrayList<>();
+    }
 
-        // Game API
-        gameService = new GameService.Builder(AndroidHttp.newCompatibleTransport(),
-                new AndroidJsonFactory(), null).build().gameServiceImpl();
+    protected void registerDataSources(T... dataSources) {
+        for (T dataSource : dataSources) {
+            this.dataSources.add(dataSource);
+        }
+    }
 
-        // Quizzes API
-        quizService = new QuizService.Builder(AndroidHttp.newCompatibleTransport(),
-                new AndroidJsonFactory(), null).build().quizServiceImpl();
+    public void setUp() {
+        for (T dataSource : dataSources) {
+            dataSource.open();
+        }
+    }
 
-        // User Stats API
-        statsService = new StatsService.Builder(AndroidHttp.newCompatibleTransport(),
-                new AndroidJsonFactory(), null).build().statsServiceImpl();
-
+    public void tearDown() {
+        for (T dataSource : dataSources) {
+            dataSource.close();
+        }
     }
 
     protected void httpGet(String url, Response.Listener<JSONObject> responseListener,

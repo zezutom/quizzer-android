@@ -24,6 +24,19 @@ public class QuizDataHelper extends BaseDataHelper {
 
     public static final String COLUMN_DIFFICULTY = "difficulty";
 
+    private String[] columns = {
+            COLUMN_ID,
+            COLUMN_QUIZ_ID,
+            COLUMN_TITLE,
+            COLUMN_EXPLANATION,
+            COLUMN_ANSWER,
+            COLUMN_MOVIE_1,
+            COLUMN_MOVIE_2,
+            COLUMN_MOVIE_3,
+            COLUMN_MOVIE_4,
+            COLUMN_DIFFICULTY
+    };
+
     public QuizDataHelper(Context context) {
         super(context, "quizzes.db");
     }
@@ -31,6 +44,11 @@ public class QuizDataHelper extends BaseDataHelper {
     @Override
     public String getTableName() {
         return TABLE_NAME;
+    }
+
+    @Override
+    public String[] getColumns() {
+        return columns;
     }
 
     @Override

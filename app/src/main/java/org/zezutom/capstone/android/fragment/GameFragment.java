@@ -71,6 +71,7 @@ public class GameFragment extends Fragment implements QuizListener, AdapterView.
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         quizApi = new QuizApi(getActivity(), this);
+        quizApi.setUp();
 
         mainView = inflater.inflate(R.layout.fragment_single_game, container, false);
 
@@ -116,6 +117,7 @@ public class GameFragment extends Fragment implements QuizListener, AdapterView.
             }
             edit.commit();
         }
+        quizApi.tearDown();
     }
 
     private void updateUI() {

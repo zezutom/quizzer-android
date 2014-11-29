@@ -14,9 +14,21 @@ public class QuizRatingDataHelper extends BaseDataHelper {
         super(context, "quiz_ratings.db");
     }
 
+    private String[] columns = {
+            COLUMN_ID,
+            COLUMN_QUIZ_ID,
+            COLUMN_CREATED_AT,
+            COLUMN_QUIZ_LIKED
+    };
+
     @Override
     public String getTableName() {
         return TABLE_NAME;
+    }
+
+    @Override
+    protected String[] getColumns() {
+        return columns;
     }
 
     @Override

@@ -5,11 +5,15 @@ import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.util.DateTime;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.zezutom.capstone.android.dao.QuizDataSource;
+import org.zezutom.capstone.android.dao.QuizRatingDataSource;
 import org.zezutom.capstone.android.util.DateTimeUtil;
 import org.zezutom.capstone.android.util.QuizListener;
 
@@ -19,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import zezutom.org.quizService.QuizService;
 import zezutom.org.quizService.model.Quiz;
 import zezutom.org.quizService.model.QuizRating;
 
@@ -28,9 +33,20 @@ public class QuizApi extends BaseApi {
 
     private QuizListener quizListener;
 
+    private QuizDataSource quizDataSource;
+
+    private QuizRatingDataSource quizRatingDataSource;
+
+    private QuizService.QuizServiceImpl quizService;
+
     public QuizApi(Context context, QuizListener quizListener) {
         super(context);
         this.quizListener = quizListener;
+        quizDataSource = new QuizDataSource(context);
+        quizRatingDataSource = new QuizRatingDataSource(context);
+        registerDataSources(quizDataSource, quizRatingDataSource);
+        quizService = new QuizService.Builder(AndroidHttp.newCompatibleTransport(),
+                new AndroidJsonFactory(), null).build().quizServiceImpl();
     }
 
     private void onGetAll(JSONObject response) {
@@ -135,5 +151,4 @@ public class QuizApi extends BaseApi {
         else
             quizListener.onGetAllSuccess(quizzes);
     }
-
 }
