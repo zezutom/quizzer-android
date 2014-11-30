@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -27,6 +28,7 @@ import com.google.android.gms.plus.model.people.Person;
 import org.zezutom.capstone.android.fragment.ChallengeAFriendFragment;
 import org.zezutom.capstone.android.fragment.GameExitDialog;
 import org.zezutom.capstone.android.fragment.GameFragment;
+import org.zezutom.capstone.android.fragment.HomeFragment;
 import org.zezutom.capstone.android.fragment.MyScoreFragment;
 import org.zezutom.capstone.android.fragment.NavigationDrawerFragment;
 import org.zezutom.capstone.android.fragment.QuizRatingFragment;
@@ -115,7 +117,7 @@ public class MainActivity extends Activity implements
 
     private FragmentManager mFragmentManager;
 
-    private LeaveGameAction mLeaveGameAction;
+    private int menuItemIndex;
 
     /**
      * Called when the activity is starting. Restores the activity state.
@@ -145,11 +147,11 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onBackPressed() {
-        mLeaveGameAction = new LeaveGameAction(true);
+        menuItemIndex = NavigationDrawerFragment.HOME_MENU_ITEM_POSITION;
         if (mIsGameInProgress) {
             showGameExitDialog();
         } else {
-            super.onBackPressed();
+            mNavigationDrawerFragment.selectItem(menuItemIndex);
         }
 
     }
@@ -158,14 +160,14 @@ public class MainActivity extends Activity implements
     public void onNavigationDrawerItemSelected(int position) {
 
         if (mIsGameInProgress && mNavigationDrawerFragment != null) {
-            mLeaveGameAction = new LeaveGameAction(position);
+            menuItemIndex = position;
             showGameExitDialog();
             return;
         }
 
         // update the main content by replacing fragments
         getFragmentManager().beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, PlaceholderFragment.newInstance(position))
                 .commit();
 
         if (mNavigationDrawerFragment == null) {
@@ -184,11 +186,16 @@ public class MainActivity extends Activity implements
         }
     }
 
-    public void onSectionAttached(int number) {
-        final NavigationItem item = mNavigationDrawerFragment.getNavigationItem(number - 1);
+    public void onSectionAttached(int position) {
+        Toast.makeText(this, "position: " + position, Toast.LENGTH_SHORT).show();
+        final NavigationItem item = mNavigationDrawerFragment.getNavigationItem(position);
 
         Fragment fragment = null;
         switch (item.getId()) {
+            case R.string.title_home:
+                mTitle = getString(R.string.title_home);
+                fragment = new HomeFragment();
+                break;
             case R.string.title_play_single:
                 mTitle = getString(R.string.title_play_single);
                 fragment = mGameFragment;
@@ -218,6 +225,7 @@ public class MainActivity extends Activity implements
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment).commit();
+            restoreActionBar();
         }
     }
 
@@ -412,7 +420,7 @@ public class MainActivity extends Activity implements
                 NavigationItem userItem = new NavigationItem(null, person.getDisplayName(), imageUrl);
 
                 // Set up the sign-in / sign-out menu
-                mNavigationDrawerFragment.setMenu(userItem);
+                mNavigationDrawerFragment.setSignedInView(userItem);
             }
 
         } else if (!mGoogleApiClient.isConnecting()) {
@@ -427,13 +435,7 @@ public class MainActivity extends Activity implements
         switch (view.getId()) {
             case R.id.exit_game:
                 mGameFragment.endGame();
-                if (mLeaveGameAction != null) {
-                    if (mLeaveGameAction.goBack) {
-                        onBackPressed();
-                    } else if (mLeaveGameAction.menuIndex >= 0) {
-                        onNavigationDrawerItemSelected(mLeaveGameAction.menuIndex);
-                    }
-                }
+                mNavigationDrawerFragment.selectItem(menuItemIndex);
                 break;
             case R.id.reset_game:
                 mGameFragment.endGame();
@@ -448,7 +450,7 @@ public class MainActivity extends Activity implements
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();
             mIsSignedIn = false;
-            mNavigationDrawerFragment.setMenu(null);
+            mNavigationDrawerFragment.setSignedOutView();
         }
     }
 
@@ -510,19 +512,4 @@ public class MainActivity extends Activity implements
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
-
-    public static class LeaveGameAction {
-        private boolean goBack;
-
-        private int menuIndex = -1;
-
-        public LeaveGameAction(boolean goBack) {
-            this.goBack = goBack;
-        }
-
-        public LeaveGameAction(int menuIndex) {
-            this.menuIndex = menuIndex;
-        }
-    }
-
 }

@@ -35,6 +35,7 @@ import java.util.List;
  */
 public class NavigationDrawerFragment extends Fragment {
 
+    public static final int HOME_MENU_ITEM_POSITION = 0;
     /**
      * Remember the position of the selected item.
      */
@@ -94,7 +95,8 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private void initNavigationItems() {
-        mNavigationItems = new ArrayList<NavigationItem>();
+        mNavigationItems = new ArrayList<>();
+        mNavigationItems.add(createNavigationItem(R.string.title_home));
         mNavigationItems.add(createNavigationItem(R.string.title_play_single));
         mNavigationItems.add(createNavigationItem(R.string.title_play_challenge));
         mNavigationItems.add(createNavigationItem(R.string.title_stats_score));
@@ -119,22 +121,16 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        setMenu(null);
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        mDrawerListView.setAdapter(new NavigationItemAdapter(this.getActivity(), mNavigationItems));
         return mDrawerListView;
     }
 
-    public void setMenu(NavigationItem userItem) {
+    public void setSignedInView(NavigationItem signInItem) {
+        // TODO - must be handled as a non-item, such as a textview on top of the list
+    }
 
-        initNavigationItems();
-        if (userItem != null) {
-            mNavigationItems.add(0, userItem);
-            mNavigationItems.add(mNavigationItems.size(), createNavigationItem(R.string.title_sign_out));
-        } else {
-            mNavigationItems.add(mNavigationItems.size(), createNavigationItem(R.string.title_sign_in));
-        }
-
-        mDrawerListView.setAdapter(new NavigationItemAdapter(this.getActivity(), mNavigationItems));
+    public void setSignedOutView() {
+        // TODO - must be handled as a non-item, such as a textview on top of the list
     }
 
     private NavigationItem createNavigationItem(int itemId) {
@@ -231,7 +227,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position) {
+    public void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);

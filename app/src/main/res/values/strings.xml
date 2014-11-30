@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Mutibo</string>
+    <string name="title_home">Home</string>
     <string name="title_sign_in">Sign in</string>
     <string name="title_sign_out">Sign out</string>
     <string name="title_play_single">Play a Single Game</string>
