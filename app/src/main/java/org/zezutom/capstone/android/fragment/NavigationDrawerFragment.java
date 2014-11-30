@@ -35,17 +35,21 @@ import java.util.List;
  */
 public class NavigationDrawerFragment extends Fragment {
 
+    /**
+     * The Home menu is the very first item in the navigation drawer.
+     */
     public static final int HOME_MENU_ITEM_POSITION = 0;
+
     /**
      * Remember the position of the selected item.
      */
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
+    public static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
 
     /**
      * Per the design guidelines, you should show the drawer on launch until the user manually
      * expands it. This shared preference tracks this.
      */
-    private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
+    public static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
     /**
      * A pointer to the current callbacks instance (the Activity).
@@ -63,11 +67,15 @@ public class NavigationDrawerFragment extends Fragment {
     private List<NavigationItem> mNavigationItems;
 
     private DrawerLayout mDrawerLayout;
+
     private ListView mDrawerListView;
+
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
+    private int mCurrentSelectedPosition;
+
     private boolean mFromSavedInstanceState;
+
     private boolean mUserLearnedDrawer;
 
     public NavigationDrawerFragment() {
@@ -85,6 +93,8 @@ public class NavigationDrawerFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
+        } else {
+            mCurrentSelectedPosition = HOME_MENU_ITEM_POSITION;
         }
 
         // Add all of the standard menu items

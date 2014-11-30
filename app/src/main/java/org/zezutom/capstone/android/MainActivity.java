@@ -25,6 +25,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
+import org.zezutom.capstone.android.api.GameApi;
+import org.zezutom.capstone.android.api.GameResultListener;
 import org.zezutom.capstone.android.fragment.ChallengeAFriendFragment;
 import org.zezutom.capstone.android.fragment.GameExitDialog;
 import org.zezutom.capstone.android.fragment.GameFragment;
@@ -32,41 +34,55 @@ import org.zezutom.capstone.android.fragment.HomeFragment;
 import org.zezutom.capstone.android.fragment.MyScoreFragment;
 import org.zezutom.capstone.android.fragment.NavigationDrawerFragment;
 import org.zezutom.capstone.android.fragment.QuizRatingFragment;
+import org.zezutom.capstone.android.model.Game;
+import org.zezutom.capstone.android.model.GameHistory;
 import org.zezutom.capstone.android.model.NavigationItem;
 import org.zezutom.capstone.android.util.AppUtil;
+
+import zezutom.org.gameService.model.GameResult;
 
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
-        View.OnClickListener {
+        View.OnClickListener,
+        GameResultListener {
 
-    private static final String TAG = "MainActivity";
+    public static final String TAG = "MainActivity";
 
-    private static final String KEY_IN_RESOLUTION = "is_in_resolution";
+    /**
+     * A key to save the progress of signing in to the Google API.
+     *
+     * {@link #mIsInResolution}
+     */
+    public static final String KEY_IN_RESOLUTION = "is_in_resolution";
 
-    private static final String KEY_GAME_IN_PROGRESS = "is_game_in_progress";
+    /**
+     * Indicates if a there is a game in progress (useful when one wants to load a different menu for ex.).
+     *
+     * {@link #mIsGameInProgress}
+     */
+    public static final String KEY_GAME_IN_PROGRESS = "is_game_in_progress";
 
     /**
      * Request code for auto Google Play Services error resolution.
      */
-    protected static final int REQUEST_CODE_RESOLUTION = 1;
+    public static final int REQUEST_CODE_RESOLUTION = 1;
 
     /**
      * Request code for signing a user in.
      */
-    protected static final int REQUEST_CODE_SIGN_IN = 2;
-
-    /**
-     * Google API client.
-     */
-    private GoogleApiClient mGoogleApiClient;
+    public static final int REQUEST_CODE_SIGN_IN = 2;
 
     /**
      * Profile picture image size in pixels.
      */
     public static final int PROFILE_IMAGE_SIZE = 400;
 
+    /**
+     * Google API client.
+     */
+    private GoogleApiClient mGoogleApiClient;
 
     /**
      * Google API latest connection result.
@@ -91,6 +107,11 @@ public class MainActivity extends Activity implements
      */
     private boolean mIsIntentInProgress;
 
+    /**
+     * A flag indicating that there is a game in progress. If that's the case the user
+     * is asked to take a decision on what to do with the game before she is allowed
+     * to navigate away from it.
+     */
     private boolean mIsGameInProgress;
 
     /**
@@ -103,6 +124,9 @@ public class MainActivity extends Activity implements
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
+    /**
+     * Fragment managing a single game, incl. end-user interactions and presentation.
+     */
     private GameFragment mGameFragment;
 
     /**
@@ -115,9 +139,12 @@ public class MainActivity extends Activity implements
      */
     private GameExitDialog mGameExitDialog;
 
-    private FragmentManager mFragmentManager;
+    /**
+     * An index of the currently selected menu item.
+     */
+    private int mMenuItemIndex;
 
-    private int menuItemIndex;
+    private GameApi mGameApi;
 
     /**
      * Called when the activity is starting. Restores the activity state.
@@ -125,16 +152,17 @@ public class MainActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mFragmentManager = getFragmentManager();
         if (savedInstanceState != null) {
             mIsInResolution = savedInstanceState.getBoolean(KEY_IN_RESOLUTION, false);
             mIsGameInProgress = savedInstanceState.getBoolean(KEY_GAME_IN_PROGRESS, false);
         }
-        mGameFragment = new GameFragment();
         setContentView(R.layout.activity_main_navigation);
+        mGameApi = new GameApi(this, this);
+        mGameApi.setUp();
+
+        mGameFragment = new GameFragment();
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
-
 
         mTitle = getTitle();
 
@@ -146,21 +174,25 @@ public class MainActivity extends Activity implements
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mGameApi.tearDown();
+    }
+
+    @Override
     public void onBackPressed() {
-        menuItemIndex = NavigationDrawerFragment.HOME_MENU_ITEM_POSITION;
+        mMenuItemIndex = NavigationDrawerFragment.HOME_MENU_ITEM_POSITION;
         if (mIsGameInProgress) {
             showGameExitDialog();
         } else {
-            mNavigationDrawerFragment.selectItem(menuItemIndex);
+            mNavigationDrawerFragment.selectItem(mMenuItemIndex);
         }
-
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-
         if (mIsGameInProgress && mNavigationDrawerFragment != null) {
-            menuItemIndex = position;
+            mMenuItemIndex = position;
             showGameExitDialog();
             return;
         }
@@ -187,7 +219,6 @@ public class MainActivity extends Activity implements
     }
 
     public void onSectionAttached(int position) {
-        Toast.makeText(this, "position: " + position, Toast.LENGTH_SHORT).show();
         final NavigationItem item = mNavigationDrawerFragment.getNavigationItem(position);
 
         Fragment fragment = null;
@@ -229,7 +260,7 @@ public class MainActivity extends Activity implements
         }
     }
 
-    public void restoreActionBar() {
+    private void restoreActionBar() {
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
@@ -369,7 +400,6 @@ public class MainActivity extends Activity implements
      */
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-
         Log.i(TAG, "GoogleApiClient connection failed: " + result.toString());
         if (!result.hasResolution()) {
             // Show a localized error dialog.
@@ -409,6 +439,28 @@ public class MainActivity extends Activity implements
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        mIsGameInProgress = false;
+        switch (view.getId()) {
+            case R.id.exit_game:
+            case R.id.save_score:
+                Game game = mGameFragment.getGame();
+                GameHistory history = game.getHistory();
+                mGameApi.saveGameResult(game.getRound(), game.getScore(), game.getPowerUps(),
+                        history.getOneTimeAttempts(), history.getTwoTimeAttempts());
+                mGameFragment.resetGame();
+                if (view.getId() == R.id.exit_game) {
+                    mNavigationDrawerFragment.selectItem(mMenuItemIndex);
+                }
+                break;
+            case R.id.reset_game:
+                mGameFragment.resetGame();
+                break;
+        }
+        AppUtil.closeDialog(mGameExitDialog);
+    }
+
     private void signIn() {
         if (mIsSignedIn) {
             final Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
@@ -427,21 +479,6 @@ public class MainActivity extends Activity implements
             mIsSignInProgress = true;
             mGoogleApiClient.connect();
         }
-    }
-
-    @Override
-    public void onClick(View view) {
-        mIsGameInProgress = false;
-        switch (view.getId()) {
-            case R.id.exit_game:
-                mGameFragment.endGame();
-                mNavigationDrawerFragment.selectItem(menuItemIndex);
-                break;
-            case R.id.reset_game:
-                mGameFragment.endGame();
-                break;
-        }
-        AppUtil.closeDialog(mGameExitDialog);
     }
 
     private void signOut() {
@@ -470,7 +507,17 @@ public class MainActivity extends Activity implements
         mGameExitDialog = new GameExitDialog();
         mGameExitDialog.setOnClickListener(this);
         mGameExitDialog.setCancelable(false);
-        mGameExitDialog.show(mFragmentManager, null);
+        mGameExitDialog.show(getFragmentManager(), null);
+    }
+
+    @Override
+    public void onSaveGameResult(GameResult gameResult) {
+        Toast.makeText(this, "yupee", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSaveGameError(Exception ex) {
+        Toast.makeText(this, "nope", Toast.LENGTH_SHORT).show();
     }
 
     /**

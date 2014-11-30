@@ -20,6 +20,7 @@ public class GameResultDataHelper extends BaseDataHelper {
 
     private String[] columns = {
             COLUMN_ID,
+            COLUMN_CREATED_AT,
             COLUMN_SCORE,
             COLUMN_ROUND,
             COLUMN_POWER_UPS,

@@ -1,5 +1,6 @@
 package org.zezutom.capstone.android.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
@@ -16,124 +17,115 @@ import android.widget.Toast;
 
 import org.zezutom.capstone.android.R;
 import org.zezutom.capstone.android.adapter.MovieItemAdapter;
-import org.zezutom.capstone.android.api.GameApi;
-import org.zezutom.capstone.android.api.GameResultListener;
 import org.zezutom.capstone.android.api.QuizApi;
 import org.zezutom.capstone.android.api.QuizListener;
 import org.zezutom.capstone.android.model.Game;
-import org.zezutom.capstone.android.model.GameHistory;
 import org.zezutom.capstone.android.util.AppUtil;
 import org.zezutom.capstone.android.util.GameCache;
 
 import java.util.Arrays;
 import java.util.List;
 
-import zezutom.org.gameService.model.GameResult;
 import zezutom.org.quizService.model.Quiz;
 import zezutom.org.quizService.model.QuizRating;
 
-public class GameFragment extends Fragment implements QuizListener, GameResultListener,
+public class GameFragment extends Fragment implements QuizListener,
         AdapterView.OnItemClickListener, View.OnClickListener {
 
-    public static final String GAME_KEY = "game";
+    public static final String GAME_KEY = "mGame";
 
     public static final String NUMBER_FORMAT = "%03d";
 
-    private View mainView;
+    private View mMainView;
 
-    private TextView scoreView;
+    private TextView mScoreView;
 
-    private TextView roundView;
+    private TextView mRoundView;
 
-    private TextView powerUpView;
+    private TextView mPowerUpView;
 
-    private TextView attemptView;
+    private TextView mAttemptView;
 
-    private Button nextQuizButton;
+    private Button mNextQuizButton;
 
-    private ListView moviesView;
+    private ListView mMoviesView;
 
-    private List<Quiz> quizzes;
+    private List<Quiz> mQuizzes;
 
-    private Game game;
+    private Game mGame;
 
-    private FragmentManager fragmentManager;
+    private FragmentManager mFragmentManager;
 
-    private QuizSolutionDialog quizSolutionDialog;
+    private QuizSolutionDialog mQuizSolutionDialog;
 
-    private QuizApi quizApi;
+    private QuizApi mQuizApi;
 
-    private GameApi gameApi;
-
-    private GameCache gameCache;
+    private GameCache mGameCache;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        fragmentManager = getFragmentManager();
+        mFragmentManager = getFragmentManager();
 
-        quizApi = new QuizApi(getActivity(), this);
-        quizApi.setUp();
+        final Activity activity = getActivity();
+        mQuizApi = new QuizApi(activity, this);
+        mQuizApi.setUp();
 
-        gameApi = new GameApi(getActivity(), this);
-        gameApi.setUp();
+        mGameCache = new GameCache(getSharedPreferences());
 
-        gameCache = new GameCache(getSharedPreferences());
+        mMainView = inflater.inflate(R.layout.fragment_game, container, false);
 
-        mainView = inflater.inflate(R.layout.fragment_game, container, false);
+        mMoviesView = (ListView) mMainView.findViewById(R.id.list_movies);
+        mMoviesView.setOnItemClickListener(this);
 
-        moviesView = (ListView) mainView.findViewById(R.id.list_movies);
-        moviesView.setOnItemClickListener(this);
+        mRoundView = (TextView) mMainView.findViewById(R.id.round);
+        mScoreView = (TextView) mMainView.findViewById(R.id.score);
+        mPowerUpView = (TextView) mMainView.findViewById(R.id.power_ups);
+        mAttemptView = (TextView) mMainView.findViewById(R.id.remaining_attempts);
 
-        roundView = (TextView) mainView.findViewById(R.id.round);
-        scoreView = (TextView) mainView.findViewById(R.id.score);
-        powerUpView = (TextView) mainView.findViewById(R.id.power_ups);
-        attemptView = (TextView) mainView.findViewById(R.id.remaining_attempts);
-
-        nextQuizButton = (Button) mainView.findViewById(R.id.next_quiz);
-        nextQuizButton.setOnClickListener(this);
+        mNextQuizButton = (Button) mMainView.findViewById(R.id.next_quiz);
+        mNextQuizButton.setOnClickListener(this);
 
         loadGame();
 
-        return mainView;
+        return mMainView;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (game != null) {
-            if (game.isGameOver()) {
-                // Remove all cached entries if the game is over
-                gameCache.clearCache();
+        if (mGame != null) {
+            if (mGame.isGameOver()) {
+                // Remove all cached entries if the mGame is over
+                mGameCache.clearCache();
             } else {
-                // Save state when the game is in progress
-                gameCache.saveGame(game);
+                // Save state when the mGame is in progress
+                mGameCache.saveGame(mGame);
             }
         }
-        quizApi.tearDown();
-        gameApi.tearDown();
+        mQuizApi.tearDown();
     }
 
     private void updateUI() {
-        scoreView.setText(toString(game.getScore()));
-        roundView.setText(toString(game.getRound()));
-        powerUpView.setText(toString(game.getPowerUps()));
-        attemptView.setText(toString(game.getRemainingAttempts()));
+        mScoreView.setText(toString(mGame.getScore()));
+        mRoundView.setText(toString(mGame.getRound()));
+        mPowerUpView.setText(toString(mGame.getPowerUps()));
+        mAttemptView.setText(toString(mGame.getRemainingAttempts()));
 
-        if (game.getPowerUps() > 0) {
-            nextQuizButton.setVisibility(View.VISIBLE);
+        if (mGame.getPowerUps() > 0) {
+            mNextQuizButton.setVisibility(View.VISIBLE);
         } else {
-            nextQuizButton.setVisibility(View.GONE);
+            mNextQuizButton.setVisibility(View.GONE);
         }
     }
 
     private void loadGame() {
-        game = gameCache.loadGame();
-        int round = game.getRound();
-        if (quizzes != null && quizzes.size() > round) {
-            loadQuiz(quizzes.get(round));
+        mGame = mGameCache.loadGame();
+        int round = mGame.getRound();
+        if (mQuizzes != null && mQuizzes.size() > round) {
+            loadQuiz(mQuizzes.get(round));
         } else {
-            quizApi.loadQuizzes();
+            mQuizApi.loadQuizzes();
         }
     }
 
@@ -142,7 +134,7 @@ public class GameFragment extends Fragment implements QuizListener, GameResultLi
     }
 
     private void loadQuiz(Quiz quiz) {
-        moviesView.setAdapter(
+        mMoviesView.setAdapter(
                 new MovieItemAdapter(getActivity(),
                         Arrays.asList(
                                 quiz.getMovieOne(),
@@ -154,20 +146,20 @@ public class GameFragment extends Fragment implements QuizListener, GameResultLi
     }
 
     private void nextQuiz() {
-        if (quizzes != null && game.getRound() < quizzes.size() - 1) {
-            loadQuiz(quizzes.get(game.nextRound()));
+        if (mQuizzes != null && mGame.getRound() < mQuizzes.size() - 1) {
+            loadQuiz(mQuizzes.get(mGame.nextRound()));
         } else {
-            endGame();
+            resetGame();
         }
     }
 
     private Quiz getCurrentQuiz() {
-        return quizzes.get(game.getRound());
+        return mQuizzes.get(mGame.getRound());
     }
 
     @Override
     public void onGetAllSuccess(List<Quiz> quizzes) {
-        this.quizzes = quizzes;
+        this.mQuizzes = quizzes;
         loadQuiz(quizzes.get(0));
     }
 
@@ -186,16 +178,6 @@ public class GameFragment extends Fragment implements QuizListener, GameResultLi
         // TODO
     }
 
-    @Override
-    public void onSaveGameResult(GameResult gameResult) {
-        // TODO
-    }
-
-    @Override
-    public void onSaveGameError(Exception ex) {
-        // TODO
-    }
-
     private String toString(int value) {
         return String.format(NUMBER_FORMAT, value);
     }
@@ -207,22 +189,22 @@ public class GameFragment extends Fragment implements QuizListener, GameResultLi
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        if (game.isGameOver()) {
-            endGame();
+        if (mGame.isGameOver()) {
+            resetGame();
             return;
         }
 
-        final Quiz quiz = quizzes.get(game.getRound());
+        final Quiz quiz = mQuizzes.get(mGame.getRound());
 
         // Quiz answers are 1-based, whereas the index is 0-based
         if ((i + 1) == quiz.getAnswer()) {
-            game.score();
+            mGame.score();
             showQuizSolutionDialog();
         } else {
-            game.subtractAttempt();
+            mGame.subtractAttempt();
 
-            if (game.isGameOver()) {
-                endGame();
+            if (mGame.isGameOver()) {
+                resetGame();
             } else {
                 updateUI();
                 toast("Please try again");
@@ -236,7 +218,7 @@ public class GameFragment extends Fragment implements QuizListener, GameResultLi
         final int viewId = view.getId();
         switch (viewId) {
            case R.id.next_quiz:
-               game.subtractPowerUps();
+               mGame.subtractPowerUps();
                break;
            case R.id.vote_up:
            case R.id.vote_down:
@@ -244,39 +226,35 @@ public class GameFragment extends Fragment implements QuizListener, GameResultLi
                 if (viewId != R.id.close_dialog) {
                     rateQuiz(viewId == R.id.vote_up);
                 }
-               AppUtil.closeDialog(quizSolutionDialog);
+               AppUtil.closeDialog(mQuizSolutionDialog);
                break;
-            case R.id.save_score:
-                final GameHistory gameHistory = game.getHistory();
-                gameApi.saveGameResult(game.getRound(), game.getScore(),
-                        gameHistory.getPowerUps(),
-                        gameHistory.getOneTimeAttempts(),
-                        gameHistory.getTwoTimeAttempts());
-                break;
        }
        nextQuiz();
     }
 
     private void rateQuiz(boolean liked) {
         Quiz quiz = getCurrentQuiz();
-        quizApi.rateQuiz(liked, quiz.getId());
+        mQuizApi.rateQuiz(liked, quiz.getId());
         Toast.makeText(this.getActivity(), "Thanks for your vote", Toast.LENGTH_SHORT).show();
     }
 
     private void showQuizSolutionDialog() {
-        quizSolutionDialog = new QuizSolutionDialog();
-        quizSolutionDialog.setOnClickListener(this);
+        mQuizSolutionDialog = new QuizSolutionDialog();
+        mQuizSolutionDialog.setOnClickListener(this);
 
         Bundle args = new Bundle();
         args.putString("explanation", getCurrentQuiz().getExplanation());
-        quizSolutionDialog.setArguments(args);
-        quizSolutionDialog.show(fragmentManager, null);
+        mQuizSolutionDialog.setArguments(args);
+        mQuizSolutionDialog.show(mFragmentManager, null);
     }
 
-    public void endGame() {
-        toast("Game over");
-        gameCache.clearCache();
-        game = new Game();
-        loadQuiz(quizzes.get(0));
+    public Game getGame() {
+        return mGame;
+    }
+
+    public void resetGame() {
+        mGameCache.clearCache();
+        mGame = new Game();
+        loadQuiz(mQuizzes.get(0));
     }
 }
