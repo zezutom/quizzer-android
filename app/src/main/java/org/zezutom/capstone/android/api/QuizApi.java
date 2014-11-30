@@ -15,7 +15,6 @@ import org.json.JSONObject;
 import org.zezutom.capstone.android.dao.QuizDataSource;
 import org.zezutom.capstone.android.dao.QuizRatingDataSource;
 import org.zezutom.capstone.android.util.DateTimeUtil;
-import org.zezutom.capstone.android.util.QuizListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -93,7 +92,7 @@ public class QuizApi extends BaseApi {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        DateTime createdAt = DateTimeUtil.toDateTime(jsonObject.getString("createdAt"));
+                        final DateTime createdAt = DateTimeUtil.toDateTime(jsonObject.getString("createdAt"));
                         QuizRating quizRating = new QuizRating();
                         quizRating.setId(jsonObject.getString("id"));
                         quizRating.setCreatedAt(createdAt);

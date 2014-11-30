@@ -1,4 +1,4 @@
-package org.zezutom.capstone.android.util;
+package org.zezutom.capstone.android.api;
 
 import java.util.List;
 

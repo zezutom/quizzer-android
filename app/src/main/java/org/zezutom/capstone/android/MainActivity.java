@@ -25,20 +25,25 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
 import org.zezutom.capstone.android.fragment.ChallengeAFriendFragment;
+import org.zezutom.capstone.android.fragment.GameExitDialog;
 import org.zezutom.capstone.android.fragment.GameFragment;
 import org.zezutom.capstone.android.fragment.MyScoreFragment;
 import org.zezutom.capstone.android.fragment.NavigationDrawerFragment;
 import org.zezutom.capstone.android.fragment.QuizRatingFragment;
 import org.zezutom.capstone.android.model.NavigationItem;
+import org.zezutom.capstone.android.util.AppUtil;
 
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        NavigationDrawerFragment.NavigationDrawerCallbacks {
+        NavigationDrawerFragment.NavigationDrawerCallbacks,
+        View.OnClickListener {
 
     private static final String TAG = "MainActivity";
 
     private static final String KEY_IN_RESOLUTION = "is_in_resolution";
+
+    private static final String KEY_GAME_IN_PROGRESS = "is_game_in_progress";
 
     /**
      * Request code for auto Google Play Services error resolution.
@@ -84,6 +89,8 @@ public class MainActivity extends Activity implements
      */
     private boolean mIsIntentInProgress;
 
+    private boolean mIsGameInProgress;
+
     /**
      * Determines if the user has been successfully signed in.
      */
@@ -94,11 +101,19 @@ public class MainActivity extends Activity implements
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
+    private GameFragment mGameFragment;
+
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
 
+    /**
+     * Shown when the user is about to leave a game in progress.
+     */
+    private GameExitDialog mGameExitDialog;
+
+    private FragmentManager fragmentManager;
 
     /**
      * Called when the activity is starting. Restores the activity state.
@@ -106,10 +121,17 @@ public class MainActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragmentManager = getFragmentManager();
+        if (savedInstanceState != null) {
+            mIsInResolution = savedInstanceState.getBoolean(KEY_IN_RESOLUTION, false);
+            mIsGameInProgress = savedInstanceState.getBoolean(KEY_GAME_IN_PROGRESS, false);
+        }
+        mGameFragment = new GameFragment();
         setContentView(R.layout.activity_main_navigation);
-
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+
         mTitle = getTitle();
 
         // Set up the drawer.
@@ -117,17 +139,28 @@ public class MainActivity extends Activity implements
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        if (savedInstanceState != null) {
-            mIsInResolution = savedInstanceState.getBoolean(KEY_IN_RESOLUTION, false);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mIsGameInProgress) {
+            showGameExitDialog();
+        } else {
+            super.onBackPressed();
         }
+
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
+        if (mIsGameInProgress && mNavigationDrawerFragment != null) {
+            showGameExitDialog();
+            return;
+        }
+
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
+        getFragmentManager().beginTransaction()
                 .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
 
@@ -154,7 +187,8 @@ public class MainActivity extends Activity implements
         switch (item.getId()) {
             case R.string.title_play_single:
                 mTitle = getString(R.string.title_play_single);
-                fragment = new GameFragment();
+                fragment = mGameFragment;
+                mIsGameInProgress = true;
                 break;
             case R.string.title_play_challenge:
                 mTitle = getString(R.string.title_play_challenge);
@@ -251,6 +285,14 @@ public class MainActivity extends Activity implements
         super.onStop();
     }
 
+    @Override
+    protected void onPause() {
+        if (mGameExitDialog != null) {
+            AppUtil.closeDialog(mGameExitDialog);
+        }
+        super.onPause();
+    }
+
     /**
      * Saves the resolution state.
      */
@@ -258,6 +300,7 @@ public class MainActivity extends Activity implements
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_IN_RESOLUTION, mIsInResolution);
+        outState.putBoolean(KEY_GAME_IN_PROGRESS, mIsGameInProgress);
     }
 
     /**
@@ -374,6 +417,17 @@ public class MainActivity extends Activity implements
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.exit_game:
+            case R.id.reset_game:
+                mGameFragment.endGame();
+                AppUtil.closeDialog(mGameExitDialog);
+                break;
+        }
+    }
+
     private void signOut() {
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -394,6 +448,13 @@ public class MainActivity extends Activity implements
                 mGoogleApiClient.connect();
             }
         }
+    }
+
+    private void showGameExitDialog() {
+        mGameExitDialog = new GameExitDialog();
+        mGameExitDialog.setOnClickListener(this);
+        mGameExitDialog.setCancelable(false);
+        mGameExitDialog.show(fragmentManager, null);
     }
 
     /**

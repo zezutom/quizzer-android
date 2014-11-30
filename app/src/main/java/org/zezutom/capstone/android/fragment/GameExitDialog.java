@@ -6,13 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.TextView;
 
 import org.zezutom.capstone.android.R;
 
-public class GameSolutionDialog extends DialogFragment {
-
-    public static final String EXPLANATION_KEY = "explanation";
+public class GameExitDialog extends DialogFragment {
 
     private View dialogView;
 
@@ -20,16 +17,12 @@ public class GameSolutionDialog extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        dialogView = inflater.inflate(R.layout.fragment_dialog_single_game, container, false);
-        TextView explanationView = (TextView) dialogView.findViewById(R.id.explanation);
-
-        String explanation = getArguments().getString(EXPLANATION_KEY);
-        explanationView.setText(explanation);
-
+        dialogView = inflater.inflate(R.layout.fragment_dialog_game_exit, container, false);
+        setCancelable(false);
         if (listener != null) {
-            onClick(R.id.voteUp, listener);
-            onClick(R.id.voteDown, listener);
-            onClick(R.id.closeDialog, listener);
+            onClick(R.id.save_score, listener);
+            onClick(R.id.reset_game, listener);
+            onClick(R.id.exit_game, listener);
         }
 
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);

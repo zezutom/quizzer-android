@@ -16,5 +16,10 @@
     <string name="label_score">Score</string>
     <string name="label_remaining_attempts">Attempts</string>
     <string name="label_power_ups">Power-ups</string>
+    <string name="label_solution">Solution</string>
+    <string name="label_game_exit_header">Leave Game</string>
+    <string name="label_game_exit_save_score">Save My Score</string>
+    <string name="label_game_exit_reset_game">Reset Game</string>
+    <string name="label_game_exit_leave_game">Exit Game</string>
 
 </resources>

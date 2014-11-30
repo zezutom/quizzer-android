@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_game_exit_header"
+        android:textSize="32sp"
+        android:gravity="center"
+        android:padding="5dp"/>
+
+    <Button
+        android:id="@+id/save_score"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/label_game_exit_save_score"/>
+
+    <Button
+        android:id="@+id/reset_game"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/label_game_exit_reset_game"/>
+
+    <Button
+        android:id="@+id/exit_game"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="@string/label_game_exit_leave_game"/>
+
+</LinearLayout>

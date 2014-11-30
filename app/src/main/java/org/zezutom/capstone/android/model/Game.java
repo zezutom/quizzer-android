@@ -1,6 +1,6 @@
 package org.zezutom.capstone.android.model;
 
-public class SingleGame {
+public class Game {
 
     private int round = 1;
 
@@ -8,11 +8,17 @@ public class SingleGame {
 
     private int powerUps;
 
-    private int firstTimeCorrectAttempts;
+    private int oneTimeCorrectAttempts;
 
     private int remainingAttempts = 3;
 
     private boolean gameOver;
+
+    private GameHistory history;
+
+    public Game() {
+        this.history = new GameHistory();
+    }
 
     public int getRound() {
         return round;
@@ -46,12 +52,16 @@ public class SingleGame {
         this.remainingAttempts = remainingAttempts;
     }
 
-    public int getFirstTimeCorrectAttempts() {
-        return firstTimeCorrectAttempts;
+    public int getOneTimeCorrectAttempts() {
+        return oneTimeCorrectAttempts;
     }
 
-    public void setFirstTimeCorrectAttempts(int firstTimeCorrectAttempts) {
-        this.firstTimeCorrectAttempts = firstTimeCorrectAttempts;
+    public void setOneTimeCorrectAttempts(int oneTimeCorrectAttempts) {
+        this.oneTimeCorrectAttempts = oneTimeCorrectAttempts;
+    }
+
+    public GameHistory getHistory() {
+        return history;
     }
 
     public void subtractAttempt() {
@@ -77,10 +87,12 @@ public class SingleGame {
         switch (remainingAttempts) {
             case 3:
                 score += 5;
-                firstTimeCorrectAttempts++;
+                oneTimeCorrectAttempts++;
+                history.incrementOneTimeAttempts();
                 break;
             case 2:
                 score += 3;
+                history.incrementTwoTimeAttempts();
                 break;
             case 1:
                 score++;
@@ -90,9 +102,10 @@ public class SingleGame {
         }
 
         // Increase power ups if there have been at least two consecutive correct attempts
-        if (firstTimeCorrectAttempts > 1) {
+        if (oneTimeCorrectAttempts > 1) {
             powerUps++;
-            firstTimeCorrectAttempts = 0;   // Reset the verification counter
+            history.incrementPowerUps();
+            oneTimeCorrectAttempts = 0;   // Reset the verification counter
         }
         // Reset attempts
         setRemainingAttempts(3);
