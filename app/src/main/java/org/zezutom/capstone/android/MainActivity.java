@@ -113,7 +113,9 @@ public class MainActivity extends Activity implements
      */
     private GameExitDialog mGameExitDialog;
 
-    private FragmentManager fragmentManager;
+    private FragmentManager mFragmentManager;
+
+    private LeaveGameAction mLeaveGameAction;
 
     /**
      * Called when the activity is starting. Restores the activity state.
@@ -121,7 +123,7 @@ public class MainActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fragmentManager = getFragmentManager();
+        mFragmentManager = getFragmentManager();
         if (savedInstanceState != null) {
             mIsInResolution = savedInstanceState.getBoolean(KEY_IN_RESOLUTION, false);
             mIsGameInProgress = savedInstanceState.getBoolean(KEY_GAME_IN_PROGRESS, false);
@@ -143,6 +145,7 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onBackPressed() {
+        mLeaveGameAction = new LeaveGameAction(true);
         if (mIsGameInProgress) {
             showGameExitDialog();
         } else {
@@ -155,6 +158,7 @@ public class MainActivity extends Activity implements
     public void onNavigationDrawerItemSelected(int position) {
 
         if (mIsGameInProgress && mNavigationDrawerFragment != null) {
+            mLeaveGameAction = new LeaveGameAction(position);
             showGameExitDialog();
             return;
         }
@@ -419,13 +423,23 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onClick(View view) {
+        mIsGameInProgress = false;
         switch (view.getId()) {
             case R.id.exit_game:
+                mGameFragment.endGame();
+                if (mLeaveGameAction != null) {
+                    if (mLeaveGameAction.goBack) {
+                        onBackPressed();
+                    } else if (mLeaveGameAction.menuIndex >= 0) {
+                        onNavigationDrawerItemSelected(mLeaveGameAction.menuIndex);
+                    }
+                }
+                break;
             case R.id.reset_game:
                 mGameFragment.endGame();
-                AppUtil.closeDialog(mGameExitDialog);
                 break;
         }
+        AppUtil.closeDialog(mGameExitDialog);
     }
 
     private void signOut() {
@@ -454,7 +468,7 @@ public class MainActivity extends Activity implements
         mGameExitDialog = new GameExitDialog();
         mGameExitDialog.setOnClickListener(this);
         mGameExitDialog.setCancelable(false);
-        mGameExitDialog.show(fragmentManager, null);
+        mGameExitDialog.show(mFragmentManager, null);
     }
 
     /**
@@ -494,6 +508,20 @@ public class MainActivity extends Activity implements
             super.onAttach(activity);
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
+        }
+    }
+
+    public static class LeaveGameAction {
+        private boolean goBack;
+
+        private int menuIndex = -1;
+
+        public LeaveGameAction(boolean goBack) {
+            this.goBack = goBack;
+        }
+
+        public LeaveGameAction(int menuIndex) {
+            this.menuIndex = menuIndex;
         }
     }
 

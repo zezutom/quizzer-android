@@ -218,7 +218,6 @@ public class GameFragment extends Fragment implements QuizListener, GameResultLi
         if ((i + 1) == quiz.getAnswer()) {
             game.score();
             showQuizSolutionDialog();
-            nextQuiz();
         } else {
             game.subtractAttempt();
 
