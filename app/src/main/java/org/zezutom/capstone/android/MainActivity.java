@@ -427,6 +427,9 @@ public class MainActivity extends Activity implements
             if (mIsSignInProgress) {
                 // the user is being signed in
                 resolveSignInError();
+            } else {
+                // the user is signed out
+                mNavigationDrawerFragment.setSignedOutView();
             }
         } else {
             mIsInResolution = true;

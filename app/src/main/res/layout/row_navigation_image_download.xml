@@ -5,8 +5,10 @@
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/row_menu_image"
-        android:layout_width="50dip"
-        android:layout_height="50dip"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:scaleType="centerInside"/>
 
     <TextView
@@ -14,6 +16,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:text="test"/>
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="@color/list_item_title"/>
 
 </LinearLayout>

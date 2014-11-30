@@ -38,7 +38,7 @@ public class NavigationDrawerFragment extends Fragment {
     /**
      * The Home menu is the very first item in the navigation drawer.
      */
-    public static final int HOME_MENU_ITEM_POSITION = 0;
+    public static final int HOME_MENU_ITEM_POSITION = 1;
 
     /**
      * Remember the position of the selected item.
@@ -84,7 +84,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mNavigationItems = new ArrayList<>();
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -96,21 +96,25 @@ public class NavigationDrawerFragment extends Fragment {
         } else {
             mCurrentSelectedPosition = HOME_MENU_ITEM_POSITION;
         }
-
-        // Add all of the standard menu items
-        initNavigationItems();
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
     }
 
-    private void initNavigationItems() {
-        mNavigationItems = new ArrayList<>();
-        mNavigationItems.add(createNavigationItem(R.string.title_home));
-        mNavigationItems.add(createNavigationItem(R.string.title_play_single));
-        mNavigationItems.add(createNavigationItem(R.string.title_play_challenge));
-        mNavigationItems.add(createNavigationItem(R.string.title_stats_score));
-        mNavigationItems.add(createNavigationItem(R.string.title_stats_rating));
+    private void initNavigationItems(NavigationItem signedInItem) {
+        mNavigationItems.clear();
+        mNavigationItems.add(createNavigationItem(R.string.title_home, R.drawable.ic_action_home));
+        mNavigationItems.add(createNavigationItem(R.string.title_play_single, R.drawable.ic_action_play_single));
+        mNavigationItems.add(createNavigationItem(R.string.title_play_challenge, R.drawable.ic_action_playoff));
+        mNavigationItems.add(createNavigationItem(R.string.title_stats_score, R.drawable.ic_action_score));
+        mNavigationItems.add(createNavigationItem(R.string.title_stats_rating, R.drawable.ic_action_rating));
+
+        if (signedInItem != null) {
+            mNavigationItems.add(0, signedInItem);
+            mNavigationItems.add(mNavigationItems.size(), createNavigationItem(R.string.title_sign_out, R.drawable.ic_action_google_plus));
+        } else {
+            mNavigationItems.add(0, createNavigationItem(R.string.title_sign_in, R.drawable.ic_action_google_plus));
+        }
+
+        selectItem(mCurrentSelectedPosition);
+
     }
 
     @Override
@@ -135,16 +139,16 @@ public class NavigationDrawerFragment extends Fragment {
         return mDrawerListView;
     }
 
-    public void setSignedInView(NavigationItem signInItem) {
-        // TODO - must be handled as a non-item, such as a textview on top of the list
+    public void setSignedInView(NavigationItem signedInItem) {
+        initNavigationItems(signedInItem);
     }
 
     public void setSignedOutView() {
-        // TODO - must be handled as a non-item, such as a textview on top of the list
+        initNavigationItems(null);
     }
 
-    private NavigationItem createNavigationItem(int itemId) {
-        return new NavigationItem(itemId, getString(itemId));
+    private NavigationItem createNavigationItem(int itemId, int imageId) {
+        return new NavigationItem(itemId, getString(itemId), imageId);
     }
 
     public NavigationItem getNavigationItem(int position) {
