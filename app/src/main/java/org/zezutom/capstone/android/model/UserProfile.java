@@ -1,21 +1,21 @@
 package org.zezutom.capstone.android.model;
 
-public class UserInfo {
+public class UserProfile {
 
-    private String name;
+    private String fullName;
 
     private String email;
 
     private String imageUrl;
 
-    public UserInfo(String name, String email, String imageUrl) {
-        this.name = name;
+    public UserProfile(String fullName, String email, String imageUrl) {
+        this.fullName = fullName;
         this.email = email;
         this.imageUrl = imageUrl;
     }
 
-    public String getName() {
-        return name;
+    public String getFullName() {
+        return fullName;
     }
 
     public String getEmail() {

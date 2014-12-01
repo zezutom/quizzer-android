@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -18,12 +19,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.zezutom.capstone.android.R;
 import org.zezutom.capstone.android.adapter.NavigationItemAdapter;
 import org.zezutom.capstone.android.model.NavigationItem;
+import org.zezutom.capstone.android.model.UserProfile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +45,11 @@ import java.util.List;
 public class NavigationDrawerFragment extends Fragment {
 
     /**
-     * The Home menu is the very first item in the navigation drawer.
-     */
-    public static final int HOME_MENU_ITEM_POSITION = 1;
-
-    /**
-     * Remember the position of the selected item.
+     * Remember the currently selected position.
      */
     public static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
+
+    public static final String STATE_SIGNED_IN = "is_signed_in";
 
     /**
      * Per the design guidelines, you should show the drawer on launch until the user manually
@@ -68,15 +74,23 @@ public class NavigationDrawerFragment extends Fragment {
 
     private DrawerLayout mDrawerLayout;
 
+    private View mDrawerView;
+
+    private View mUserProfileView;
+
     private ListView mDrawerListView;
 
     private View mFragmentContainerView;
 
     private int mCurrentSelectedPosition;
 
+    private boolean mIsUserSignedIn;
+
     private boolean mFromSavedInstanceState;
 
     private boolean mUserLearnedDrawer;
+
+    private RequestQueue mRequestQueue;
 
     public NavigationDrawerFragment() {
     }
@@ -85,6 +99,7 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNavigationItems = new ArrayList<>();
+        mRequestQueue = Volley.newRequestQueue(getActivity());
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -92,11 +107,12 @@ public class NavigationDrawerFragment extends Fragment {
 
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
+            mIsUserSignedIn = savedInstanceState.getBoolean(STATE_SIGNED_IN);
             mFromSavedInstanceState = true;
         }
     }
 
-    private void initNavigationItems(NavigationItem signedInItem) {
+    private void initNavigationItems(UserProfile userProfile) {
         mNavigationItems = new ArrayList<>();
         mNavigationItems.add(createNavigationItem(R.string.title_home, R.drawable.ic_action_home));
         mNavigationItems.add(createNavigationItem(R.string.title_play_single, R.drawable.ic_action_play_single));
@@ -104,16 +120,37 @@ public class NavigationDrawerFragment extends Fragment {
         mNavigationItems.add(createNavigationItem(R.string.title_stats_score, R.drawable.ic_action_score));
         mNavigationItems.add(createNavigationItem(R.string.title_stats_rating, R.drawable.ic_action_rating));
 
-        if (signedInItem != null) {
-            mNavigationItems.add(0, signedInItem);
+        initUserProfileView(userProfile);
+        mIsUserSignedIn = (userProfile != null);
+        if (mIsUserSignedIn) {
             mNavigationItems.add(mNavigationItems.size(), createNavigationItem(R.string.title_sign_out, R.drawable.ic_action_google_plus));
         } else {
             mNavigationItems.add(0, createNavigationItem(R.string.title_sign_in, R.drawable.ic_action_google_plus));
         }
         mDrawerListView.setAdapter(new NavigationItemAdapter(this.getActivity(), mNavigationItems));
-        mCurrentSelectedPosition = HOME_MENU_ITEM_POSITION;
-        selectItem(mCurrentSelectedPosition);
+    }
 
+    private void initUserProfileView(UserProfile userProfile) {
+        if (userProfile == null) {
+            mUserProfileView.setVisibility(View.GONE);
+        } else {
+            mUserProfileView.setVisibility(View.VISIBLE);
+
+            final ImageView imageView = (ImageView) mUserProfileView.findViewById(R.id.image);
+            ImageRequest imageRequest = new ImageRequest(userProfile.getImageUrl(), new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap bitmap) {
+                    imageView.setImageBitmap(bitmap);
+                }
+            }, 0, 0, null, null);
+            mRequestQueue.add(imageRequest);
+
+            final TextView fullNameView = (TextView) mUserProfileView.findViewById(R.id.full_name);
+            fullNameView.setText(userProfile.getFullName());
+
+            final TextView emailView = (TextView) mUserProfileView.findViewById(R.id.email);
+            emailView.setText(userProfile.getEmail());
+        }
     }
 
     @Override
@@ -126,8 +163,10 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
+        mDrawerView = inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
+
+        mDrawerListView = (ListView) mDrawerView.findViewById(R.id.drawer_list);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -135,15 +174,27 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
-        return mDrawerListView;
+        mUserProfileView = mDrawerView.findViewById(R.id.user_profile);
+
+        return mDrawerView;
     }
 
-    public void setSignedInView(NavigationItem signedInItem) {
-        initNavigationItems(signedInItem);
+    public void setSignedInView(UserProfile userProfile) {
+        boolean userSignedIn = mIsUserSignedIn;
+        initNavigationItems(userProfile);
+        selectMenuItem(userSignedIn);
     }
 
     public void setSignedOutView() {
-        initNavigationItems(null);
+        setSignedInView(null);
+    }
+
+    private void selectMenuItem(boolean userSignedIn) {
+        if (userSignedIn != mIsUserSignedIn) {
+            selectHomeItem();
+        } else {
+            selectItem(mCurrentSelectedPosition);
+        }
     }
 
     private NavigationItem createNavigationItem(int itemId, int imageId) {
@@ -240,6 +291,10 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
+    public void selectHomeItem() {
+        selectItem(mUserProfileView.getVisibility() == View.VISIBLE ? 0 : 1);
+    }
+
     public void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
@@ -273,6 +328,7 @@ public class NavigationDrawerFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
+        outState.putBoolean(STATE_SIGNED_IN, mIsUserSignedIn);
     }
 
     @Override

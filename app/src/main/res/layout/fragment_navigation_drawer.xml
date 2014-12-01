@@ -1,9 +1,60 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:choiceMode="singleChoice"
-    android:divider="@color/list_divider"
-    android:dividerHeight="1dp"
-    android:listSelector="@drawable/list_selector"
-    android:background="@color/list_background"
-    tools:context="org.zezutom.capstone.android.fragment.NavigationDrawerFragment" />
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@drawable/list_selector">
+
+    <RelativeLayout
+        android:id="@+id/user_profile"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/list_selector"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"/>
+
+        <TextView
+            android:id="@+id/full_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/image"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="@color/list_item_title"
+            android:text="test"/>
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/image"
+            android:gravity="bottom"
+            android:textSize="10dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/list_item_title"
+            android:textStyle="italic"
+            android:text="email"/>
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/drawer_list"
+        android:layout_below="@+id/user_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="singleChoice"
+        android:divider="@color/list_divider"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/list_selector"
+        android:background="@color/list_background"
+        tools:context="org.zezutom.capstone.android.fragment.NavigationDrawerFragment" />
+</RelativeLayout>

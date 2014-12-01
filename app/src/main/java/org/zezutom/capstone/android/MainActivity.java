@@ -37,6 +37,7 @@ import org.zezutom.capstone.android.fragment.QuizRatingFragment;
 import org.zezutom.capstone.android.model.Game;
 import org.zezutom.capstone.android.model.GameHistory;
 import org.zezutom.capstone.android.model.NavigationItem;
+import org.zezutom.capstone.android.model.UserProfile;
 import org.zezutom.capstone.android.util.AppUtil;
 
 import zezutom.org.gameService.model.GameResult;
@@ -77,7 +78,7 @@ public class MainActivity extends Activity implements
     /**
      * Profile picture image size in pixels.
      */
-    public static final int PROFILE_IMAGE_SIZE = 400;
+    public static final int PROFILE_IMAGE_SIZE = 200;
 
     /**
      * Google API client.
@@ -181,11 +182,10 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onBackPressed() {
-        mMenuItemIndex = NavigationDrawerFragment.HOME_MENU_ITEM_POSITION;
         if (mIsGameInProgress) {
             showGameExitDialog();
         } else {
-            mNavigationDrawerFragment.selectItem(mMenuItemIndex);
+            mNavigationDrawerFragment.selectHomeItem();
         }
     }
 
@@ -467,15 +467,17 @@ public class MainActivity extends Activity implements
     private void signIn() {
         if (mIsSignedIn) {
             final Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+            final String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
             if (person != null) {
                 final String url = person.getImage().getUrl();
                 final String imageUrl = url.substring(0, url.length() - 2) + PROFILE_IMAGE_SIZE;
 
-                NavigationItem userItem = new NavigationItem(null, person.getDisplayName(), imageUrl);
+                UserProfile userProfile = new UserProfile(person.getDisplayName(), email, url);
+
 
                 // Set up the sign-in / sign-out menu
-                mNavigationDrawerFragment.setSignedInView(userItem);
+                mNavigationDrawerFragment.setSignedInView(userProfile);
             }
 
         } else if (!mGoogleApiClient.isConnecting()) {
