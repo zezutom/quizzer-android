@@ -93,13 +93,11 @@ public class NavigationDrawerFragment extends Fragment {
         if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
-        } else {
-            mCurrentSelectedPosition = HOME_MENU_ITEM_POSITION;
         }
     }
 
     private void initNavigationItems(NavigationItem signedInItem) {
-        mNavigationItems.clear();
+        mNavigationItems = new ArrayList<>();
         mNavigationItems.add(createNavigationItem(R.string.title_home, R.drawable.ic_action_home));
         mNavigationItems.add(createNavigationItem(R.string.title_play_single, R.drawable.ic_action_play_single));
         mNavigationItems.add(createNavigationItem(R.string.title_play_challenge, R.drawable.ic_action_playoff));
@@ -112,7 +110,8 @@ public class NavigationDrawerFragment extends Fragment {
         } else {
             mNavigationItems.add(0, createNavigationItem(R.string.title_sign_in, R.drawable.ic_action_google_plus));
         }
-
+        mDrawerListView.setAdapter(new NavigationItemAdapter(this.getActivity(), mNavigationItems));
+        mCurrentSelectedPosition = HOME_MENU_ITEM_POSITION;
         selectItem(mCurrentSelectedPosition);
 
     }
@@ -135,7 +134,7 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new NavigationItemAdapter(this.getActivity(), mNavigationItems));
+
         return mDrawerListView;
     }
 

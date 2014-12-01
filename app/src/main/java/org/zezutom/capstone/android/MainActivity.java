@@ -490,7 +490,6 @@ public class MainActivity extends Activity implements
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();
             mIsSignedIn = false;
-            mNavigationDrawerFragment.setSignedOutView();
         }
     }
 
