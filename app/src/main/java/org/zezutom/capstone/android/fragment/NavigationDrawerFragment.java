@@ -127,7 +127,7 @@ public class NavigationDrawerFragment extends Fragment {
         } else {
             mNavigationItems.add(0, createNavigationItem(R.string.title_sign_in, R.drawable.ic_action_google_plus));
         }
-        mDrawerListView.setAdapter(new NavigationItemAdapter(this.getActivity(), mNavigationItems));
+        mDrawerListView.setAdapter(new NavigationItemAdapter(this.getActivity(), mNavigationItems, R.layout.row_navigation));
     }
 
     private void initUserProfileView(UserProfile userProfile) {

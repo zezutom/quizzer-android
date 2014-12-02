@@ -17,16 +17,18 @@ public class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
 
     private List<NavigationItem> navigationItems;
 
-    public NavigationItemAdapter(Context context, List<NavigationItem> navigationItems) {
+    private int layoutId;
+
+    public NavigationItemAdapter(Context context, List<NavigationItem> navigationItems, int layoutId) {
         super(context, (navigationItems == null) ? 0 : navigationItems.size());
         this.navigationItems = navigationItems;
+        this.layoutId = layoutId;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             final NavigationItem item = navigationItems.get(position);
-            final int layoutId = R.layout.row_navigation;
 
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
