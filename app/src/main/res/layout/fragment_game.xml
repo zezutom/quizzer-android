@@ -6,32 +6,107 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
-        <TableLayout
+        <GridLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:layout_margin="10dp">
+            <TextView
+                android:padding="5dp"
+                android:text="@string/label_round"
+                android:layout_column="0"
+                android:layout_row="0"/>
+            <TextView
+                android:id="@+id/round"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:layout_gravity="center_horizontal|top"
+                android:textSize="40dp"
+                android:text="9"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_gravity="fill"
+                android:gravity="right"
+                android:layout_column="1"
+                android:layout_row="0"
+                android:layout_rowSpan="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+                <TextView
+                    android:id="@+id/power_ups"
+                    android:background="@drawable/circle_bg"
+                    android:layout_height="50dp"
+                    android:layout_width="50dp"
+                    android:layout_marginTop="7dp"
+                    android:gravity="center"
+                    android:textSize="30dp"
+                    android:text="1"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"/>
+                <TextView
+                    android:id="@+id/attempt_one"
+                    android:background="@drawable/stroke_bg"
+                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:text="     "/>
+                <TextView
+                    android:id="@+id/attempt_two"
+                    android:background="@drawable/stroke_bg"
+                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center"
+                    android:text="     "/>
+                <TextView
+                    android:id="@+id/attempt_three"
+                    android:background="@drawable/stroke_bg"
+                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:gravity="center"
+                    android:text="     "/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/score"
+                android:layout_column="2"
+                android:layout_row="0"
+                android:layout_rowSpan="2"
+                android:layout_marginLeft="30dp"
+                android:gravity="right"
+                android:textSize="60dp"
+                android:text="5"/>
+            <TextView
+                android:layout_column="3"
+                android:layout_row="1"
+                android:layout_rowSpan="2"
+                android:paddingTop="6dp"
+                android:textSize="20dp"
+                android:text="pts"/>
+        </GridLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
-            <TableRow>
-                <TextView android:padding="5dp" android:text="@string/label_round"/>
-                <TextView android:padding="5dp" android:text="@string/label_score"/>
-                <TextView android:padding="5dp" android:text="@string/label_remaining_attempts"/>
-                <TextView android:padding="5dp" android:text="@string/label_power_ups"/>
-            </TableRow>
-            <TableRow>
-                <TextView android:gravity="center" android:id="@+id/round"/>
-                <TextView android:gravity="center" android:id="@+id/score"/>
-                <TextView android:gravity="center" android:id="@+id/remaining_attempts"/>
-                <TextView android:gravity="center" android:id="@+id/power_ups"/>
-            </TableRow>
-        </TableLayout>
+            android:text="Which movie is the odd one?"/>
         <Button
             android:id="@+id/next_quiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
             android:text="Next"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
     </LinearLayout>
 
     <ListView

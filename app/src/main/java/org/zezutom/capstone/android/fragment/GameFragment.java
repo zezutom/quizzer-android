@@ -34,7 +34,7 @@ public class GameFragment extends Fragment implements QuizListener,
 
     public static final String GAME_KEY = "mGame";
 
-    public static final String NUMBER_FORMAT = "%03d";
+    public static final String NUMBER_FORMAT = "%01d";
 
     private View mMainView;
 
@@ -44,7 +44,11 @@ public class GameFragment extends Fragment implements QuizListener,
 
     private TextView mPowerUpView;
 
-    private TextView mAttemptView;
+    private TextView mAttemptViewOne;
+
+    private TextView mAttemptViewTwo;
+
+    private TextView mAttemptViewThree;
 
     private Button mNextQuizButton;
 
@@ -81,7 +85,9 @@ public class GameFragment extends Fragment implements QuizListener,
         mRoundView = (TextView) mMainView.findViewById(R.id.round);
         mScoreView = (TextView) mMainView.findViewById(R.id.score);
         mPowerUpView = (TextView) mMainView.findViewById(R.id.power_ups);
-        mAttemptView = (TextView) mMainView.findViewById(R.id.remaining_attempts);
+        mAttemptViewOne = (TextView) mMainView.findViewById(R.id.attempt_one);
+        mAttemptViewTwo = (TextView) mMainView.findViewById(R.id.attempt_two);
+        mAttemptViewThree = (TextView) mMainView.findViewById(R.id.attempt_three);
 
         mNextQuizButton = (Button) mMainView.findViewById(R.id.next_quiz);
         mNextQuizButton.setOnClickListener(this);
@@ -109,13 +115,39 @@ public class GameFragment extends Fragment implements QuizListener,
     private void updateUI() {
         mScoreView.setText(toString(mGame.getScore()));
         mRoundView.setText(toString(mGame.getRound()));
-        mPowerUpView.setText(toString(mGame.getPowerUps()));
-        mAttemptView.setText(toString(mGame.getRemainingAttempts()));
 
-        if (mGame.getPowerUps() > 0) {
+
+        final int powerUps = mGame.getPowerUps();
+        if (powerUps > 0) {
+            mPowerUpView.setText(toString(powerUps));
+            mPowerUpView.setVisibility(View.VISIBLE);
+        } else {
+            mPowerUpView.setVisibility(View.GONE);
+        }
+
+        final int remainingAttempts = mGame.getRemainingAttempts();
+        int attemptOneVisibility, attemptTwoVisibility, attemptThreeVisibility;
+        attemptOneVisibility = attemptTwoVisibility = attemptThreeVisibility = View.GONE;
+
+        switch (remainingAttempts) {
+            case 3:
+                attemptOneVisibility = attemptTwoVisibility = attemptThreeVisibility = View.VISIBLE;
+                break;
+            case 2:
+                attemptOneVisibility = attemptTwoVisibility = View.VISIBLE;
+                break;
+            case 1:
+                attemptOneVisibility = View.VISIBLE;
+                break;
+        }
+        mAttemptViewOne.setVisibility(attemptOneVisibility);
+        mAttemptViewTwo.setVisibility(attemptTwoVisibility);
+        mAttemptViewThree.setVisibility(attemptThreeVisibility);
+
+        if (powerUps > 0) {
             mNextQuizButton.setVisibility(View.VISIBLE);
         } else {
-            mNextQuizButton.setVisibility(View.GONE);
+            mNextQuizButton.setVisibility(View.INVISIBLE);
         }
     }
 
