@@ -46,6 +46,7 @@ public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
+        HomeFragment.HomeMenuCallbacks,
         View.OnClickListener,
         GameResultListener {
 
@@ -446,16 +447,16 @@ public class MainActivity extends Activity implements
     public void onClick(View view) {
         mIsGameInProgress = false;
         switch (view.getId()) {
-            case R.id.exit_game:
             case R.id.save_score:
                 Game game = mGameFragment.getGame();
                 GameHistory history = game.getHistory();
                 mGameApi.saveGameResult(game.getRound(), game.getScore(), game.getPowerUps(),
                         history.getOneTimeAttempts(), history.getTwoTimeAttempts());
                 mGameFragment.resetGame();
-                if (view.getId() == R.id.exit_game) {
-                    mNavigationDrawerFragment.selectItem(mMenuItemIndex);
-                }
+                break;
+            case R.id.exit_game:
+                mGameFragment.resetGame();
+                mNavigationDrawerFragment.selectItem(mMenuItemIndex);
                 break;
             case R.id.reset_game:
                 mGameFragment.resetGame();
@@ -522,6 +523,28 @@ public class MainActivity extends Activity implements
     @Override
     public void onSaveGameError(Exception ex) {
         Toast.makeText(this, "nope", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onHomeMenuItemSelected(int position) {
+        int itemId = R.string.title_home;
+        switch (position) {
+            case 0:
+                itemId = R.string.title_play_single;
+                break;
+            case 1:
+                itemId = R.string.title_play_challenge;
+                break;
+            case 2:
+                itemId = R.string.title_stats_score;
+                break;
+            case 3:
+                itemId = R.string.title_stats_rating;
+                break;
+        }
+        // Delegates the action to the sidebar menu
+        position = mNavigationDrawerFragment.getNavigationItemPosition(itemId);
+        mNavigationDrawerFragment.selectItem(position);
     }
 
     /**

@@ -36,6 +36,7 @@ import org.zezutom.capstone.android.model.UserProfile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -57,7 +58,7 @@ public class NavigationDrawerFragment extends Fragment {
      */
     public static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
 
-    /**
+    /**x
      * A pointer to the current callbacks instance (the Activity).
      */
     private NavigationDrawerCallbacks mCallbacks;
@@ -212,6 +213,17 @@ public class NavigationDrawerFragment extends Fragment {
         return mNavigationItems.get(position);
     }
 
+    public int getNavigationItemPosition(int itemId) {
+        int position = 0;
+
+        for (int i = 0; i < mNavigationItems.size(); i++) {
+            if (mNavigationItems.get(i).getId() == itemId) {
+                position = i;
+                break;
+            }
+        }
+        return position;
+    }
 
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
