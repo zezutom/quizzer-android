@@ -8,96 +8,91 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
-        <GridLayout
+        android:paddingLeft="20dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp">
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="4"
-            android:layout_margin="10dp">
-            <TextView
-                android:padding="5dp"
-                android:text="@string/label_round"
-                android:layout_column="0"
-                android:layout_row="0"/>
-            <TextView
-                android:id="@+id/round"
-                android:layout_column="0"
-                android:layout_row="1"
-                android:layout_gravity="center_horizontal|top"
-                android:textSize="40dp"
-                android:text="9"/>
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_round"
+                    android:textAllCaps="true"/>
+                <TextView
+                    android:id="@+id/round"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="40dp"
+                    android:text="9"/>
+            </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_gravity="fill"
                 android:gravity="right"
-                android:layout_column="1"
-                android:layout_row="0"
-                android:layout_rowSpan="2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
                 <TextView
-                    android:id="@+id/power_ups"
-                    android:background="@drawable/circle_bg"
-                    android:layout_height="50dp"
-                    android:layout_width="50dp"
-                    android:layout_marginTop="7dp"
-                    android:gravity="center"
-                    android:textSize="30dp"
-                    android:text="1"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="10dp"/>
+                    android:id="@+id/score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textSize="60dp"
+                    android:text="5"/>
                 <TextView
+                    android:text="@string/label_score"
+                    android:textAllCaps="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:paddingRight="20dp"/>
+                <ImageView
                     android:id="@+id/attempt_one"
-                    android:background="@drawable/stroke_bg"
-                    android:layout_height="50dp"
-                    android:layout_width="wrap_content"
-                    android:gravity="center"
-                    android:text="     "/>
-                <TextView
+                    android:layout_width="15dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/stroke_bg"/>
+                <ImageView
                     android:id="@+id/attempt_two"
-                    android:background="@drawable/stroke_bg"
-                    android:layout_height="50dp"
-                    android:layout_width="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:gravity="center"
-                    android:text="     "/>
-                <TextView
+                    android:layout_width="15dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/stroke_bg"/>
+                <ImageView
                     android:id="@+id/attempt_three"
-                    android:background="@drawable/stroke_bg"
-                    android:layout_height="50dp"
-                    android:layout_width="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:gravity="center"
-                    android:text="     "/>
+                    android:layout_width="15dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/stroke_bg"/>
             </LinearLayout>
-            <TextView
-                android:id="@+id/score"
-                android:layout_column="2"
-                android:layout_row="0"
-                android:layout_rowSpan="2"
-                android:layout_marginLeft="30dp"
-                android:gravity="right"
-                android:textSize="60dp"
-                android:text="5"/>
-            <TextView
-                android:layout_column="3"
-                android:layout_row="1"
-                android:layout_rowSpan="2"
-                android:paddingTop="6dp"
-                android:textSize="20dp"
-                android:text="pts"/>
-        </GridLayout>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Which movie is the odd one?"/>
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight=".7"
+            android:gravity="center"
+            android:text="@string/label_quiz_question"/>
+        <TextView
+            android:id="@+id/power_ups"
+            android:background="@drawable/circle_bg"
+            android:layout_height="50dp"
+            android:layout_width="50dp"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:text="1"
+            android:layout_marginRight="10dp"/>
         <Button
             android:id="@+id/next_quiz"
             android:layout_width="wrap_content"
@@ -109,9 +104,11 @@
             android:visibility="visible"/>
     </LinearLayout>
 
-    <ListView
+    <GridView
         android:id="@+id/list_movies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:numColumns="1"
+        android:stretchMode="columnWidth"
         android:choiceMode="singleChoice"/>
 </LinearLayout>

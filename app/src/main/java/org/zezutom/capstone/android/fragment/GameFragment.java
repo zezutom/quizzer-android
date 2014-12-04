@@ -11,7 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,15 +45,15 @@ public class GameFragment extends Fragment implements QuizListener,
 
     private TextView mPowerUpView;
 
-    private TextView mAttemptViewOne;
+    private ImageView mAttemptViewOne;
 
-    private TextView mAttemptViewTwo;
+    private ImageView mAttemptViewTwo;
 
-    private TextView mAttemptViewThree;
+    private ImageView mAttemptViewThree;
 
     private Button mNextQuizButton;
 
-    private ListView mMoviesView;
+    private GridView mMoviesView;
 
     private List<Quiz> mQuizzes;
 
@@ -79,15 +80,15 @@ public class GameFragment extends Fragment implements QuizListener,
 
         mMainView = inflater.inflate(R.layout.fragment_game, container, false);
 
-        mMoviesView = (ListView) mMainView.findViewById(R.id.list_movies);
+        mMoviesView = (GridView) mMainView.findViewById(R.id.list_movies);
         mMoviesView.setOnItemClickListener(this);
 
         mRoundView = (TextView) mMainView.findViewById(R.id.round);
         mScoreView = (TextView) mMainView.findViewById(R.id.score);
         mPowerUpView = (TextView) mMainView.findViewById(R.id.power_ups);
-        mAttemptViewOne = (TextView) mMainView.findViewById(R.id.attempt_one);
-        mAttemptViewTwo = (TextView) mMainView.findViewById(R.id.attempt_two);
-        mAttemptViewThree = (TextView) mMainView.findViewById(R.id.attempt_three);
+        mAttemptViewOne = (ImageView) mMainView.findViewById(R.id.attempt_one);
+        mAttemptViewTwo = (ImageView) mMainView.findViewById(R.id.attempt_two);
+        mAttemptViewThree = (ImageView) mMainView.findViewById(R.id.attempt_three);
 
         mNextQuizButton = (Button) mMainView.findViewById(R.id.next_quiz);
         mNextQuizButton.setOnClickListener(this);
@@ -122,12 +123,12 @@ public class GameFragment extends Fragment implements QuizListener,
             mPowerUpView.setText(toString(powerUps));
             mPowerUpView.setVisibility(View.VISIBLE);
         } else {
-            mPowerUpView.setVisibility(View.GONE);
+            mPowerUpView.setVisibility(View.INVISIBLE);
         }
 
         final int remainingAttempts = mGame.getRemainingAttempts();
         int attemptOneVisibility, attemptTwoVisibility, attemptThreeVisibility;
-        attemptOneVisibility = attemptTwoVisibility = attemptThreeVisibility = View.GONE;
+        attemptOneVisibility = attemptTwoVisibility = attemptThreeVisibility = View.INVISIBLE;
 
         switch (remainingAttempts) {
             case 3:

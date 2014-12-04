@@ -192,7 +192,8 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        if (mIsGameInProgress && mNavigationDrawerFragment != null) {
+        if (isGameInProgress(position)) {
+            mNavigationDrawerFragment.getNavigationItem(position);
             mMenuItemIndex = position;
             showGameExitDialog();
             return;
@@ -217,6 +218,16 @@ public class MainActivity extends Activity implements
                 signOut();
                 break;
         }
+    }
+
+    private boolean isGameInProgress(int position) {
+        if (!mIsGameInProgress || mNavigationDrawerFragment == null) {
+            return false;
+        }
+
+        final NavigationItem item = mNavigationDrawerFragment.getNavigationItem(position);
+
+        return item.getId() != R.string.title_play_single;
     }
 
     public void onSectionAttached(int position) {
