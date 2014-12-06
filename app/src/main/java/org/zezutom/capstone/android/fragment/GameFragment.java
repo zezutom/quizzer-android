@@ -3,7 +3,6 @@ package org.zezutom.capstone.android.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -100,8 +99,15 @@ public class GameFragment extends Fragment implements QuizListener,
     }
 
     @Override
+    public void onPause() {
+        if (mQuizSolutionDialog != null) {
+            AppUtil.closeDialog(mQuizSolutionDialog);
+        }
+        super.onPause();
+    }
+
+    @Override
     public void onDestroyView() {
-        super.onDestroyView();
         if (mGame != null) {
             if (mGame.isGameOver()) {
                 // Remove all cached entries if the mGame is over
@@ -112,6 +118,7 @@ public class GameFragment extends Fragment implements QuizListener,
             }
         }
         mQuizApi.tearDown();
+        super.onDestroyView();
     }
 
     private void updateUI() {
@@ -155,9 +162,9 @@ public class GameFragment extends Fragment implements QuizListener,
 
     private void loadGame() {
         mGame = mGameCache.loadGame();
-        int round = mGame.getRound();
-        if (mQuizzes != null && mQuizzes.size() > round) {
-            loadQuiz(mQuizzes.get(round));
+        final int round = mGame.getRound();
+        if (mQuizzes != null && round > 0 && mQuizzes.size() > round) {
+            loadQuiz(mQuizzes.get(round - 1));
         } else {
             mQuizApi.loadQuizzes();
         }
@@ -289,6 +296,6 @@ public class GameFragment extends Fragment implements QuizListener,
     public void resetGame() {
         mGameCache.clearCache();
         mGame = new Game();
-        loadQuiz(mQuizzes.get(0));
+        loadGame();
     }
 }

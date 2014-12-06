@@ -24,6 +24,7 @@ public class GameExitDialog extends DialogFragment {
             onClick(R.id.save_score, listener);
             onClick(R.id.reset_game, listener);
             onClick(R.id.exit_game, listener);
+            onClick(R.id.cancel_exit, listener);
         }
 
         final Window window = getDialog().getWindow();

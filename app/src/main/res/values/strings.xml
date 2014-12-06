@@ -19,9 +19,10 @@
     <string name="label_remaining_attempts">Attempts</string>
     <string name="label_power_ups">Power-ups</string>
     <string name="label_solution">Explanation</string>
-    <string name="label_game_exit_header">Leave Game</string>
-    <string name="label_game_exit_save_score">Save My Score</string>
-    <string name="label_game_exit_reset_game">Reset Game</string>
-    <string name="label_game_exit_leave_game">Exit Game</string>
+    <string name="label_game_exit_header">Quit the game?</string>
+    <string name="label_game_exit_save_score">Quit and save my score</string>
+    <string name="label_game_exit_leave_game">Just quit</string>
+    <string name="label_game_exit_reset_game">Start from scratch</string>
+    <string name="label_game_exit_cancel">Return to the game</string>
 
 </resources>

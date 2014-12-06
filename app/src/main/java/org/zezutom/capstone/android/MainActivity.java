@@ -60,13 +60,6 @@ public class MainActivity extends Activity implements
     public static final String KEY_IN_RESOLUTION = "is_in_resolution";
 
     /**
-     * Indicates if a there is a game in progress (useful when one wants to load a different menu for ex.).
-     *
-     * {@link #mIsGameInProgress}
-     */
-    public static final String KEY_GAME_IN_PROGRESS = "is_game_in_progress";
-
-    /**
      * Request code for auto Google Play Services error resolution.
      */
     public static final int REQUEST_CODE_RESOLUTION = 1;
@@ -110,13 +103,6 @@ public class MainActivity extends Activity implements
     private boolean mIsIntentInProgress;
 
     /**
-     * A flag indicating that there is a game in progress. If that's the case the user
-     * is asked to take a decision on what to do with the game before she is allowed
-     * to navigate away from it.
-     */
-    private boolean mIsGameInProgress;
-
-    /**
      * Determines if the user has been successfully signed in.
      */
     private boolean mIsSignedIn;
@@ -156,7 +142,6 @@ public class MainActivity extends Activity implements
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             mIsInResolution = savedInstanceState.getBoolean(KEY_IN_RESOLUTION, false);
-            mIsGameInProgress = savedInstanceState.getBoolean(KEY_GAME_IN_PROGRESS, false);
         }
         setContentView(R.layout.activity_main_navigation);
         mGameApi = new GameApi(this, this);
@@ -183,7 +168,7 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onBackPressed() {
-        if (mIsGameInProgress) {
+        if (isGameInProgress()) {
             showGameExitDialog();
         } else {
             mNavigationDrawerFragment.selectHomeItem();
@@ -221,7 +206,7 @@ public class MainActivity extends Activity implements
     }
 
     private boolean isGameInProgress(int position) {
-        if (!mIsGameInProgress || mNavigationDrawerFragment == null) {
+        if (!isGameInProgress() || mNavigationDrawerFragment == null) {
             return false;
         }
 
@@ -242,7 +227,6 @@ public class MainActivity extends Activity implements
             case R.string.title_play_single:
                 mTitle = getString(R.string.title_play_single);
                 fragment = mGameFragment;
-                mIsGameInProgress = true;
                 break;
             case R.string.title_play_challenge:
                 mTitle = getString(R.string.title_play_challenge);
@@ -355,7 +339,6 @@ public class MainActivity extends Activity implements
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_IN_RESOLUTION, mIsInResolution);
-        outState.putBoolean(KEY_GAME_IN_PROGRESS, mIsGameInProgress);
     }
 
     /**
@@ -456,7 +439,6 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onClick(View view) {
-        mIsGameInProgress = false;
         switch (view.getId()) {
             case R.id.save_score:
                 Game game = mGameFragment.getGame();
@@ -474,6 +456,16 @@ public class MainActivity extends Activity implements
                 break;
         }
         AppUtil.closeDialog(mGameExitDialog);
+    }
+
+    private boolean isGameInProgress() {
+        if (mGameFragment == null) {
+            return false;
+        }
+
+        Game game = mGameFragment.getGame();
+
+        return (game != null) ? game.isGameInProgress() : false;
     }
 
     private void signIn() {

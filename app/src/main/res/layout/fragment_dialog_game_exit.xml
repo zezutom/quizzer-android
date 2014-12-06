@@ -18,21 +18,40 @@
         android:id="@+id/save_score"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/label_game_exit_save_score"/>
+        android:layout_margin="2dp"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="@color/list_item_title"
+        android:text="@string/label_game_exit_save_score"
+        android:background="@drawable/rounded_corner"/>
 
     <Button
         android:id="@+id/reset_game"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:text="@string/label_game_exit_reset_game"/>
+        android:layout_margin="2dp"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="@color/list_item_title"
+        android:text="@string/label_game_exit_reset_game"
+        android:background="@drawable/rounded_corner"/>
 
     <Button
         android:id="@+id/exit_game"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="2dp"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="@color/list_item_title"
+        android:background="@drawable/rounded_corner"
         android:text="@string/label_game_exit_leave_game"/>
+
+    <Button
+        android:id="@+id/cancel_exit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="@color/list_item_title"
+        android:background="@drawable/rounded_corner"
+        android:text="@string/label_game_exit_cancel"/>
 
 </LinearLayout>

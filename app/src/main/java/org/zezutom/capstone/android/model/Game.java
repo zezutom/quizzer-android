@@ -79,6 +79,11 @@ public class Game {
         return gameOver;
     }
 
+    public boolean isGameInProgress() {
+        return !isGameOver() && (
+                score > 0 || powerUps > 0 || oneTimeCorrectAttempts > 0 || remainingAttempts < 3);
+    }
+
     public int nextRound() {
         return ++round;
     }
