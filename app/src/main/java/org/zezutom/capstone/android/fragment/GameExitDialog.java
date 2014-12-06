@@ -1,6 +1,7 @@
 package org.zezutom.capstone.android.fragment;
 
 import android.app.DialogFragment;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +26,11 @@ public class GameExitDialog extends DialogFragment {
             onClick(R.id.exit_game, listener);
         }
 
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        final Window window = getDialog().getWindow();
+        window.requestFeature(Window.FEATURE_NO_TITLE);
+        window.setBackgroundDrawable(new ColorDrawable(0));
 
+        dialogView.getBackground().setAlpha(200);
         return dialogView;
     }
 

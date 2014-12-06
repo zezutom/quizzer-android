@@ -5,13 +5,13 @@
 
     <!-- view background color -->
     <solid
-        android:color="@color/list_background">
+        android:color="@color/dialog_warn_background">
     </solid>
 
     <!-- view border color and width -->
     <stroke
         android:width="3dp"
-        android:color="@color/list_background" >
+        android:color="@color/dialog_warn_background">
     </stroke>
 
     <!-- If you want to add some padding -->
@@ -19,12 +19,17 @@
         android:left="4dp"
         android:top="4dp"
         android:right="4dp"
-        android:bottom="4dp"    >
+        android:bottom="4dp">
     </padding>
 
     <!-- Here is the corner radius -->
     <corners
-        android:radius="10dp"   >
+        android:radius="5dp">
     </corners>
+
+    <gradient
+        android:startColor="@color/dialog_warn_background"
+        android:endColor="@color/dialog_warn_background"
+        android:angle="90" />
 
 </shape>

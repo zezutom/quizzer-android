@@ -3,6 +3,7 @@ package org.zezutom.capstone.android.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -250,19 +251,19 @@ public class GameFragment extends Fragment implements QuizListener,
     public void onClick(View view) {
         final int viewId = view.getId();
         switch (viewId) {
-           case R.id.next_quiz:
-               mGame.subtractPowerUps();
-               break;
-           case R.id.vote_up:
-           case R.id.vote_down:
-           case R.id.close_dialog:
+            case R.id.next_quiz:
+                mGame.subtractPowerUps();
+                break;
+            case R.id.vote_up:
+            case R.id.vote_down:
+            case R.id.close_dialog:
                 if (viewId != R.id.close_dialog) {
                     rateQuiz(viewId == R.id.vote_up);
                 }
-               AppUtil.closeDialog(mQuizSolutionDialog);
-               break;
-       }
-       nextQuiz();
+                AppUtil.closeDialog(mQuizSolutionDialog);
+                break;
+        }
+        nextQuiz();
     }
 
     private void rateQuiz(boolean liked) {

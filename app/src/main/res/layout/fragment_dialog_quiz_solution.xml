@@ -1,59 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_corner_dialog">
 
     <TextView
         android:id="@+id/solution"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/label_solution"
-        android:textSize="32dp"
-        android:gravity="center"
-        android:padding="5dp"/>
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="@color/list_item_title"
+        android:gravity="center"/>
 
     <TextView
         android:id="@+id/explanation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/solution"
-        android:textSize="16dp"
+        android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        android:textColor="@color/list_item_title"
         android:padding="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/explanation"
-        android:padding="5dp">
+        android:layout_below="@+id/explanation">
 
         <ImageView
             android:id="@+id/vote_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_good"
-            android:layout_weight=".33"
-            android:background="@drawable/image_border"
-            android:layout_marginRight="3dp"/>
+            android:layout_weight=".33"/>
 
         <ImageView
             android:id="@+id/vote_down"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_bad"
-            android:layout_weight=".33"
-            android:background="@drawable/image_border"
-            android:layout_marginRight="3dp"/>
+            android:layout_weight=".33"/>
 
         <ImageView
             android:id="@+id/close_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_cancel"
-            android:layout_weight=".33"
-            android:background="@drawable/image_border"/>
+            android:layout_weight=".33"/>
      </LinearLayout>
-
-
 
 </RelativeLayout>

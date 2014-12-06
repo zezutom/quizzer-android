@@ -1,6 +1,9 @@
 package org.zezutom.capstone.android.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +23,8 @@ public class QuizSolutionDialog extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        dialogView = inflater.inflate(R.layout.fragment_dialog_quiz_solution, container, false);
+        dialogView = inflater.inflate(R.layout.fragment_dialog_quiz_solution, container);
+        setCancelable(false);
         TextView explanationView = (TextView) dialogView.findViewById(R.id.explanation);
 
         String explanation = getArguments().getString(EXPLANATION_KEY);
@@ -32,8 +36,11 @@ public class QuizSolutionDialog extends DialogFragment {
             onClick(R.id.close_dialog, listener);
         }
 
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        final Window window = getDialog().getWindow();
+        window.requestFeature(Window.FEATURE_NO_TITLE);
+        window.setBackgroundDrawable(new ColorDrawable(0));
 
+        dialogView.getBackground().setAlpha(200);
         return dialogView;
     }
 
