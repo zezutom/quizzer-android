@@ -94,16 +94,17 @@
                 android:src="@drawable/stroke_bg"/>
         </LinearLayout>
     </LinearLayout>
+
     <GridView
         android:id="@+id/list_movies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.0"
         android:columnWidth="250dp"
         android:gravity="center"
         android:horizontalSpacing="20dp"
         android:numColumns="2"
         android:stretchMode="none"
+        android:choiceMode="singleChoice"
         android:verticalSpacing="20dp" />
 
 </LinearLayout>

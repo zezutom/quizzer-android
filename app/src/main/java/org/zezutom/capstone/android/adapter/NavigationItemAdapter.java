@@ -34,7 +34,7 @@ public class NavigationItemAdapter extends ArrayAdapter<NavigationItem> {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layoutId, null);
 
-            TextView textView = (TextView) convertView.findViewById(R.id.row_menu_title);
+            TextView textView = (TextView) convertView.findViewById(R.id.title);
             textView.setText(item.getTitle());
 
             if (item.getImageId() != null) {

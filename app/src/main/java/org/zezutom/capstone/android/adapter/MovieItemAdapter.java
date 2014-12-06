@@ -29,7 +29,7 @@ public class MovieItemAdapter extends ArrayAdapter<String> {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.row_movie, null);
 
-            TextView titleView = (TextView) convertView.findViewById(R.id.row_movie_title);
+            TextView titleView = (TextView) convertView.findViewById(R.id.title);
             titleView.setText(title);
         }
         return convertView;

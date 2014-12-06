@@ -11,18 +11,16 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_action_home"/>
+        android:layout_centerVertical="true"/>
 
     <TextView
-        android:id="@+id/row_menu_title"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/image"
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:textColor="@color/list_item_title"
-        android:text="test"/>
+        android:textColor="@color/list_item_title"/>
 
 </RelativeLayout>

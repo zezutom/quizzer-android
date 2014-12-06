@@ -16,7 +16,7 @@
     </ImageView>
 
     <TextView
-        android:id="@+id/row_menu_title"
+        android:id="@+id/title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
