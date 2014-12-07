@@ -1,42 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     android:padding="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="?android:attr/listPreferredItemHeight"
-        android:textAppearance="?android:attr/textAppearanceListItem"
-        android:text="@string/title_settings_topic"
-        android:gravity="center_vertical"/>
-
-    <GridView
-        android:id="@+id/topics"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:verticalSpacing="2dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:gravity="fill_horizontal" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="?android:attr/listPreferredItemHeight"
-        android:textAppearance="?android:attr/textAppearanceListItem"
-        android:text="@string/title_settings_difficulty"
-        android:gravity="center_vertical"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <GridView
-        android:id="@+id/difficulty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:verticalSpacing="2dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"
-        android:gravity="fill_horizontal" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:paddingLeft="10dp"
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="?android:attr/listPreferredItemHeight"
+                    android:text="@string/title_settings_topic"
+                    android:textAppearance="?android:attr/textAppearanceListItem" />
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/checkbox_selector"
+                    android:drawablePadding="10dp"
+                    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                    android:text="@string/title_settings_topic_android"
+                    android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/checkbox_selector"
+                    android:drawablePadding="10dp"
+                    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                    android:text="@string/title_settings_topic_java"
+                    android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/checkbox_selector"
+                    android:drawablePadding="10dp"
+                    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                    android:text="@string/title_settings_topic_javascript"
+                    android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/checkbox_selector"
+                    android:drawablePadding="10dp"
+                    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                    android:text="@string/title_settings_topic_html5"
+                    android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:paddingLeft="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="?android:attr/listPreferredItemHeight"
+                    android:text="@string/title_settings_difficulty"
+                    android:textAppearance="?android:attr/textAppearanceListItem" />
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/checkbox_selector"
+                    android:drawablePadding="10dp"
+                    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                    android:text="@string/title_settings_difficulty_easy"
+                    android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/checkbox_selector"
+                    android:drawablePadding="10dp"
+                    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                    android:text="@string/title_settings_difficulty_medium"
+                    android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/checkbox_selector"
+                    android:drawablePadding="10dp"
+                    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                    android:text="@string/title_settings_difficulty_hard"
+                    android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

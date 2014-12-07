@@ -51,7 +51,6 @@ public class MainActivity extends Activity implements
         GoogleApiClient.OnConnectionFailedListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         HomeFragment.HomeMenuCallbacks,
-        SettingsFragment.SettingsMenuCallbacks,
         View.OnClickListener,
         GameResultListener {
 
@@ -557,11 +556,6 @@ public class MainActivity extends Activity implements
         // Delegates the action to the sidebar menu
         position = mNavigationDrawerFragment.getNavigationItemPosition(itemId);
         mNavigationDrawerFragment.selectItem(position);
-    }
-
-    @Override
-    public void onSettingsMenuItemSelected(int position) {
-
     }
 
     /**
