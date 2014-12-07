@@ -34,6 +34,7 @@ import org.zezutom.capstone.android.fragment.HomeFragment;
 import org.zezutom.capstone.android.fragment.MyScoreFragment;
 import org.zezutom.capstone.android.fragment.NavigationDrawerFragment;
 import org.zezutom.capstone.android.fragment.QuizRatingFragment;
+import org.zezutom.capstone.android.fragment.SettingsFragment;
 import org.zezutom.capstone.android.model.Game;
 import org.zezutom.capstone.android.model.GameHistory;
 import org.zezutom.capstone.android.model.NavigationItem;
@@ -42,11 +43,15 @@ import org.zezutom.capstone.android.util.AppUtil;
 
 import zezutom.org.gameService.model.GameResult;
 
+/**
+ * Don't forget to add a link to: http://www.icons4android.com/
+ */
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         HomeFragment.HomeMenuCallbacks,
+        SettingsFragment.SettingsMenuCallbacks,
         View.OnClickListener,
         GameResultListener {
 
@@ -231,6 +236,10 @@ public class MainActivity extends Activity implements
             case R.string.title_play_challenge:
                 mTitle = getString(R.string.title_play_challenge);
                 fragment = new ChallengeAFriendFragment();
+                break;
+            case R.string.title_settings:
+                mTitle = getString(R.string.title_settings);
+                fragment = new SettingsFragment();
                 break;
             case R.string.title_stats_score:
                 mTitle = getString(R.string.title_stats_score);
@@ -548,6 +557,11 @@ public class MainActivity extends Activity implements
         // Delegates the action to the sidebar menu
         position = mNavigationDrawerFragment.getNavigationItemPosition(itemId);
         mNavigationDrawerFragment.selectItem(position);
+    }
+
+    @Override
+    public void onSettingsMenuItemSelected(int position) {
+
     }
 
     /**

@@ -21,7 +21,7 @@ public class HomeFragment extends Fragment {
 
     private GridView mHomeMenuGridView;
 
-    /**x
+    /**
      * A pointer to the current callbacks instance (the Activity).
      */
     private HomeMenuCallbacks mCallbacks;
