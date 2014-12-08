@@ -44,7 +44,9 @@ import org.zezutom.capstone.android.util.AppUtil;
 import zezutom.org.gameService.model.GameResult;
 
 /**
- * Don't forget to add a link to: http://www.icons4android.com/
+ * Don't forget to add a link to:
+ * http://www.icons4android.com
+ * http://www.iconarchive.com
  */
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,

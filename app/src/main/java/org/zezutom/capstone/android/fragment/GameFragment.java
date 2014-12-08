@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.zezutom.capstone.android.R;
-import org.zezutom.capstone.android.adapter.MovieItemAdapter;
+import org.zezutom.capstone.android.adapter.OptionItemAdapter;
 import org.zezutom.capstone.android.api.QuizApi;
 import org.zezutom.capstone.android.api.QuizListener;
 import org.zezutom.capstone.android.model.Game;
@@ -176,12 +176,12 @@ public class GameFragment extends Fragment implements QuizListener,
 
     private void loadQuiz(Quiz quiz) {
         mMoviesView.setAdapter(
-                new MovieItemAdapter(getActivity(),
+                new OptionItemAdapter(getActivity(),
                         Arrays.asList(
-                                quiz.getMovieOne(),
-                                quiz.getMovieTwo(),
-                                quiz.getMovieThree(),
-                                quiz.getMovieFour()
+                                quiz.getOptionOne(),
+                                quiz.getOptionTwo(),
+                                quiz.getOptionThree(),
+                                quiz.getOptionFour()
                         )));
         updateUI();
     }

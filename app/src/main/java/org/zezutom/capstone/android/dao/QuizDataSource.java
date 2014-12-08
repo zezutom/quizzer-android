@@ -12,19 +12,33 @@ public class QuizDataSource extends BaseDataSource<Quiz, QuizDataHelper> {
         super(new QuizDataHelper(context));
     }
 
+    /*
+                "(" + COLUMN_ID + " integer primary key autoincrement" +
+                "," + COLUMN_QUIZ_ID + " text not null" +
+                "," + COLUMN_CATEGORY + " text not null" +
+                "," + COLUMN_DIFFICULTY + " text not null" +
+                "," + COLUMN_QUESTION + " text not null" +
+                "," + COLUMN_ANSWER + " integer not null" +
+                "," + COLUMN_OPTION_1 + " text not null" +
+                "," + COLUMN_OPTION_2 + " text not null" +
+                "," + COLUMN_OPTION_3 + " text not null" +
+                "," + COLUMN_OPTION_4 + " text not null" +
+                "," + COLUMN_EXPLANATION + " text not null);";
+    * */
     @Override
     protected ContentValues getValues(Quiz quiz) {
         ContentValues values = new ContentValues();
 
         values.put(QuizDataHelper.COLUMN_QUIZ_ID, quiz.getId());
-        values.put(QuizDataHelper.COLUMN_TITLE, quiz.getTitle());
-        values.put(QuizDataHelper.COLUMN_EXPLANATION, quiz.getExplanation());
-        values.put(QuizDataHelper.COLUMN_ANSWER, quiz.getAnswer());
-        values.put(QuizDataHelper.COLUMN_MOVIE_1, quiz.getMovieOne());
-        values.put(QuizDataHelper.COLUMN_MOVIE_2, quiz.getMovieTwo());
-        values.put(QuizDataHelper.COLUMN_MOVIE_3, quiz.getMovieThree());
-        values.put(QuizDataHelper.COLUMN_MOVIE_4, quiz.getMovieFour());
+        values.put(QuizDataHelper.COLUMN_CATEGORY, quiz.getCategory());
         values.put(QuizDataHelper.COLUMN_DIFFICULTY, quiz.getDifficulty());
+        values.put(QuizDataHelper.COLUMN_QUESTION, quiz.getQuestion());
+        values.put(QuizDataHelper.COLUMN_ANSWER, quiz.getAnswer());
+        values.put(QuizDataHelper.COLUMN_OPTION_1, quiz.getOptionOne());
+        values.put(QuizDataHelper.COLUMN_OPTION_2, quiz.getOptionTwo());
+        values.put(QuizDataHelper.COLUMN_OPTION_3, quiz.getOptionThree());
+        values.put(QuizDataHelper.COLUMN_OPTION_4, quiz.getOptionFour());
+        values.put(QuizDataHelper.COLUMN_EXPLANATION, quiz.getExplanation());
 
         return values;
     }
@@ -34,14 +48,15 @@ public class QuizDataSource extends BaseDataSource<Quiz, QuizDataHelper> {
         Quiz quiz = new Quiz();
 
         quiz.setId(cursor.getString(1));
-        quiz.setTitle(cursor.getString(2));
-        quiz.setExplanation(cursor.getString(3));
-        quiz.setAnswer(cursor.getInt(4));
-        quiz.setMovieOne(cursor.getString(5));
-        quiz.setMovieTwo(cursor.getString(6));
-        quiz.setMovieThree(cursor.getString(7));
-        quiz.setMovieFour(cursor.getString(8));
-        quiz.setDifficulty(cursor.getInt(9));
+        quiz.setCategory(cursor.getString(2));
+        quiz.setDifficulty(cursor.getString(3));
+        quiz.setQuestion(cursor.getString(4));
+        quiz.setAnswer(cursor.getInt(5));
+        quiz.setOptionOne(cursor.getString(6));
+        quiz.setOptionTwo(cursor.getString(7));
+        quiz.setOptionThree(cursor.getString(8));
+        quiz.setOptionFour(cursor.getString(9));
+        quiz.setExplanation(cursor.getString(10));
 
         return quiz;
     }

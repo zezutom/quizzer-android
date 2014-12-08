@@ -11,11 +11,11 @@ import org.zezutom.capstone.android.R;
 
 import java.util.List;
 
-public class MovieItemAdapter extends ArrayAdapter<String> {
+public class OptionItemAdapter extends ArrayAdapter<String> {
 
     private List<String> titles;
 
-    public MovieItemAdapter(Context context, List<String> titles) {
+    public OptionItemAdapter(Context context, List<String> titles) {
         super(context, (titles == null) ? 0 : titles.size());
         this.titles = titles;
     }

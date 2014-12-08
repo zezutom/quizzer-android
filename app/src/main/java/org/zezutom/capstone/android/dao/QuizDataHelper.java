@@ -8,33 +8,37 @@ public class QuizDataHelper extends BaseDataHelper {
 
     public static final String COLUMN_QUIZ_ID = "quiz_id";
 
-    public static final String COLUMN_TITLE = "title";
+    public static final String COLUMN_CATEGORY = "category";
 
-    public static final String COLUMN_EXPLANATION = "explanation";
+    public static final String COLUMN_DIFFICULTY = "difficulty";
+
+    public static final String COLUMN_QUESTION = "question";
 
     public static final String COLUMN_ANSWER = "answer";
 
-    public static final String COLUMN_MOVIE_1 = "movie_1";
+    public static final String COLUMN_EXPLANATION = "explanation";
 
-    public static final String COLUMN_MOVIE_2 = "movie_2";
+    public static final String COLUMN_OPTION_1 = "option_1";
 
-    public static final String COLUMN_MOVIE_3 = "movie_3";
+    public static final String COLUMN_OPTION_2 = "option_2";
 
-    public static final String COLUMN_MOVIE_4 = "movie_4";
+    public static final String COLUMN_OPTION_3 = "option_3";
 
-    public static final String COLUMN_DIFFICULTY = "difficulty";
+    public static final String COLUMN_OPTION_4 = "option_4";
+
 
     private String[] columns = {
             COLUMN_ID,
             COLUMN_QUIZ_ID,
-            COLUMN_TITLE,
-            COLUMN_EXPLANATION,
+            COLUMN_CATEGORY,
+            COLUMN_DIFFICULTY,
+            COLUMN_QUESTION,
             COLUMN_ANSWER,
-            COLUMN_MOVIE_1,
-            COLUMN_MOVIE_2,
-            COLUMN_MOVIE_3,
-            COLUMN_MOVIE_4,
-            COLUMN_DIFFICULTY
+            COLUMN_OPTION_1,
+            COLUMN_OPTION_2,
+            COLUMN_OPTION_3,
+            COLUMN_OPTION_4,
+            COLUMN_EXPLANATION
     };
 
     public QuizDataHelper(Context context) {
@@ -56,13 +60,14 @@ public class QuizDataHelper extends BaseDataHelper {
         return "create table " + TABLE_NAME +
                 "(" + COLUMN_ID + " integer primary key autoincrement" +
                 "," + COLUMN_QUIZ_ID + " text not null" +
-                "," + COLUMN_TITLE + " text not null" +
-                "," + COLUMN_EXPLANATION + " text not null" +
+                "," + COLUMN_CATEGORY + " text not null" +
+                "," + COLUMN_DIFFICULTY + " text not null" +
+                "," + COLUMN_QUESTION + " text not null" +
                 "," + COLUMN_ANSWER + " integer not null" +
-                "," + COLUMN_MOVIE_1 + " text not null" +
-                "," + COLUMN_MOVIE_2 + " text not null" +
-                "," + COLUMN_MOVIE_3 + " text not null" +
-                "," + COLUMN_MOVIE_4 + " text not null" +
-                "," + COLUMN_DIFFICULTY + " integer not null);";
+                "," + COLUMN_OPTION_1 + " text not null" +
+                "," + COLUMN_OPTION_2 + " text not null" +
+                "," + COLUMN_OPTION_3 + " text not null" +
+                "," + COLUMN_OPTION_4 + " text not null" +
+                "," + COLUMN_EXPLANATION + " text not null);";
     }
 }

@@ -59,14 +59,15 @@ public class QuizApi extends BaseApi {
 
                 Quiz quiz = new Quiz();
                 quiz.setId(item.getString("id"));
-                quiz.setTitle(item.getString("title"));
-                quiz.setExplanation(item.getString("explanation"));
+                quiz.setCategory(item.getString("category"));
+                quiz.setDifficulty(item.getString("difficulty"));
+                quiz.setQuestion(item.getString("question"));
                 quiz.setAnswer(item.getInt("answer"));
-                quiz.setMovieOne(item.getString("movieOne"));
-                quiz.setMovieTwo(item.getString("movieTwo"));
-                quiz.setMovieThree(item.getString("movieThree"));
-                quiz.setMovieFour(item.getString("movieFour"));
-                quiz.setDifficulty(item.getInt("difficulty"));
+                quiz.setOptionOne(item.getString("optionOne"));
+                quiz.setOptionTwo(item.getString("optionTwo"));
+                quiz.setOptionThree(item.getString("optionThree"));
+                quiz.setOptionFour(item.getString("optionFour"));
+                quiz.setExplanation(item.getString("explanation"));
                 quizzes.add(quiz);
             }
 

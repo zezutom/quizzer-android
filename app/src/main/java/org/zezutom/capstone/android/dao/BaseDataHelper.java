@@ -9,7 +9,7 @@ public abstract class BaseDataHelper extends SQLiteOpenHelper {
 
     public static final String TAG = BaseDataHelper.class.getSimpleName();
 
-    protected static final int DB_VERSION = 11;
+    protected static final int DB_VERSION = 12;
 
     protected static final String DB_SCHEMA = "mutibo";
 
