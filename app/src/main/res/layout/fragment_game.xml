@@ -33,6 +33,26 @@
                     android:text="9"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/power_ups_container"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_power_ups"
+                    android:textAllCaps="true"/>
+                <TextView
+                    android:id="@+id/power_ups"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="40dp"
+                    android:text="1"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:orientation="horizontal"
                 android:gravity="right"
                 android:layout_width="fill_parent"
@@ -79,28 +99,22 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/question"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_weight=".7"
-            android:gravity="center"
-            android:text="@string/label_quiz_question"/>
-        <TextView
-            android:id="@+id/power_ups"
-            android:background="@drawable/circle_bg"
-            android:layout_height="50dp"
-            android:layout_width="50dp"
-            android:gravity="center"
-            android:textSize="30dp"
-            android:text="1"
-            android:layout_marginRight="10dp"/>
+            android:layout_weight=".8"
+            android:paddingLeft="20dp"
+            android:minHeight="?android:attr/listPreferredItemHeight"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:gravity="center_vertical"
+            android:text="test test test"/>
         <Button
             android:id="@+id/next_quiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/ic_arrow_right"
             android:layout_gravity="right"
-            android:layout_marginRight="10dp"
             android:layout_marginBottom="5dp"
-            android:text="Next"
             android:visibility="visible"/>
     </LinearLayout>
 

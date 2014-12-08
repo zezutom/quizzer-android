@@ -26,7 +26,6 @@
     <string name="action_settings">Settings</string>
     <string name="label_round">Round</string>
     <string name="label_score">pts.</string>
-    <string name="label_quiz_question">Which movie is the odd one?</string>
     <string name="label_remaining_attempts">Attempts</string>
     <string name="label_power_ups">Power-ups</string>
     <string name="label_solution">Explanation</string>

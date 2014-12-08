@@ -39,9 +39,13 @@ public class GameFragment extends Fragment implements QuizListener,
 
     private View mMainView;
 
+    private TextView mQuestionView;
+
     private TextView mScoreView;
 
     private TextView mRoundView;
+
+    private View mPowerUpContainerView;
 
     private TextView mPowerUpView;
 
@@ -56,6 +60,8 @@ public class GameFragment extends Fragment implements QuizListener,
     private GridView mMoviesView;
 
     private List<Quiz> mQuizzes;
+
+    private Quiz mCurrentQuiz;
 
     private Game mGame;
 
@@ -83,8 +89,10 @@ public class GameFragment extends Fragment implements QuizListener,
         mMoviesView = (GridView) mMainView.findViewById(R.id.list_movies);
         mMoviesView.setOnItemClickListener(this);
 
+        mQuestionView = (TextView) mMainView.findViewById(R.id.question);
         mRoundView = (TextView) mMainView.findViewById(R.id.round);
         mScoreView = (TextView) mMainView.findViewById(R.id.score);
+        mPowerUpContainerView = mMainView.findViewById(R.id.power_ups_container);
         mPowerUpView = (TextView) mMainView.findViewById(R.id.power_ups);
         mAttemptViewOne = (ImageView) mMainView.findViewById(R.id.attempt_one);
         mAttemptViewTwo = (ImageView) mMainView.findViewById(R.id.attempt_two);
@@ -129,9 +137,9 @@ public class GameFragment extends Fragment implements QuizListener,
         final int powerUps = mGame.getPowerUps();
         if (powerUps > 0) {
             mPowerUpView.setText(toString(powerUps));
-            mPowerUpView.setVisibility(View.VISIBLE);
+            mPowerUpContainerView.setVisibility(View.VISIBLE);
         } else {
-            mPowerUpView.setVisibility(View.INVISIBLE);
+            mPowerUpContainerView.setVisibility(View.INVISIBLE);
         }
 
         final int remainingAttempts = mGame.getRemainingAttempts();
@@ -175,6 +183,8 @@ public class GameFragment extends Fragment implements QuizListener,
     }
 
     private void loadQuiz(Quiz quiz) {
+        mCurrentQuiz = quiz;
+        mQuestionView.setText(quiz.getQuestion());
         mMoviesView.setAdapter(
                 new OptionItemAdapter(getActivity(),
                         Arrays.asList(
@@ -192,10 +202,6 @@ public class GameFragment extends Fragment implements QuizListener,
         } else {
             resetGame();
         }
-    }
-
-    private Quiz getCurrentQuiz() {
-        return mQuizzes.get(mGame.getRound());
     }
 
     @Override
@@ -274,8 +280,7 @@ public class GameFragment extends Fragment implements QuizListener,
     }
 
     private void rateQuiz(boolean liked) {
-        Quiz quiz = getCurrentQuiz();
-        mQuizApi.rateQuiz(liked, quiz.getId());
+        mQuizApi.rateQuiz(liked, mCurrentQuiz.getId());
         Toast.makeText(this.getActivity(), "Thanks for your vote", Toast.LENGTH_SHORT).show();
     }
 
@@ -284,7 +289,7 @@ public class GameFragment extends Fragment implements QuizListener,
         mQuizSolutionDialog.setOnClickListener(this);
 
         Bundle args = new Bundle();
-        args.putString("explanation", getCurrentQuiz().getExplanation());
+        args.putString("explanation", mCurrentQuiz.getExplanation());
         mQuizSolutionDialog.setArguments(args);
         mQuizSolutionDialog.show(mFragmentManager, null);
     }
