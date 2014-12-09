@@ -25,14 +25,15 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
     <string name="label_round">Round</string>
-    <string name="label_score">pts.</string>
+    <string name="label_score">Score</string>
     <string name="label_remaining_attempts">Attempts</string>
-    <string name="label_power_ups">Power-ups</string>
+    <string name="label_power_ups">Bonus</string>
     <string name="label_solution">Explanation</string>
     <string name="label_game_exit_header">Quit the game?</string>
     <string name="label_game_exit_save_score">Quit and save my score</string>
     <string name="label_game_exit_leave_game">Just quit</string>
     <string name="label_game_exit_reset_game">Start from scratch</string>
     <string name="label_game_exit_cancel">Return to the game</string>
-
+    <integer name="pair_cols">2</integer>
+    <integer name="single_col">1</integer>
 </resources>

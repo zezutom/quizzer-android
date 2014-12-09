@@ -27,7 +27,7 @@ public class OptionItemAdapter extends ArrayAdapter<String> {
 
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.row_option, null);
+            convertView = inflater.inflate(R.layout.row_option, parent, false);
 
             TextView titleView = (TextView) convertView.findViewById(R.id.title);
             titleView.setText(title);
