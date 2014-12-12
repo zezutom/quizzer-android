@@ -1,55 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_corner_dialog">
+
 
     <TextView
         android:id="@+id/solution"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_solution"
+        android:gravity="center"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
+        android:text="@string/label_solution"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:textColor="@color/list_item_title"
-        android:gravity="center"/>
+        android:textColor="@color/list_item_title" />
 
-    <TextView
-        android:id="@+id/explanation"
+    <org.zezutom.capstone.android.util.MaxHeightScrollView
+        android:id="@+id/explanation_scroll"
+        android:layout_below="@+id/solution"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/solution"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:textColor="@color/list_item_title"
-        android:padding="10dp"/>
+        app:maxHeight="150dp">
+
+        <TextView
+            android:id="@+id/explanation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/solution"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:padding="10dp"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="@color/list_item_title" />
+    </org.zezutom.capstone.android.util.MaxHeightScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/explanation">
+        android:layout_below="@+id/explanation_scroll"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/vote_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_good"
-            android:layout_weight=".33"/>
+            android:layout_weight=".33"
+            android:src="@drawable/ic_action_good" />
 
         <ImageView
             android:id="@+id/vote_down"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_bad"
-            android:layout_weight=".33"/>
+            android:layout_weight=".33"
+            android:src="@drawable/ic_action_bad" />
 
         <ImageView
             android:id="@+id/close_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_cancel"
-            android:layout_weight=".33"/>
-     </LinearLayout>
+            android:layout_weight=".33"
+            android:src="@drawable/ic_action_cancel" />
+    </LinearLayout>
+
 
 </RelativeLayout>

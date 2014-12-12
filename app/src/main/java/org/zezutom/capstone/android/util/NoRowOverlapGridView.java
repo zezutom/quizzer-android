@@ -14,7 +14,8 @@ import android.widget.ListAdapter;
  * http://obduro.nl/blog/the-solution-of-android-gridview-overlap/
  */
 public class NoRowOverlapGridView extends GridView {
-    private static final String TAG = "NoRowOverlapGridView";
+
+    public static final String TAG = "NoRowOverlapGridView";
 
     private int numColumnsID;
 

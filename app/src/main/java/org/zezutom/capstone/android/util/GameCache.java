@@ -52,9 +52,9 @@ public class GameCache {
 
     public Game loadGame() {
         int score = sharedPreferences.getInt(SCORE_KEY, 0);
-        int round = sharedPreferences.getInt(ROUND_KEY, 1);
+        int round = sharedPreferences.getInt(ROUND_KEY, Game.FIRST_ROUND);
         int powerUps = sharedPreferences.getInt(POWER_UPS_KEY, 0);
-        int remainingAttempts = sharedPreferences.getInt(REMAINING_ATTEMPTS_KEY, 3);
+        int remainingAttempts = sharedPreferences.getInt(REMAINING_ATTEMPTS_KEY, Game.MAX_ATTEMPTS);
         int oneTimeCorrectAttempts = sharedPreferences.getInt(ONE_TIME_CORRECT_ATTEMPTS, 0);
 
         Game game = new Game();

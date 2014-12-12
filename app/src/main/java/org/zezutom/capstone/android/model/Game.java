@@ -2,7 +2,11 @@ package org.zezutom.capstone.android.model;
 
 public class Game {
 
-    private int round = 1;
+    public static final int MAX_ATTEMPTS = 3;
+
+    public static final int FIRST_ROUND = 1;
+
+    private int round = FIRST_ROUND;
 
     private int score;
 
@@ -10,7 +14,7 @@ public class Game {
 
     private int oneTimeCorrectAttempts;
 
-    private int remainingAttempts = 3;
+    private int remainingAttempts = MAX_ATTEMPTS;
 
     private boolean gameOver;
 
@@ -81,7 +85,7 @@ public class Game {
 
     public boolean isGameInProgress() {
         return !isGameOver() && (
-                score > 0 || powerUps > 0 || oneTimeCorrectAttempts > 0 || remainingAttempts < 3);
+                round > FIRST_ROUND || score > 0 || powerUps > 0 || oneTimeCorrectAttempts > 0 || remainingAttempts < MAX_ATTEMPTS);
     }
 
     public int nextRound() {
