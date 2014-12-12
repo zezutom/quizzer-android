@@ -110,6 +110,7 @@ public class GameFragment extends Fragment implements QuizListener,
     public void onPause() {
         if (mQuizSolutionDialog != null) {
             AppUtil.closeDialog(mQuizSolutionDialog);
+            mGame.nextRound();
         }
         super.onPause();
     }
@@ -169,12 +170,19 @@ public class GameFragment extends Fragment implements QuizListener,
     }
 
     private void loadGame() {
-        mGame = mGameCache.loadGame();
-        final int round = mGame.getRound();
-        if (mQuizzes != null && round > 0 && mQuizzes.size() > round) {
-            loadQuiz(mQuizzes.get(round - 1));
-        } else {
+
+        if (mQuizzes == null || mQuizzes.isEmpty()) {
             mQuizApi.loadQuizzes();
+            return;
+        }
+
+        mGame = mGameCache.loadGame();
+
+        if (mGame == null) {
+            loadQuiz(mQuizzes.get(0));
+        } else {
+            final int round = mGame.getRound();
+            loadQuiz(mQuizzes.get(round == 0 ? round : round - 1));
         }
     }
 
@@ -197,8 +205,8 @@ public class GameFragment extends Fragment implements QuizListener,
     }
 
     private void nextQuiz() {
-        if (mQuizzes != null && mGame.getRound() < mQuizzes.size() - 1) {
-            loadQuiz(mQuizzes.get(mGame.nextRound()));
+        if (mQuizzes != null && mGame.getRound() < mQuizzes.size()) {
+            loadQuiz(mQuizzes.get(mGame.nextRound() - 1));
         } else {
             resetGame();
         }
@@ -207,7 +215,7 @@ public class GameFragment extends Fragment implements QuizListener,
     @Override
     public void onGetAllSuccess(List<Quiz> quizzes) {
         this.mQuizzes = quizzes;
-        loadQuiz(quizzes.get(0));
+        loadGame();
     }
 
     @Override
@@ -241,10 +249,8 @@ public class GameFragment extends Fragment implements QuizListener,
             return;
         }
 
-        final Quiz quiz = mQuizzes.get(mGame.getRound());
-
         // Quiz answers are 1-based, whereas the index is 0-based
-        if ((i + 1) == quiz.getAnswer()) {
+        if ((i + 1) == mCurrentQuiz.getAnswer()) {
             mGame.score();
             showQuizSolutionDialog();
         } else {
