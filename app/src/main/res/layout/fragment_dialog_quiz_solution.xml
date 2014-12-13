@@ -20,18 +20,15 @@
         android:id="@+id/explanation_scroll"
         android:layout_below="@+id/solution"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:maxHeight="150dp">
 
-        <TextView
+        <WebView
             android:id="@+id/explanation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/solution"
-            android:minHeight="?android:attr/listPreferredItemHeightSmall"
-            android:padding="10dp"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall"
-            android:textColor="@color/list_item_title" />
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@android:color/transparent"/>
+
     </org.zezutom.capstone.android.util.MaxHeightScrollView>
 
     <LinearLayout
