@@ -14,17 +14,17 @@ public class GameExitDialog extends DialogFragment {
 
     private View dialogView;
 
-    private View.OnClickListener listener;
+    private View.OnClickListener onClickListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dialogView = inflater.inflate(R.layout.fragment_dialog_game_exit, container, false);
         setCancelable(false);
-        if (listener != null) {
-            onClick(R.id.save_score, listener);
-            onClick(R.id.reset_game, listener);
-            onClick(R.id.exit_game, listener);
-            onClick(R.id.cancel_exit, listener);
+        if (onClickListener != null) {
+            onClick(R.id.save_score, onClickListener);
+            onClick(R.id.reset_game, onClickListener);
+            onClick(R.id.exit_game, onClickListener);
+            onClick(R.id.cancel_exit, onClickListener);
         }
 
         final Window window = getDialog().getWindow();
@@ -36,7 +36,7 @@ public class GameExitDialog extends DialogFragment {
     }
 
     public void setOnClickListener(View.OnClickListener listener) {
-        this.listener = listener;
+        this.onClickListener = listener;
     }
 
     private void onClick(int id, View.OnClickListener listener) {

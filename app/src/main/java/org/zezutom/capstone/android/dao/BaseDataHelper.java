@@ -7,11 +7,9 @@ import android.util.Log;
 
 public abstract class BaseDataHelper extends SQLiteOpenHelper {
 
-    public static final String TAG = BaseDataHelper.class.getSimpleName();
+    public static final String TAG = "BaseDataHelper";
 
     protected static final int DB_VERSION = 12;
-
-    protected static final String DB_SCHEMA = "mutibo";
 
     protected static final String COLUMN_ID = "id";
 

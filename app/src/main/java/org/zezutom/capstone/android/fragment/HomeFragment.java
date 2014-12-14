@@ -19,25 +19,25 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private GridView mHomeMenuGridView;
+    private GridView homeMenuGridView;
 
     /**
      * A pointer to the current callbacks instance (the Activity).
      */
-    private HomeMenuCallbacks mCallbacks;
+    private HomeMenuCallbacks callbacks;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        mHomeMenuGridView = (GridView) view.findViewById(R.id.home_menu);
-        mHomeMenuGridView.setAdapter(new NavigationItemAdapter(getActivity(), getMenuItems(), R.layout.row_home_menu));
-        mHomeMenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        homeMenuGridView = (GridView) view.findViewById(R.id.home_menu);
+        homeMenuGridView.setAdapter(new NavigationItemAdapter(getActivity(), getMenuItems(), R.layout.row_home_menu));
+        homeMenuGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mCallbacks != null) {
-                    mCallbacks.onHomeMenuItemSelected(position);
+                if (callbacks != null) {
+                    callbacks.onHomeMenuItemSelected(position);
                 }
             }
         });
@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mCallbacks = (HomeMenuCallbacks) activity;
+            callbacks = (HomeMenuCallbacks) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement HomeMenuCallbacks.");
         }

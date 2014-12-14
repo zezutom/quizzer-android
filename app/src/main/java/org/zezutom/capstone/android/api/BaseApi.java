@@ -22,7 +22,7 @@ import java.util.Map;
 
 public abstract class BaseApi<T extends BaseDataSource> {
 
-    public static final String TAG = BaseApi.class.getName();
+    public static final String TAG = "BaseApi";
 
     protected HttpClient httpClient;
 

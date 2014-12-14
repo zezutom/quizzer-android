@@ -83,13 +83,13 @@ public class MainActivity extends Activity implements
     /**
      * Google API client.
      */
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient googleApiClient;
 
     /**
      * Google API latest connection result.
      * It's need for making an explicit login attempt.
      */
-    private ConnectionResult mConnectionResult;
+    private ConnectionResult connectionResult;
 
     /**
      * Determines if the client is in a resolution state, and
@@ -100,45 +100,48 @@ public class MainActivity extends Activity implements
     /**
      * Determines if the client is waiting for sign-in intent to return.
      */
-    private boolean mIsSignInProgress;
+    private boolean isSignInProgress;
 
     /**
      * A flag indicating that a PendingIntent is in progress and prevents us
      * from starting further intents.
      */
-    private boolean mIsIntentInProgress;
+    private boolean isIntentInProgress;
 
     /**
      * Determines if the user has been successfully signed in.
      */
-    private boolean mIsSignedIn;
+    private boolean isSignedIn;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private NavigationDrawerFragment navigationDrawerFragment;
 
     /**
      * Fragment managing a single game, incl. end-user interactions and presentation.
      */
-    private GameFragment mGameFragment;
+    private GameFragment gameFragment;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
-    private CharSequence mTitle;
+    private CharSequence title;
 
     /**
      * Shown when the user is about to leave a game in progress.
      */
-    private GameExitDialog mGameExitDialog;
+    private GameExitDialog gameExitDialog;
 
     /**
      * An index of the currently selected menu item.
      */
-    private int mMenuItemIndex;
+    private int menuItemIndex;
 
-    private GameApi mGameApi;
+    /**
+     * Captures game results and provides game stats.
+     */
+    private GameApi gameApi;
 
     /**
      * Called when the activity is starting. Restores the activity state.
@@ -150,17 +153,17 @@ public class MainActivity extends Activity implements
             mIsInResolution = savedInstanceState.getBoolean(KEY_IN_RESOLUTION, false);
         }
         setContentView(R.layout.activity_main_navigation);
-        mGameApi = new GameApi(this, this);
-        mGameApi.setUp();
+        gameApi = new GameApi(this, this);
+        gameApi.setUp();
 
-        mGameFragment = new GameFragment();
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
+        gameFragment = new GameFragment();
+        navigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
-        mTitle = getTitle();
+        title = getTitle();
 
         // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
+        navigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
@@ -169,7 +172,7 @@ public class MainActivity extends Activity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mGameApi.tearDown();
+        gameApi.tearDown();
     }
 
     @Override
@@ -177,15 +180,15 @@ public class MainActivity extends Activity implements
         if (isGameInProgress()) {
             showGameExitDialog();
         } else {
-            mNavigationDrawerFragment.selectHomeItem();
+            navigationDrawerFragment.selectHomeItem();
         }
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         if (isGameInProgress(position)) {
-            mNavigationDrawerFragment.getNavigationItem(position);
-            mMenuItemIndex = position;
+            navigationDrawerFragment.getNavigationItem(position);
+            menuItemIndex = position;
             showGameExitDialog();
             return;
         }
@@ -195,12 +198,12 @@ public class MainActivity extends Activity implements
                 .replace(R.id.container, PlaceholderFragment.newInstance(position))
                 .commit();
 
-        if (mNavigationDrawerFragment == null) {
+        if (navigationDrawerFragment == null) {
             return;
         }
 
         // take an action
-        final NavigationItem item = mNavigationDrawerFragment.getNavigationItem(position);
+        final NavigationItem item = navigationDrawerFragment.getNavigationItem(position);
         switch (item.getId()) {
             case R.string.title_sign_in:
                 signIn();
@@ -212,49 +215,49 @@ public class MainActivity extends Activity implements
     }
 
     private boolean isGameInProgress(int position) {
-        if (!isGameInProgress() || mNavigationDrawerFragment == null) {
+        if (!isGameInProgress() || navigationDrawerFragment == null) {
             return false;
         }
 
-        final NavigationItem item = mNavigationDrawerFragment.getNavigationItem(position);
+        final NavigationItem item = navigationDrawerFragment.getNavigationItem(position);
 
         return item.getId() != R.string.title_play_single;
     }
 
     public void onSectionAttached(int position) {
-        final NavigationItem item = mNavigationDrawerFragment.getNavigationItem(position);
+        final NavigationItem item = navigationDrawerFragment.getNavigationItem(position);
 
         Fragment fragment = null;
         switch (item.getId()) {
             case R.string.title_home:
-                mTitle = getString(R.string.title_home);
+                title = getString(R.string.title_home);
                 fragment = new HomeFragment();
                 break;
             case R.string.title_play_single:
-                mTitle = getString(R.string.title_play_single);
-                fragment = mGameFragment;
+                title = getString(R.string.title_play_single);
+                fragment = gameFragment;
                 break;
             case R.string.title_play_challenge:
-                mTitle = getString(R.string.title_play_challenge);
+                title = getString(R.string.title_play_challenge);
                 fragment = new ChallengeAFriendFragment();
                 break;
             case R.string.title_settings:
-                mTitle = getString(R.string.title_settings);
+                title = getString(R.string.title_settings);
                 fragment = new SettingsFragment();
                 break;
             case R.string.title_stats_score:
-                mTitle = getString(R.string.title_stats_score);
+                title = getString(R.string.title_stats_score);
                 fragment = new MyScoreFragment();
                 break;
             case R.string.title_stats_rating:
-                mTitle = getString(R.string.title_stats_rating);
+                title = getString(R.string.title_stats_rating);
                 fragment = new QuizRatingFragment();
                 break;
             case R.string.title_sign_in:
-                mTitle = getString(R.string.title_sign_in);
+                title = getString(R.string.title_sign_in);
                 break;
             case R.string.title_sign_out:
-                mTitle = getString(R.string.title_sign_out);
+                title = getString(R.string.title_sign_out);
                 break;
         }
 
@@ -270,12 +273,12 @@ public class MainActivity extends Activity implements
         ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        actionBar.setTitle(title);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+        if (!navigationDrawerFragment.isDrawerOpen()) {
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
@@ -311,15 +314,15 @@ public class MainActivity extends Activity implements
     @Override
     protected void onStart() {
         super.onStart();
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
+        if (googleApiClient == null) {
+            googleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Plus.API)
                     .addScope(Plus.SCOPE_PLUS_LOGIN)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .build();
         }
-        mGoogleApiClient.connect();
+        googleApiClient.connect();
     }
 
     /**
@@ -328,16 +331,16 @@ public class MainActivity extends Activity implements
      */
     @Override
     protected void onStop() {
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.disconnect();
+        if (googleApiClient != null) {
+            googleApiClient.disconnect();
         }
         super.onStop();
     }
 
     @Override
     protected void onPause() {
-        if (mGameExitDialog != null) {
-            AppUtil.closeDialog(mGameExitDialog);
+        if (gameExitDialog != null) {
+            AppUtil.closeDialog(gameExitDialog);
         }
         super.onPause();
     }
@@ -357,16 +360,16 @@ public class MainActivity extends Activity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mIsIntentInProgress = false;
+        isIntentInProgress = false;
 
         switch (requestCode) {
             case REQUEST_CODE_RESOLUTION:
                 retryConnecting();
                 break;
             case REQUEST_CODE_SIGN_IN:
-                mIsSignInProgress = true;
-                if (!mGoogleApiClient.isConnecting()) {
-                    mGoogleApiClient.connect();
+                isSignInProgress = true;
+                if (!googleApiClient.isConnecting()) {
+                    googleApiClient.connect();
                 }
                 break;
         }
@@ -374,23 +377,23 @@ public class MainActivity extends Activity implements
 
     private void retryConnecting() {
         mIsInResolution = false;
-        if (!mGoogleApiClient.isConnecting()) {
-            mGoogleApiClient.connect();
+        if (!googleApiClient.isConnecting()) {
+            googleApiClient.connect();
         }
     }
 
     /**
-     * Called when {@code mGoogleApiClient} is connected.
+     * Called when {@code googleApiClient} is connected.
      */
     @Override
     public void onConnected(Bundle connectionHint) {
-        mIsSignInProgress = false;
-        mIsSignedIn = true;
+        isSignInProgress = false;
+        isSignedIn = true;
         signIn();
     }
 
     /**
-     * Called when {@code mGoogleApiClient} connection is suspended.
+     * Called when {@code googleApiClient} connection is suspended.
      */
     @Override
     public void onConnectionSuspended(int cause) {
@@ -399,7 +402,7 @@ public class MainActivity extends Activity implements
     }
 
     /**
-     * Called when {@code mGoogleApiClient} is trying to connect but failed.
+     * Called when {@code googleApiClient} is trying to connect but failed.
      * Handle {@code result.getResolution()} if there is a resolution
      * available.
      */
@@ -425,16 +428,16 @@ public class MainActivity extends Activity implements
             return;
         }
 
-        if (!mIsIntentInProgress) {
+        if (!isIntentInProgress) {
             // save the connection result for later
-            this.mConnectionResult = result;
+            this.connectionResult = result;
 
-            if (mIsSignInProgress) {
+            if (isSignInProgress) {
                 // the user is being signed in
                 resolveSignInError();
             } else {
                 // the user is signed out
-                mNavigationDrawerFragment.setSignedOutView();
+                navigationDrawerFragment.setSignedOutView();
             }
         } else {
             mIsInResolution = true;
@@ -451,37 +454,37 @@ public class MainActivity extends Activity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.save_score:
-                Game game = mGameFragment.getGame();
+                Game game = gameFragment.getGame();
                 GameHistory history = game.getHistory();
-                mGameApi.saveGameResult(game.getRound(), game.getScore(), game.getPowerUps(),
+                gameApi.saveGameResult(game.getRound(), game.getScore(), game.getPowerUps(),
                         history.getOneTimeAttempts(), history.getTwoTimeAttempts());
-                mGameFragment.resetGame();
+                gameFragment.resetGame();
                 break;
             case R.id.exit_game:
-                mGameFragment.resetGame();
-                mNavigationDrawerFragment.selectItem(mMenuItemIndex);
+                gameFragment.resetGame();
+                navigationDrawerFragment.selectItem(menuItemIndex);
                 break;
             case R.id.reset_game:
-                mGameFragment.resetGame();
+                gameFragment.resetGame();
                 break;
         }
-        AppUtil.closeDialog(mGameExitDialog);
+        AppUtil.closeDialog(gameExitDialog);
     }
 
     private boolean isGameInProgress() {
-        if (mGameFragment == null) {
+        if (gameFragment == null) {
             return false;
         }
 
-        Game game = mGameFragment.getGame();
+        Game game = gameFragment.getGame();
 
         return (game != null) ? game.isGameInProgress() : false;
     }
 
     private void signIn() {
-        if (mIsSignedIn) {
-            final Person person = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            final String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+        if (isSignedIn) {
+            final Person person = Plus.PeopleApi.getCurrentPerson(googleApiClient);
+            final String email = Plus.AccountApi.getAccountName(googleApiClient);
 
             if (person != null) {
                 final String url = person.getImage().getUrl();
@@ -491,41 +494,41 @@ public class MainActivity extends Activity implements
 
 
                 // Set up the sign-in / sign-out menu
-                mNavigationDrawerFragment.setSignedInView(userProfile);
+                navigationDrawerFragment.setSignedInView(userProfile);
             }
 
-        } else if (!mGoogleApiClient.isConnecting()) {
-            mIsSignInProgress = true;
-            mGoogleApiClient.connect();
+        } else if (!googleApiClient.isConnecting()) {
+            isSignInProgress = true;
+            googleApiClient.connect();
         }
     }
 
     private void signOut() {
-        if (mGoogleApiClient.isConnected()) {
-            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-            mGoogleApiClient.disconnect();
-            mGoogleApiClient.connect();
-            mIsSignedIn = false;
+        if (googleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(googleApiClient);
+            googleApiClient.disconnect();
+            googleApiClient.connect();
+            isSignedIn = false;
         }
     }
 
     private void resolveSignInError() {
-        if (mConnectionResult != null && mConnectionResult.hasResolution()) {
-            mIsIntentInProgress = true;
+        if (connectionResult != null && connectionResult.hasResolution()) {
+            isIntentInProgress = true;
             try {
-                mConnectionResult.startResolutionForResult(this, REQUEST_CODE_SIGN_IN);
+                connectionResult.startResolutionForResult(this, REQUEST_CODE_SIGN_IN);
             } catch (IntentSender.SendIntentException e) {
-                mIsIntentInProgress = false;
-                mGoogleApiClient.connect();
+                isIntentInProgress = false;
+                googleApiClient.connect();
             }
         }
     }
 
     private void showGameExitDialog() {
-        mGameExitDialog = new GameExitDialog();
-        mGameExitDialog.setOnClickListener(this);
-        mGameExitDialog.setCancelable(false);
-        mGameExitDialog.show(getFragmentManager(), null);
+        gameExitDialog = new GameExitDialog();
+        gameExitDialog.setOnClickListener(this);
+        gameExitDialog.setCancelable(false);
+        gameExitDialog.show(getFragmentManager(), null);
     }
 
     @Override
@@ -556,8 +559,8 @@ public class MainActivity extends Activity implements
                 break;
         }
         // Delegates the action to the sidebar menu
-        position = mNavigationDrawerFragment.getNavigationItemPosition(itemId);
-        mNavigationDrawerFragment.selectItem(position);
+        position = navigationDrawerFragment.getNavigationItemPosition(itemId);
+        navigationDrawerFragment.selectItem(position);
     }
 
     /**

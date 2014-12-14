@@ -1,7 +1,5 @@
 package org.zezutom.capstone.android.util;
 
-import android.app.FragmentManager;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import java.util.HashMap;
@@ -15,10 +13,6 @@ public class UIHelper {
     private Map<Integer, View> viewMap;
 
     private View mainView;
-
-    private FragmentManager fragmentManager;
-
-    private LayoutInflater inflater;
 
     public UIHelper(View mainView) {
         this.mainView = mainView;

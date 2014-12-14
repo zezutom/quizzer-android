@@ -36,7 +36,6 @@ import org.zezutom.capstone.android.model.UserProfile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -61,37 +60,37 @@ public class NavigationDrawerFragment extends Fragment {
     /**x
      * A pointer to the current callbacks instance (the Activity).
      */
-    private NavigationDrawerCallbacks mCallbacks;
+    private NavigationDrawerCallbacks callbacks;
 
     /**
      * Helper component that ties the action bar to the navigation drawer.
      */
-    private ActionBarDrawerToggle mDrawerToggle;
+    private ActionBarDrawerToggle drawerToggle;
 
     /**
      * Fixed menu items.
      */
-    private List<NavigationItem> mNavigationItems;
+    private List<NavigationItem> navigationItems;
 
-    private DrawerLayout mDrawerLayout;
+    private DrawerLayout drawerLayout;
 
-    private View mDrawerView;
+    private View drawerView;
 
-    private View mUserProfileView;
+    private View userProfileView;
 
-    private ListView mDrawerListView;
+    private ListView drawerListView;
 
-    private View mFragmentContainerView;
+    private View fragmentContainerView;
 
-    private int mCurrentSelectedPosition;
+    private int selectedPosition;
 
-    private boolean mIsUserSignedIn;
+    private boolean isUserSignedIn;
 
-    private boolean mFromSavedInstanceState;
+    private boolean fromSavedInstanceState;
 
-    private boolean mUserLearnedDrawer;
+    private boolean hasUserLearnedDrawer;
 
-    private RequestQueue mRequestQueue;
+    private RequestQueue requestQueue;
 
     public NavigationDrawerFragment() {
     }
@@ -99,58 +98,58 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNavigationItems = new ArrayList<>();
-        mRequestQueue = Volley.newRequestQueue(getActivity());
+        navigationItems = new ArrayList<>();
+        requestQueue = Volley.newRequestQueue(getActivity());
         // Read in the flag indicating whether or not the user has demonstrated awareness of the
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+        hasUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
 
         if (savedInstanceState != null) {
-            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
-            mIsUserSignedIn = savedInstanceState.getBoolean(STATE_SIGNED_IN);
-            mFromSavedInstanceState = true;
+            selectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
+            isUserSignedIn = savedInstanceState.getBoolean(STATE_SIGNED_IN);
+            fromSavedInstanceState = true;
         }
     }
 
     private void initNavigationItems(UserProfile userProfile) {
-        mNavigationItems = new ArrayList<>();
-        mNavigationItems.add(createNavigationItem(R.string.title_home, R.drawable.ic_action_home));
-        mNavigationItems.add(createNavigationItem(R.string.title_play_single, R.drawable.ic_action_play_single));
-        mNavigationItems.add(createNavigationItem(R.string.title_play_challenge, R.drawable.ic_action_playoff));
-        mNavigationItems.add(createNavigationItem(R.string.title_settings, R.drawable.ic_action_settings));
-        mNavigationItems.add(createNavigationItem(R.string.title_stats_score, R.drawable.ic_action_score));
-        mNavigationItems.add(createNavigationItem(R.string.title_stats_rating, R.drawable.ic_action_rating));
+        navigationItems = new ArrayList<>();
+        navigationItems.add(createNavigationItem(R.string.title_home, R.drawable.ic_action_home));
+        navigationItems.add(createNavigationItem(R.string.title_play_single, R.drawable.ic_action_play_single));
+        navigationItems.add(createNavigationItem(R.string.title_play_challenge, R.drawable.ic_action_playoff));
+        navigationItems.add(createNavigationItem(R.string.title_settings, R.drawable.ic_action_settings));
+        navigationItems.add(createNavigationItem(R.string.title_stats_score, R.drawable.ic_action_score));
+        navigationItems.add(createNavigationItem(R.string.title_stats_rating, R.drawable.ic_action_rating));
 
         initUserProfileView(userProfile);
-        mIsUserSignedIn = (userProfile != null);
-        if (mIsUserSignedIn) {
-            mNavigationItems.add(mNavigationItems.size(), createNavigationItem(R.string.title_sign_out, R.drawable.ic_action_google_plus));
+        isUserSignedIn = (userProfile != null);
+        if (isUserSignedIn) {
+            navigationItems.add(navigationItems.size(), createNavigationItem(R.string.title_sign_out, R.drawable.ic_action_google_plus));
         } else {
-            mNavigationItems.add(0, createNavigationItem(R.string.title_sign_in, R.drawable.ic_action_google_plus));
+            navigationItems.add(0, createNavigationItem(R.string.title_sign_in, R.drawable.ic_action_google_plus));
         }
-        mDrawerListView.setAdapter(new NavigationItemAdapter(this.getActivity(), mNavigationItems, R.layout.row_navigation));
+        drawerListView.setAdapter(new NavigationItemAdapter(this.getActivity(), navigationItems, R.layout.row_navigation));
     }
 
     private void initUserProfileView(UserProfile userProfile) {
         if (userProfile == null) {
-            mUserProfileView.setVisibility(View.GONE);
+            userProfileView.setVisibility(View.GONE);
         } else {
-            mUserProfileView.setVisibility(View.VISIBLE);
+            userProfileView.setVisibility(View.VISIBLE);
 
-            final ImageView imageView = (ImageView) mUserProfileView.findViewById(R.id.image);
+            final ImageView imageView = (ImageView) userProfileView.findViewById(R.id.image);
             ImageRequest imageRequest = new ImageRequest(userProfile.getImageUrl(), new Response.Listener<Bitmap>() {
                 @Override
                 public void onResponse(Bitmap bitmap) {
                     imageView.setImageBitmap(bitmap);
                 }
             }, 0, 0, null, null);
-            mRequestQueue.add(imageRequest);
+            requestQueue.add(imageRequest);
 
-            final TextView fullNameView = (TextView) mUserProfileView.findViewById(R.id.full_name);
+            final TextView fullNameView = (TextView) userProfileView.findViewById(R.id.full_name);
             fullNameView.setText(userProfile.getFullName());
 
-            final TextView emailView = (TextView) mUserProfileView.findViewById(R.id.email);
+            final TextView emailView = (TextView) userProfileView.findViewById(R.id.email);
             emailView.setText(userProfile.getEmail());
         }
     }
@@ -165,24 +164,24 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDrawerView = inflater.inflate(
+        drawerView = inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
 
-        mDrawerListView = (ListView) mDrawerView.findViewById(R.id.drawer_list);
-        mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        drawerListView = (ListView) drawerView.findViewById(R.id.drawer_list);
+        drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
 
-        mUserProfileView = mDrawerView.findViewById(R.id.user_profile);
+        userProfileView = drawerView.findViewById(R.id.user_profile);
 
-        return mDrawerView;
+        return drawerView;
     }
 
     public void setSignedInView(UserProfile userProfile) {
-        boolean userSignedIn = mIsUserSignedIn;
+        boolean userSignedIn = isUserSignedIn;
         initNavigationItems(userProfile);
         selectMenuItem(userSignedIn);
     }
@@ -192,10 +191,10 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private void selectMenuItem(boolean userSignedIn) {
-        if (userSignedIn != mIsUserSignedIn) {
+        if (userSignedIn != isUserSignedIn) {
             selectHomeItem();
         } else {
-            selectItem(mCurrentSelectedPosition);
+            selectItem(selectedPosition);
         }
     }
 
@@ -204,21 +203,21 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public NavigationItem getNavigationItem(int position) {
-        if (mNavigationItems == null) {
+        if (navigationItems == null) {
             throw new IllegalStateException("The drawer is empty!");
         }
 
-        if (mNavigationItems.size() <= position) {
-            position = mNavigationItems.size() - 1;
+        if (navigationItems.size() <= position) {
+            position = navigationItems.size() - 1;
         }
-        return mNavigationItems.get(position);
+        return navigationItems.get(position);
     }
 
     public int getNavigationItemPosition(int itemId) {
         int position = 0;
 
-        for (int i = 0; i < mNavigationItems.size(); i++) {
-            if (mNavigationItems.get(i).getId() == itemId) {
+        for (int i = 0; i < navigationItems.size(); i++) {
+            if (navigationItems.get(i).getId() == itemId) {
                 position = i;
                 break;
             }
@@ -227,7 +226,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public boolean isDrawerOpen() {
-        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+        return drawerLayout != null && drawerLayout.isDrawerOpen(fragmentContainerView);
     }
 
     /**
@@ -237,11 +236,11 @@ public class NavigationDrawerFragment extends Fragment {
      * @param drawerLayout The DrawerLayout containing this fragment's UI.
      */
     public void setUp(int fragmentId, DrawerLayout drawerLayout) {
-        mFragmentContainerView = getActivity().findViewById(fragmentId);
-        mDrawerLayout = drawerLayout;
+        fragmentContainerView = getActivity().findViewById(fragmentId);
+        this.drawerLayout = drawerLayout;
 
         // set a custom shadow that overlays the main content when the drawer opens
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        this.drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
 
         ActionBar actionBar = getActionBar();
@@ -250,9 +249,9 @@ public class NavigationDrawerFragment extends Fragment {
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
-        mDrawerToggle = new ActionBarDrawerToggle(
+        drawerToggle = new ActionBarDrawerToggle(
                 getActivity(),                    /* host Activity */
-                mDrawerLayout,                    /* DrawerLayout object */
+                NavigationDrawerFragment.this.drawerLayout,                    /* DrawerLayout object */
                 R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
                 R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
                 R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
@@ -274,10 +273,10 @@ public class NavigationDrawerFragment extends Fragment {
                     return;
                 }
 
-                if (!mUserLearnedDrawer) {
+                if (!hasUserLearnedDrawer) {
                     // The user manually opened the drawer; store this flag to prevent auto-showing
                     // the navigation drawer automatically in the future.
-                    mUserLearnedDrawer = true;
+                    hasUserLearnedDrawer = true;
                     SharedPreferences sp = PreferenceManager
                             .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).apply();
@@ -289,35 +288,35 @@ public class NavigationDrawerFragment extends Fragment {
 
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
         // per the navigation drawer design guidelines.
-        if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
-            mDrawerLayout.openDrawer(mFragmentContainerView);
+        if (!hasUserLearnedDrawer && !fromSavedInstanceState) {
+            this.drawerLayout.openDrawer(fragmentContainerView);
         }
 
         // Defer code dependent on restoration of previous instance state.
-        mDrawerLayout.post(new Runnable() {
+        this.drawerLayout.post(new Runnable() {
             @Override
             public void run() {
-                mDrawerToggle.syncState();
+                drawerToggle.syncState();
             }
         });
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        this.drawerLayout.setDrawerListener(drawerToggle);
     }
 
     public void selectHomeItem() {
-        selectItem(mUserProfileView.getVisibility() == View.VISIBLE ? 0 : 1);
+        selectItem(userProfileView.getVisibility() == View.VISIBLE ? 0 : 1);
     }
 
     public void selectItem(int position) {
-        mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
+        selectedPosition = position;
+        if (drawerListView != null) {
+            drawerListView.setItemChecked(position, true);
         }
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
+        if (drawerLayout != null) {
+            drawerLayout.closeDrawer(fragmentContainerView);
         }
-        if (mCallbacks != null) {
-            mCallbacks.onNavigationDrawerItemSelected(position);
+        if (callbacks != null) {
+            callbacks.onNavigationDrawerItemSelected(position);
         }
     }
 
@@ -325,7 +324,7 @@ public class NavigationDrawerFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mCallbacks = (NavigationDrawerCallbacks) activity;
+            callbacks = (NavigationDrawerCallbacks) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
         }
@@ -334,28 +333,28 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = null;
+        callbacks = null;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
-        outState.putBoolean(STATE_SIGNED_IN, mIsUserSignedIn);
+        outState.putInt(STATE_SELECTED_POSITION, selectedPosition);
+        outState.putBoolean(STATE_SIGNED_IN, isUserSignedIn);
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Forward the new configuration the drawer toggle component.
-        mDrawerToggle.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // If the drawer is open, show the global app actions in the action bar. See also
         // showGlobalContextActionBar, which controls the top-left area of the action bar.
-        if (mDrawerLayout != null && isDrawerOpen()) {
+        if (drawerLayout != null && isDrawerOpen()) {
             inflater.inflate(R.menu.global, menu);
             showGlobalContextActionBar();
         }
@@ -364,7 +363,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
 

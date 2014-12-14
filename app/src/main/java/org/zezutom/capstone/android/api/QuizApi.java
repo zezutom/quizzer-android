@@ -28,7 +28,7 @@ import zezutom.org.quizService.model.QuizRating;
 
 public class QuizApi extends BaseApi {
 
-    public static final String TAG = QuizApi.class.getName();
+    public static final String TAG = "QuizApi";
 
     private QuizListener quizListener;
 

@@ -26,7 +26,7 @@ public class QuizSolutionDialog extends DialogFragment {
 
     private View dialogView;
 
-    private View.OnClickListener listener;
+    private View.OnClickListener onClickListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,10 +41,10 @@ public class QuizSolutionDialog extends DialogFragment {
 
         explanationView.loadData(String.format(JUSTIFIED_TEXT, color, explanation), "text/html", "utf-8");
 
-        if (listener != null) {
-            onClick(R.id.vote_up, listener);
-            onClick(R.id.vote_down, listener);
-            onClick(R.id.close_dialog, listener);
+        if (onClickListener != null) {
+            onClick(R.id.vote_up, onClickListener);
+            onClick(R.id.vote_down, onClickListener);
+            onClick(R.id.close_dialog, onClickListener);
         }
 
         final Window window = getDialog().getWindow();
@@ -56,7 +56,7 @@ public class QuizSolutionDialog extends DialogFragment {
     }
 
     public void setOnClickListener(View.OnClickListener listener) {
-        this.listener = listener;
+        this.onClickListener = listener;
     }
 
     private void onClick(int id, View.OnClickListener listener) {

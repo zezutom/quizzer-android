@@ -12,19 +12,6 @@ public class QuizDataSource extends BaseDataSource<Quiz, QuizDataHelper> {
         super(new QuizDataHelper(context));
     }
 
-    /*
-                "(" + COLUMN_ID + " integer primary key autoincrement" +
-                "," + COLUMN_QUIZ_ID + " text not null" +
-                "," + COLUMN_CATEGORY + " text not null" +
-                "," + COLUMN_DIFFICULTY + " text not null" +
-                "," + COLUMN_QUESTION + " text not null" +
-                "," + COLUMN_ANSWER + " integer not null" +
-                "," + COLUMN_OPTION_1 + " text not null" +
-                "," + COLUMN_OPTION_2 + " text not null" +
-                "," + COLUMN_OPTION_3 + " text not null" +
-                "," + COLUMN_OPTION_4 + " text not null" +
-                "," + COLUMN_EXPLANATION + " text not null);";
-    * */
     @Override
     protected ContentValues getValues(Quiz quiz) {
         ContentValues values = new ContentValues();
