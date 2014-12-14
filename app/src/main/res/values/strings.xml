@@ -5,8 +5,7 @@
     <string name="title_home">Home</string>
     <string name="title_sign_in">Sign in</string>
     <string name="title_sign_out">Sign out</string>
-    <string name="title_play_single">Play a Single Game</string>
-    <string name="title_play_challenge">Challenge a Friend</string>
+    <string name="title_play_single">Start a New Game</string>
     <string name="title_settings">Settings</string>
     <string name="title_settings_topic">Topics</string>
     <string name="title_settings_topic_java">Core Java</string>
@@ -22,7 +21,6 @@
     <string name="title_stats_rating">Quiz Ratings</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
     <string name="label_round">Round</string>
     <string name="label_score">Score</string>

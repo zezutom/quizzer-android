@@ -116,7 +116,6 @@ public class NavigationDrawerFragment extends Fragment {
         navigationItems = new ArrayList<>();
         navigationItems.add(createNavigationItem(R.string.title_home, R.drawable.ic_action_home));
         navigationItems.add(createNavigationItem(R.string.title_play_single, R.drawable.ic_action_play_single));
-        navigationItems.add(createNavigationItem(R.string.title_play_challenge, R.drawable.ic_action_playoff));
         navigationItems.add(createNavigationItem(R.string.title_settings, R.drawable.ic_action_settings));
         navigationItems.add(createNavigationItem(R.string.title_stats_score, R.drawable.ic_action_score));
         navigationItems.add(createNavigationItem(R.string.title_stats_rating, R.drawable.ic_action_rating));
@@ -364,11 +363,6 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
             return true;
         }
 

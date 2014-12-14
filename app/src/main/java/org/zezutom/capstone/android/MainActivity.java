@@ -237,10 +237,6 @@ public class MainActivity extends Activity implements
                 title = getString(R.string.title_play_single);
                 fragment = gameFragment;
                 break;
-            case R.string.title_play_challenge:
-                title = getString(R.string.title_play_challenge);
-                fragment = new ChallengeAFriendFragment();
-                break;
             case R.string.title_settings:
                 title = getString(R.string.title_settings);
                 fragment = new SettingsFragment();
@@ -549,12 +545,9 @@ public class MainActivity extends Activity implements
                 itemId = R.string.title_play_single;
                 break;
             case 1:
-                itemId = R.string.title_play_challenge;
-                break;
-            case 2:
                 itemId = R.string.title_stats_score;
                 break;
-            case 3:
+            case 2:
                 itemId = R.string.title_stats_rating;
                 break;
         }
