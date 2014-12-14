@@ -129,9 +129,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
-                android:text=">"
-                android:visibility="visible"
-                android:layout_marginRight="5dp"/>
+                android:background="@drawable/rounded_corner"
+                android:textColor="@color/list_item_title"
+                android:text="@string/title_play_single_next"
+                android:visibility="visible"/>
 
         </LinearLayout>
 

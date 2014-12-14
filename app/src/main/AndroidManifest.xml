@@ -12,7 +12,7 @@
         android:allowBackup="true"
         android:icon="@android:color/transparent"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/CustomActionBarTheme" >
         <activity
             android:name="org.zezutom.capstone.android.MainActivity"
             android:label="@string/app_name" >
