@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,7 +72,8 @@ public class GameFragment extends Fragment implements QuizListener,
                 .addView(R.id.attempt_one)
                 .addView(R.id.attempt_two)
                 .addView(R.id.attempt_three)
-                .addView(R.id.next_quiz);
+                .addView(R.id.next_quiz)
+                .addView(R.id.category);
 
         GridView moviesView = uiHelper.getView(R.id.list_movies);
         moviesView.setOnItemClickListener(this);
@@ -188,9 +190,11 @@ public class GameFragment extends Fragment implements QuizListener,
     private void loadQuiz(Quiz quiz) {
         currentQuiz = quiz;
 
+        ImageView imageView = uiHelper.getView(R.id.category);
         TextView questionView = uiHelper.getView(R.id.question);
         GridView moviesView = uiHelper.getView(R.id.list_movies);
 
+        imageView.setImageResource(getCategoryImage(quiz.getCategory()));
         questionView.setText(quiz.getQuestion());
         moviesView.setAdapter(
                 new OptionItemAdapter(getActivity(),
@@ -201,6 +205,26 @@ public class GameFragment extends Fragment implements QuizListener,
                                 quiz.getOptionFour()
                         )));
         updateGameUI();
+    }
+
+    private int getCategoryImage(String category) {
+
+        int imageId = R.drawable.ic_launcher;
+
+        if (category == null) return imageId;
+
+        switch (category) {
+            case "JAVA":
+                imageId = R.drawable.ic_java;
+                break;
+            case "JAVASCRIPT":
+                imageId = R.drawable.ic_javascript;
+                break;
+            case "HTML5":
+                imageId = R.drawable.ic_html5;
+                break;
+        }
+        return imageId;
     }
 
     private void nextQuiz() {

@@ -29,6 +29,7 @@
     <string name="action_settings">Settings</string>
 
     <!-- Game -->
+    <string name="label_category">Quiz Category</string>
     <string name="label_round">Round</string>
     <string name="label_score">Score</string>
     <string name="label_remaining_attempts">Attempts</string>
