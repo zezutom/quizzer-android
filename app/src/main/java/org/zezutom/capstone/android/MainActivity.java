@@ -27,7 +27,6 @@ import com.google.android.gms.plus.model.people.Person;
 
 import org.zezutom.capstone.android.api.GameApi;
 import org.zezutom.capstone.android.api.GameResultListener;
-import org.zezutom.capstone.android.fragment.ChallengeAFriendFragment;
 import org.zezutom.capstone.android.fragment.GameExitDialog;
 import org.zezutom.capstone.android.fragment.GameFragment;
 import org.zezutom.capstone.android.fragment.HomeFragment;
@@ -205,10 +204,10 @@ public class MainActivity extends Activity implements
         // take an action
         final NavigationItem item = navigationDrawerFragment.getNavigationItem(position);
         switch (item.getId()) {
-            case R.string.title_sign_in:
+            case R.string.label_sign_in:
                 signIn();
                 break;
-            case R.string.title_sign_out:
+            case R.string.label_sign_out:
                 signOut();
                 break;
         }
@@ -221,7 +220,7 @@ public class MainActivity extends Activity implements
 
         final NavigationItem item = navigationDrawerFragment.getNavigationItem(position);
 
-        return item.getId() != R.string.title_play_single;
+        return item.getId() != R.string.label_play_single;
     }
 
     public void onSectionAttached(int position) {
@@ -229,31 +228,31 @@ public class MainActivity extends Activity implements
 
         Fragment fragment = null;
         switch (item.getId()) {
-            case R.string.title_home:
-                title = getString(R.string.title_home);
+            case R.string.label_home:
+                title = getString(R.string.label_home);
                 fragment = new HomeFragment();
                 break;
-            case R.string.title_play_single:
-                title = getString(R.string.title_play_single);
+            case R.string.label_play_single:
+                title = getString(R.string.label_play_single);
                 fragment = gameFragment;
                 break;
-            case R.string.title_settings:
-                title = getString(R.string.title_settings);
+            case R.string.label_settings:
+                title = getString(R.string.label_settings);
                 fragment = new SettingsFragment();
                 break;
-            case R.string.title_stats_score:
-                title = getString(R.string.title_stats_score);
+            case R.string.label_stats_score:
+                title = getString(R.string.label_stats_score);
                 fragment = new MyScoreFragment();
                 break;
-            case R.string.title_stats_rating:
-                title = getString(R.string.title_stats_rating);
+            case R.string.label_stats_rating:
+                title = getString(R.string.label_stats_rating);
                 fragment = new QuizRatingFragment();
                 break;
-            case R.string.title_sign_in:
-                title = getString(R.string.title_sign_in);
+            case R.string.label_sign_in:
+                title = getString(R.string.label_sign_in);
                 break;
-            case R.string.title_sign_out:
-                title = getString(R.string.title_sign_out);
+            case R.string.label_sign_out:
+                title = getString(R.string.label_sign_out);
                 break;
         }
 
@@ -539,16 +538,16 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onHomeMenuItemSelected(int position) {
-        int itemId = R.string.title_home;
+        int itemId = R.string.label_home;
         switch (position) {
             case 0:
-                itemId = R.string.title_play_single;
+                itemId = R.string.label_play_single;
                 break;
             case 1:
-                itemId = R.string.title_stats_score;
+                itemId = R.string.label_stats_score;
                 break;
             case 2:
-                itemId = R.string.title_stats_rating;
+                itemId = R.string.label_stats_rating;
                 break;
         }
         // Delegates the action to the sidebar menu

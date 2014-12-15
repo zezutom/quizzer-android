@@ -27,7 +27,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:minHeight="?android:attr/listPreferredItemHeight"
-                    android:text="@string/title_settings_topic"
+                    android:text="@string/label_settings_topic"
                     android:textAppearance="?android:attr/textAppearanceListItem" />
 
                 <CheckBox
@@ -38,7 +38,7 @@
                     android:drawableLeft="@drawable/checkbox_selector"
                     android:drawablePadding="10dp"
                     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                    android:text="@string/title_settings_topic_android"
+                    android:text="@string/label_settings_topic_android"
                     android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
                 <CheckBox
@@ -49,7 +49,7 @@
                     android:drawableLeft="@drawable/checkbox_selector"
                     android:drawablePadding="10dp"
                     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                    android:text="@string/title_settings_topic_java"
+                    android:text="@string/label_settings_topic_java"
                     android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
                 <CheckBox
@@ -60,7 +60,7 @@
                     android:drawableLeft="@drawable/checkbox_selector"
                     android:drawablePadding="10dp"
                     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                    android:text="@string/title_settings_topic_javascript"
+                    android:text="@string/label_settings_topic_javascript"
                     android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
                 <CheckBox
@@ -71,7 +71,7 @@
                     android:drawableLeft="@drawable/checkbox_selector"
                     android:drawablePadding="10dp"
                     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                    android:text="@string/title_settings_topic_html5"
+                    android:text="@string/label_settings_topic_html5"
                     android:textAppearance="?android:attr/textAppearanceListItemSmall" />
             </LinearLayout>
 
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:minHeight="?android:attr/listPreferredItemHeight"
-                    android:text="@string/title_settings_difficulty"
+                    android:text="@string/label_settings_difficulty"
                     android:textAppearance="?android:attr/textAppearanceListItem" />
 
                 <CheckBox
@@ -98,7 +98,7 @@
                     android:drawableLeft="@drawable/checkbox_selector"
                     android:drawablePadding="10dp"
                     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                    android:text="@string/title_settings_difficulty_easy"
+                    android:text="@string/label_settings_difficulty_easy"
                     android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
                 <CheckBox
@@ -109,7 +109,7 @@
                     android:drawableLeft="@drawable/checkbox_selector"
                     android:drawablePadding="10dp"
                     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                    android:text="@string/title_settings_difficulty_medium"
+                    android:text="@string/label_settings_difficulty_medium"
                     android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
                 <CheckBox
@@ -120,7 +120,7 @@
                     android:drawableLeft="@drawable/checkbox_selector"
                     android:drawablePadding="10dp"
                     android:minHeight="?android:attr/listPreferredItemHeightSmall"
-                    android:text="@string/title_settings_difficulty_hard"
+                    android:text="@string/label_settings_difficulty_hard"
                     android:textAppearance="?android:attr/textAppearanceListItemSmall" />
 
 

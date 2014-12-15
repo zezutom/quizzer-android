@@ -56,9 +56,9 @@ public class HomeFragment extends Fragment {
 
     private List<NavigationItem> getMenuItems() {
         List<NavigationItem> items = new ArrayList<>();
-        items.add(createNavigationItem(R.string.title_play_single, R.drawable.ic_action_play_single));
-        items.add(createNavigationItem(R.string.title_stats_score, R.drawable.ic_action_score));
-        items.add(createNavigationItem(R.string.title_stats_rating, R.drawable.ic_action_rating));
+        items.add(createNavigationItem(R.string.label_play_single, R.drawable.ic_action_play_single));
+        items.add(createNavigationItem(R.string.label_stats_score, R.drawable.ic_action_score));
+        items.add(createNavigationItem(R.string.label_stats_rating, R.drawable.ic_action_rating));
 
         return items;
     }

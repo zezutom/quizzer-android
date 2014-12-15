@@ -7,8 +7,6 @@ import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -24,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -116,18 +113,18 @@ public class NavigationDrawerFragment extends Fragment {
 
     private void initNavigationItems(UserProfile userProfile) {
         navigationItems = new ArrayList<>();
-        navigationItems.add(createNavigationItem(R.string.title_home, R.drawable.ic_action_home));
-        navigationItems.add(createNavigationItem(R.string.title_play_single, R.drawable.ic_action_play_single));
-        navigationItems.add(createNavigationItem(R.string.title_settings, R.drawable.ic_action_settings));
-        navigationItems.add(createNavigationItem(R.string.title_stats_score, R.drawable.ic_action_score));
-        navigationItems.add(createNavigationItem(R.string.title_stats_rating, R.drawable.ic_action_rating));
+        navigationItems.add(createNavigationItem(R.string.label_home, R.drawable.ic_action_home));
+        navigationItems.add(createNavigationItem(R.string.label_play_single, R.drawable.ic_action_play_single));
+        navigationItems.add(createNavigationItem(R.string.label_settings, R.drawable.ic_action_settings));
+        navigationItems.add(createNavigationItem(R.string.label_stats_score, R.drawable.ic_action_score));
+        navigationItems.add(createNavigationItem(R.string.label_stats_rating, R.drawable.ic_action_rating));
 
         initUserProfileView(userProfile);
         isUserSignedIn = (userProfile != null);
         if (isUserSignedIn) {
-            navigationItems.add(navigationItems.size(), createNavigationItem(R.string.title_sign_out, R.drawable.ic_action_google_plus));
+            navigationItems.add(navigationItems.size(), createNavigationItem(R.string.label_sign_out, R.drawable.ic_action_google_plus));
         } else {
-            navigationItems.add(0, createNavigationItem(R.string.title_sign_in, R.drawable.ic_action_google_plus));
+            navigationItems.add(0, createNavigationItem(R.string.label_sign_in, R.drawable.ic_action_google_plus));
         }
         drawerListView.setAdapter(new NavigationItemAdapter(this.getActivity(), navigationItems, R.layout.row_navigation));
     }

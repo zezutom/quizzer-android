@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:stretchColumns="0">
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/score_stats_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="@integer/pair_cols"
+            android:background="@drawable/rounded_corner_top"
+            android:gravity="center"
+            android:minHeight="?android:attr/listPreferredItemHeight"
+            android:text="@string/label_highest_rankings"
+            android:textAppearance="?android:attr/textAppearanceListItem"
+            android:textColor="@color/list_item_title" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_marginEnd="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/list_background"
+            android:gravity="center"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:padding="3dp"
+            android:text="@string/label_best_score"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="@color/list_item_title" />
+
+        <TextView
+            android:id="@+id/best_score"
+            android:layout_marginTop="1dp"
+            android:background="@color/list_background"
+            android:gravity="center"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:padding="3dp"
+            android:text="105"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="@color/list_item_title" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_marginEnd="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/list_background"
+            android:gravity="center"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:padding="3dp"
+            android:text="@string/label_furthest_round"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="@color/list_item_title" />
+
+        <TextView
+            android:id="@+id/furthest_round"
+            android:layout_marginTop="1dp"
+            android:background="@color/list_background"
+            android:gravity="center"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:padding="3dp"
+            android:text="27"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="@color/list_item_title" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:layout_marginEnd="1dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/rounded_corner_bottom_left"
+            android:gravity="center"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:padding="3dp"
+            android:text="@string/label_max_bonus_points"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="@color/list_item_title" />
+
+        <TextView
+            android:id="@+id/max_power_ups"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/rounded_corner_bottom_right"
+            android:gravity="center"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:padding="3dp"
+            android:text="12"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"
+            android:textColor="@color/list_item_title" />
+    </TableRow>
+
+</TableLayout>

@@ -11,8 +11,9 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/ic_action_home">
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_action_home"
+        android:contentDescription="@string/label_home">
     </ImageView>
 
     <TextView
@@ -22,8 +23,7 @@
         android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:textAppearance="?android:attr/textAppearanceListItem"
-        android:textColor="@color/list_item_title"
-        android:text="Single Game">
+        android:textColor="@color/list_item_title">
     </TextView>
 
 </LinearLayout>

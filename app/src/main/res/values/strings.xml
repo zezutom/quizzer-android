@@ -2,27 +2,33 @@
 <resources>
 
     <string name="app_name">Quizzer</string>
-    <string name="title_home">Home</string>
-    <string name="title_sign_in">Sign in</string>
-    <string name="title_sign_out">Sign out</string>
-    <string name="title_play_single">New Game</string>
-    <string name="title_play_single_next">Next</string>
-    <string name="title_settings">Settings</string>
-    <string name="title_settings_topic">Topics</string>
-    <string name="title_settings_topic_java">Core Java</string>
-    <string name="title_settings_topic_android">Android</string>
-    <string name="title_settings_topic_javascript">Javascript</string>
-    <string name="title_settings_topic_html5">CSS &amp; HTML5</string>
-    <string name="title_settings_all">All</string>
-    <string name="title_settings_difficulty">Difficulty</string>
-    <string name="title_settings_difficulty_easy">Easy</string>
-    <string name="title_settings_difficulty_medium">Medium</string>
-    <string name="title_settings_difficulty_hard">Hard</string>
-    <string name="title_stats_score">My Score</string>
-    <string name="title_stats_rating">Quiz Ratings</string>
+
+    <!-- Home / Nav Bar -->
+    <string name="label_home">Home</string>
+    <string name="label_sign_in">Sign in</string>
+    <string name="label_sign_out">Sign out</string>
+    <string name="label_play_single">New Game</string>
+    <string name="label_play_single_next">Next</string>
+    <string name="label_stats_score">My Score</string>
+    <string name="label_stats_rating">Quiz Ratings</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- App Settings -->
+    <string name="label_settings">Settings</string>
+    <string name="label_settings_topic">Topics</string>
+    <string name="label_settings_topic_java">Core Java</string>
+    <string name="label_settings_topic_android">Android</string>
+    <string name="label_settings_topic_javascript">Javascript</string>
+    <string name="label_settings_topic_html5">CSS &amp; HTML5</string>
+    <string name="label_settings_all">All</string>
+    <string name="label_settings_difficulty">Difficulty</string>
+    <string name="label_settings_difficulty_easy">Easy</string>
+    <string name="label_settings_difficulty_medium">Medium</string>
+    <string name="label_settings_difficulty_hard">Hard</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Game -->
     <string name="label_round">Round</string>
     <string name="label_score">Score</string>
     <string name="label_remaining_attempts">Attempts</string>
@@ -33,6 +39,15 @@
     <string name="label_game_exit_leave_game">Just quit</string>
     <string name="label_game_exit_reset_game">Start from scratch</string>
     <string name="label_game_exit_cancel">Return to the game</string>
+
+    <!-- My Score -->
+    <string name="label_highest_rankings">Highest Rankings</string>
+    <string name="label_best_score">Best Score</string>
+    <string name="label_furthest_round">Furthest Round</string>
+    <string name="label_max_bonus_points">Max Bonus Points</string>
+
+
+    <!-- Misc -->
     <integer name="pair_cols">2</integer>
     <integer name="single_col">1</integer>
 </resources>
