@@ -52,6 +52,9 @@
     <string name="label_best_score">Best Score</string>
     <string name="label_furthest_round">Furthest Round</string>
     <string name="label_max_bonus_points">Max Bonus Points</string>
+    <string name="label_first_attempt">1st Attempt</string>
+    <string name="label_second_attempt">2nd Attempt</string>
+    <string name="label_third_attempt">3rd Attempt</string>
 
 
     <!-- Misc -->

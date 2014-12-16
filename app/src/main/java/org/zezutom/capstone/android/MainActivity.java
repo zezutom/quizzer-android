@@ -225,7 +225,8 @@ public class MainActivity extends Activity implements
         int position = -1;
         switch (item.getItemId()) {
             case R.id.menu_home:
-                position = 0;
+                if (isGameInProgress()) showGameExitDialog();
+                else position = 0;
                 break;
             case R.id.menu_game:
                 position = 1;
@@ -509,12 +510,12 @@ public class MainActivity extends Activity implements
     }
 
     @Override
-    public void onSaveGameResult(GameResult gameResult) {
+    public void onSuccess(GameResult gameResult) {
         Toast.makeText(this, "yupee", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onSaveGameError(Exception ex) {
+    public void onError(Exception ex) {
         Toast.makeText(this, "nope", Toast.LENGTH_SHORT).show();
     }
 

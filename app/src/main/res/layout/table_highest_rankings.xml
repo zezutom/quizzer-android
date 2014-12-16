@@ -42,7 +42,6 @@
             android:gravity="center"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
             android:padding="3dp"
-            android:text="105"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:textColor="@color/list_item_title" />
     </TableRow>
@@ -67,7 +66,6 @@
             android:gravity="center"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
             android:padding="3dp"
-            android:text="27"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:textColor="@color/list_item_title" />
     </TableRow>
@@ -92,7 +90,6 @@
             android:gravity="center"
             android:minHeight="?android:attr/listPreferredItemHeightSmall"
             android:padding="3dp"
-            android:text="12"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:textColor="@color/list_item_title" />
     </TableRow>

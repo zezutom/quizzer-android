@@ -9,7 +9,7 @@ public abstract class BaseDataHelper extends SQLiteOpenHelper {
 
     public static final String TAG = "BaseDataHelper";
 
-    protected static final int DB_VERSION = 12;
+    protected static final int DB_VERSION = 13;
 
     protected static final String COLUMN_ID = "id";
 

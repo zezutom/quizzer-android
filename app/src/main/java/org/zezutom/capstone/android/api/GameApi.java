@@ -64,10 +64,10 @@ public class GameApi extends BaseApi {
                         gameResult.setAttemptOneRatio(jsonObject.getInt("attemptOneRatio"));
                         gameResult.setAttemptTwoRatio(jsonObject.getInt("attemptTwoRatio"));
                         gameResult.setAttemptThreeRatio(jsonObject.getInt("attemptThreeRatio"));
-                        gameResultListener.onSaveGameResult(gameResult);
+                        gameResultListener.onSuccess(gameResult);
                         gameResultDataSource.addOne(gameResult);
                     } catch (JSONException e) {
-                        gameResultListener.onSaveGameError(e);
+                        gameResultListener.onError(e);
                     }
                 }
             };
@@ -75,7 +75,7 @@ public class GameApi extends BaseApi {
             final Response.ErrorListener errorListener = new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError ex) {
-                    gameResultListener.onSaveGameError(ex);
+                    gameResultListener.onError(ex);
                 }
             };
 

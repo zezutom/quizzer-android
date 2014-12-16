@@ -39,8 +39,6 @@ public class GameFragment extends Fragment implements QuizListener,
 
     public static final String GAME_KEY = "game";
 
-    public static final String NUMBER_FORMAT = "%01d";
-
     private List<Quiz> quizzes;
 
     private Quiz currentQuiz;
@@ -140,12 +138,12 @@ public class GameFragment extends Fragment implements QuizListener,
 
         Button nextQuizButton = uiHelper.getView(R.id.next_quiz);
 
-        scoreView.setText(toString(game.getScore()));
-        roundView.setText(toString(game.getRound()));
+        scoreView.setText(AppUtil.numberToString(game.getScore()));
+        roundView.setText(AppUtil.numberToString(game.getRound()));
 
         final int powerUps = game.getPowerUps();
         if (powerUps > 0) {
-            powerUpsView.setText(toString(powerUps));
+            powerUpsView.setText(AppUtil.numberToString(powerUps));
             powerUpsContainerView.setVisibility(View.VISIBLE);
         } else {
             powerUpsContainerView.setVisibility(View.INVISIBLE);
@@ -272,10 +270,6 @@ public class GameFragment extends Fragment implements QuizListener,
     @Override
     public void onRateError(Exception ex) {
         // TODO
-    }
-
-    private String toString(int value) {
-        return String.format(NUMBER_FORMAT, value);
     }
 
     private void toast(String msg) {
