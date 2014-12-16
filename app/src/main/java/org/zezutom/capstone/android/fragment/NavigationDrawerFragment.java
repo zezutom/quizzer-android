@@ -115,7 +115,6 @@ public class NavigationDrawerFragment extends Fragment {
         navigationItems = new ArrayList<>();
         navigationItems.add(createNavigationItem(R.string.label_home, R.drawable.ic_action_home));
         navigationItems.add(createNavigationItem(R.string.label_play_single, R.drawable.ic_action_play_single));
-        navigationItems.add(createNavigationItem(R.string.label_settings, R.drawable.ic_action_settings));
         navigationItems.add(createNavigationItem(R.string.label_stats_score, R.drawable.ic_action_score));
         navigationItems.add(createNavigationItem(R.string.label_stats_rating, R.drawable.ic_action_rating));
 
@@ -353,7 +352,6 @@ public class NavigationDrawerFragment extends Fragment {
         // If the drawer is open, show the global app actions in the action bar. See also
         // showGlobalContextActionBar, which controls the top-left area of the action bar.
         if (drawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
             showGlobalContextActionBar();
         }
         super.onCreateOptionsMenu(menu, inflater);

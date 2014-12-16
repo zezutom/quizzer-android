@@ -1,5 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100" android:showAsAction="never" />
+    <item
+        android:id="@+id/menu_game"
+        android:title="@string/label_play_single"
+        android:icon="@drawable/ic_action_play_single"
+        android:showAsAction="ifRoom|withText"/>
+
+    <item
+        android:id="@+id/menu_home"
+        android:title="@string/label_home"
+        android:icon="@drawable/ic_action_home"
+        android:showAsAction="ifRoom|withText"/>
 </menu>

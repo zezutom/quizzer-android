@@ -1,66 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/sound"
+        android:id="@+id/menu_sound"
         android:title="@string/game_menu_sound"
         android:icon="@drawable/ic_action_volume_on"
         android:showAsAction="ifRoom|withText"/>
 
-    <item android:id="@+id/categories" android:title="@string/game_menu_categories">
-        <menu>
-            <item
-                android:id="@+id/category_android"
-                android:title="@string/label_settings_topic_android"
-                android:icon="@drawable/ic_launcher"
-                android:showAsAction="always|withText"
-                android:checkable="true"
-                android:checked="true"/>
-
-            <item
-                android:id="@+id/category_java"
-                android:title="@string/label_settings_topic_java"
-                android:icon="@drawable/ic_java"
-                android:showAsAction="always|withText"
-                android:checkable="true"
-                android:checked="true"/>
-
-            <item
-                android:id="@+id/category_javascript"
-                android:title="@string/label_settings_topic_javascript"
-                android:icon="@drawable/ic_javascript"
-                android:showAsAction="always|withText"
-                android:checkable="true"
-                android:checked="true"/>
-
-            <item
-                android:id="@+id/category_html5"
-                android:title="@string/label_settings_topic_html5"
-                android:icon="@drawable/ic_html5"
-                android:showAsAction="always|withText"
-                android:checkable="true"
-                android:checked="true"/>
-        </menu>
-    </item>
-
-    <item android:id="@+id/difficulty" android:title="@string/game_menu_difficulty">
-        <menu>
-            <item
-                android:id="@+id/difficulty_easy"
-                android:title="@string/label_settings_difficulty_easy"
-                android:checkable="true"
-                android:checked="true"/>
-
-            <item
-                android:id="@+id/difficulty_medium"
-                android:title="@string/label_settings_difficulty_medium"
-                android:checkable="true"
-                android:checked="true"/>
-
-            <item
-                android:id="@+id/difficulty_hard"
-                android:title="@string/label_settings_difficulty_hard"
-                android:checkable="true"
-                android:checked="true"/>
-        </menu>
-    </item>
+    <item
+        android:id="@+id/menu_home"
+        android:title="@string/label_home"
+        android:icon="@drawable/ic_action_home"
+        android:showAsAction="ifRoom|withText"/>
 </menu>

@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ import org.zezutom.capstone.android.fragment.HomeFragment;
 import org.zezutom.capstone.android.fragment.MyScoreFragment;
 import org.zezutom.capstone.android.fragment.NavigationDrawerFragment;
 import org.zezutom.capstone.android.fragment.QuizRatingFragment;
-import org.zezutom.capstone.android.fragment.SettingsFragment;
 import org.zezutom.capstone.android.model.Game;
 import org.zezutom.capstone.android.model.GameHistory;
 import org.zezutom.capstone.android.model.NavigationItem;
@@ -223,7 +221,23 @@ public class MainActivity extends Activity implements
         return item.getId() != R.string.label_play_single;
     }
 
-    public void onSectionAttached(int position) {
+    public boolean onMenuItemSelected(MenuItem item) {
+        int position = -1;
+        switch (item.getItemId()) {
+            case R.id.menu_home:
+                position = 0;
+                break;
+            case R.id.menu_game:
+                position = 1;
+                break;
+        }
+
+        if (position >= 0) onSectionAttached(position);
+
+        return true;
+    }
+
+    private void onSectionAttached(int position) {
         final NavigationItem item = navigationDrawerFragment.getNavigationItem(position);
 
         Fragment fragment = null;
@@ -235,10 +249,6 @@ public class MainActivity extends Activity implements
             case R.string.label_play_single:
                 title = getString(R.string.label_play_single);
                 fragment = gameFragment;
-                break;
-            case R.string.label_settings:
-                title = getString(R.string.label_settings);
-                fragment = new SettingsFragment();
                 break;
             case R.string.label_stats_score:
                 title = getString(R.string.label_stats_score);
