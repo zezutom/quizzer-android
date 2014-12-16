@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -54,6 +56,9 @@ public class GameFragment extends Fragment implements QuizListener,
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // Enables menu
+        setHasOptionsMenu(true);
 
         final Activity activity = getActivity();
         quizApi = new QuizApi(activity, this);
@@ -108,6 +113,12 @@ public class GameFragment extends Fragment implements QuizListener,
         }
         quizApi.tearDown();
         super.onDestroyView();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.game, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void updateGameUI() {

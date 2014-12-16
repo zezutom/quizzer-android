@@ -41,6 +41,12 @@
     <string name="label_game_exit_reset_game">Start from scratch</string>
     <string name="label_game_exit_cancel">Return to the game</string>
 
+    <!-- Game Menu -->
+    <string name="game_menu_categories">Categories</string>
+    <string name="game_menu_difficulty">Difficulty</string>
+    <string name="game_menu_sound">Sound</string>
+
+
     <!-- My Score -->
     <string name="label_highest_rankings">Highest Rankings</string>
     <string name="label_best_score">Best Score</string>

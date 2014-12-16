@@ -4,6 +4,8 @@
     <style name="CustomActionBarTheme"
         parent="@android:style/Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <!--item name="android:popupMenuStyle">@style/MyDropDownNav</item-->
+        <item name="android:dropDownListViewStyle">@style/MyDropDownListStyle</item>
     </style>
 
     <!-- ActionBar styles -->
@@ -11,4 +13,15 @@
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/list_background</item>
     </style>
+
+    <!-- List navigation style -->
+    <style name="MyDropDownNav" parent="android:Widget.Holo.Light.ListPopupWindow">
+        <item name="android:popupBackground">@color/list_background</item>
+    </style>
+
+    <style name="MyDropDownListStyle" parent="@android:style/Widget.Holo.ListView.DropDown">
+        <item name="android:divider">@color/list_background</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
 </resources>
