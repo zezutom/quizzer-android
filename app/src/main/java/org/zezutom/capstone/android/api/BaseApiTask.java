@@ -15,7 +15,7 @@ import zezutom.org.quizzer.Quizzer;
 /**
  * Provides a common API handling
  */
-public abstract class BaseApiTask<T extends Object> extends AsyncTask<Void, Void, Void> {
+public abstract class BaseApiTask<T extends Object> extends AsyncTask<Void, Void, Boolean> {
 
     public static final String TAG = "BaseApiTask";
 
@@ -24,6 +24,8 @@ public abstract class BaseApiTask<T extends Object> extends AsyncTask<Void, Void
     protected Quizzer.QuizzerApi api;
 
     protected ResponseListener<T> listener;
+
+    private T data;
 
     protected BaseApiTask(Activity activity, Quizzer.QuizzerApi api, ResponseListener<T> listener) {
         this.activity = activity;
@@ -34,17 +36,24 @@ public abstract class BaseApiTask<T extends Object> extends AsyncTask<Void, Void
     protected abstract T execute() throws IOException;
 
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected Boolean doInBackground(Void... voids) {
+        boolean success = true;
         try {
-            T data = execute();
-            listener.onSuccess(data);
+            data = execute();
         } catch (UserRecoverableAuthIOException e) {
+            success = false;
             activity.startActivityForResult(
                     e.getIntent(), MainActivity.REQUEST_CODE_RESOLUTION);
         } catch (IOException e) {
+            success = false;
             listener.onError(e);
         } finally {
-            return null;
+            return success;
         }
+    }
+
+    @Override
+    protected void onPostExecute(Boolean success) {
+        if (success) listener.onSuccess(data);
     }
 }

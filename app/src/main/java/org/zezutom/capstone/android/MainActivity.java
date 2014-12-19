@@ -187,7 +187,7 @@ public class MainActivity extends Activity implements
         authCache = new AuthCache(this);
 
         // Authorization
-        credential = GoogleAccountCredential.usingAudience(this, "server:client_id:" + AppUtil.WEB_CLIENT_ID);
+        credential = GoogleAccountCredential.usingAudience(this, "oauth2:server:client_id:" + AppUtil.WEB_CLIENT_ID);
         credential.setSelectedAccountName(authCache.getSelectedAccountName());
 
         /*if (credential.getSelectedAccountName() == null) {
@@ -198,7 +198,7 @@ public class MainActivity extends Activity implements
         quizzerApi = new Quizzer.Builder(
                 AndroidHttp.newCompatibleTransport(),
                 new AndroidJsonFactory(),
-                credential).build().quizzerApi();
+                null).build().quizzerApi();
 
         // Set up the local storage
         initDb();
