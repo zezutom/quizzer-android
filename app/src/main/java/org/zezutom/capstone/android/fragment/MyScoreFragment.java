@@ -43,6 +43,8 @@ public class MyScoreFragment extends Fragment {
                 .addView(R.id.second_attempt)
                 .addView(R.id.third_attempt);
 
+        callbacks.loadGameResultsStats();
+
         return view;
     }
 
@@ -51,7 +53,7 @@ public class MyScoreFragment extends Fragment {
         super.onAttach(activity);
         try {
             callbacks = (MyScoreCallbacks) activity;
-            callbacks.loadGameResultsStats();
+            callbacks.setMyScoreFragment(this);
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement MyScoreCallbacks.");
         }
@@ -94,6 +96,8 @@ public class MyScoreFragment extends Fragment {
     public static interface MyScoreCallbacks {
 
         void loadGameResultsStats();
+
+        void setMyScoreFragment(MyScoreFragment myScoreFragment);
     }
 
 }

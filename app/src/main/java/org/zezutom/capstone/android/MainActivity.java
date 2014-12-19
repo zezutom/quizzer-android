@@ -186,7 +186,7 @@ public class MainActivity extends Activity implements
 
         if (gameFragment == null) gameFragment = new GameFragment();
 
-        myScoreFragment = new MyScoreFragment();
+        if (myScoreFragment == null) myScoreFragment = new MyScoreFragment();
 
         navigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -478,6 +478,11 @@ public class MainActivity extends Activity implements
     @Override
     public void setGameFragment(GameFragment gameFragment) {
         this.gameFragment = gameFragment;
+    }
+
+    @Override
+    public void setMyScoreFragment(MyScoreFragment myScoreFragment) {
+        this.myScoreFragment = myScoreFragment;
     }
 
     private boolean isGameInProgress() {
