@@ -10,6 +10,7 @@
     <string name="label_play_single">New Game</string>
     <string name="label_play_single_next">Next</string>
     <string name="label_stats_score">My Score</string>
+    <string name="label_game_results">Game Results</string>
     <string name="label_stats_rating">Quiz Ratings</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

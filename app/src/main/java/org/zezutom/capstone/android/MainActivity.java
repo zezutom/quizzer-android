@@ -36,6 +36,7 @@ import org.zezutom.capstone.android.dao.QuizDataSource;
 import org.zezutom.capstone.android.dao.QuizRatingDataSource;
 import org.zezutom.capstone.android.fragment.GameExitDialog;
 import org.zezutom.capstone.android.fragment.GameFragment;
+import org.zezutom.capstone.android.fragment.GameResultsFragment;
 import org.zezutom.capstone.android.fragment.HomeFragment;
 import org.zezutom.capstone.android.fragment.MyScoreFragment;
 import org.zezutom.capstone.android.fragment.NavigationDrawerFragment;
@@ -282,6 +283,10 @@ public class MainActivity extends Activity implements
             case R.string.label_stats_score:
                 title = getString(R.string.label_stats_score);
                 fragment = myScoreFragment;
+                break;
+            case R.string.label_game_results:
+                title = getString(R.string.label_game_results);
+                fragment = new GameResultsFragment();
                 break;
             case R.string.label_stats_rating:
                 title = getString(R.string.label_stats_rating);
@@ -560,6 +565,9 @@ public class MainActivity extends Activity implements
                 itemId = R.string.label_stats_score;
                 break;
             case 2:
+                itemId = R.string.label_game_results;
+                break;
+            case 3:
                 itemId = R.string.label_stats_rating;
                 break;
         }

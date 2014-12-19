@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment {
         List<NavigationItem> items = new ArrayList<>();
         items.add(createNavigationItem(R.string.label_play_single, R.drawable.ic_action_play_single));
         items.add(createNavigationItem(R.string.label_stats_score, R.drawable.ic_action_score));
+        items.add(createNavigationItem(R.string.label_game_results, R.drawable.ic_action_calendar));
         items.add(createNavigationItem(R.string.label_stats_rating, R.drawable.ic_action_rating));
 
         return items;

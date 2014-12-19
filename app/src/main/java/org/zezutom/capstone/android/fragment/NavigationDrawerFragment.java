@@ -116,6 +116,7 @@ public class NavigationDrawerFragment extends Fragment {
         navigationItems.add(createNavigationItem(R.string.label_home, R.drawable.ic_action_home));
         navigationItems.add(createNavigationItem(R.string.label_play_single, R.drawable.ic_action_play_single));
         navigationItems.add(createNavigationItem(R.string.label_stats_score, R.drawable.ic_action_score));
+        navigationItems.add(createNavigationItem(R.string.label_game_results, R.drawable.ic_action_calendar));
         navigationItems.add(createNavigationItem(R.string.label_stats_rating, R.drawable.ic_action_rating));
 
         initUserProfileView(userProfile);
