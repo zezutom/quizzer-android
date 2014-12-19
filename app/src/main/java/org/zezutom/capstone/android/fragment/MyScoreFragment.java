@@ -1,5 +1,6 @@
 package org.zezutom.capstone.android.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,22 +11,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import org.zezutom.capstone.android.MainActivity;
 import org.zezutom.capstone.android.R;
-import org.zezutom.capstone.android.api.GameResultStatsListener;
-import org.zezutom.capstone.android.api.StatsApi;
 import org.zezutom.capstone.android.util.AppUtil;
 import org.zezutom.capstone.android.util.UIHelper;
+import zezutom.org.quizzer.model.GameResultStats;
 
-import zezutom.org.statsService.model.GameResultStats;
-
-public class MyScoreFragment extends Fragment implements GameResultStatsListener {
-
-    private StatsApi statsApi;
+public class MyScoreFragment extends Fragment {
 
     private UIHelper uiHelper;
+
+
+    /**
+     * A pointer to the current callbacks instance (the Activity).
+     */
+    private MyScoreCallbacks callbacks;
 
     @Nullable
     @Override
@@ -43,18 +43,18 @@ public class MyScoreFragment extends Fragment implements GameResultStatsListener
                 .addView(R.id.second_attempt)
                 .addView(R.id.third_attempt);
 
-        // Load data
-        statsApi = new StatsApi(getActivity(), this);
-        statsApi.setUp();
-        statsApi.getGameResultStats();
-
         return view;
     }
 
     @Override
-    public void onDestroyView() {
-        statsApi.tearDown();
-        super.onDestroyView();
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            callbacks = (MyScoreCallbacks) activity;
+            callbacks.loadGameResultsStats();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement MyScoreCallbacks.");
+        }
     }
 
     @Override
@@ -68,8 +68,7 @@ public class MyScoreFragment extends Fragment implements GameResultStatsListener
         return ((MainActivity) getActivity()).onMenuItemSelected(item);
     }
 
-    @Override
-    public void onSuccess(GameResultStats stats) {
+    public void showStats(GameResultStats stats) {
         TextView bestScoreView = uiHelper.getView(R.id.best_score);
         bestScoreView.setText(AppUtil.numberToString(stats.getScore()));
 
@@ -89,9 +88,12 @@ public class MyScoreFragment extends Fragment implements GameResultStatsListener
         thirdAttemptView.setText(AppUtil.numberToString(stats.getAttemptThreeRatio()));
     }
 
-    @Override
-    public void onError(Exception ex) {
-        Toast.makeText(getActivity(),
-                "An error occurred, please try again later.", Toast.LENGTH_SHORT).show();
+    /**
+     *  Callbacks interface allowing to handle game data asynchronously.
+     */
+    public static interface MyScoreCallbacks {
+
+        void loadGameResultsStats();
     }
+
 }

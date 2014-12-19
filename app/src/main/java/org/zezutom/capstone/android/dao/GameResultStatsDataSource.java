@@ -3,10 +3,8 @@ package org.zezutom.capstone.android.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-
 import java.util.List;
-
-import zezutom.org.statsService.model.GameResultStats;
+import zezutom.org.quizzer.model.GameResultStats;
 
 public class GameResultStatsDataSource extends BaseDataSource<GameResultStats, GameResultStatsDataHelper> {
 

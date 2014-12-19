@@ -3,10 +3,8 @@ package org.zezutom.capstone.android.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-
 import org.zezutom.capstone.android.util.DateTimeUtil;
-
-import zezutom.org.quizService.model.QuizRating;
+import zezutom.org.quizzer.model.QuizRating;
 
 public class QuizRatingDataSource extends BaseDataSource<QuizRating, QuizRatingDataHelper> {
 

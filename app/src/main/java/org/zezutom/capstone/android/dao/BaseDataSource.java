@@ -25,13 +25,16 @@ public abstract class BaseDataSource<T extends Object, H extends BaseDataHelper>
         helper.close();
     }
 
-
     protected abstract ContentValues getValues(T entity);
 
     protected abstract T getEntity(Cursor cursor);
 
     public void addOne(T entity) {
         getDb().insert(helper.getTableName(), null, getValues(entity));
+    }
+
+    public void deleteAll() {
+        getDb().execSQL("delete from " + helper.getTableName());
     }
 
     public void addAll(List<T> entities) {

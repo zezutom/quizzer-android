@@ -2,7 +2,6 @@ package org.zezutom.capstone.android.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -21,9 +20,8 @@ import android.widget.Toast;
 import org.zezutom.capstone.android.MainActivity;
 import org.zezutom.capstone.android.R;
 import org.zezutom.capstone.android.adapter.OptionItemAdapter;
-import org.zezutom.capstone.android.api.QuizApi;
-import org.zezutom.capstone.android.api.QuizListener;
 import org.zezutom.capstone.android.model.Game;
+import org.zezutom.capstone.android.model.GameHistory;
 import org.zezutom.capstone.android.util.AppUtil;
 import org.zezutom.capstone.android.util.GameCache;
 import org.zezutom.capstone.android.util.UIHelper;
@@ -31,13 +29,12 @@ import org.zezutom.capstone.android.util.UIHelper;
 import java.util.Arrays;
 import java.util.List;
 
-import zezutom.org.quizService.model.Quiz;
-import zezutom.org.quizService.model.QuizRating;
+import zezutom.org.quizzer.model.Quiz;
 
-public class GameFragment extends Fragment implements QuizListener,
+public class GameFragment extends Fragment implements
         AdapterView.OnItemClickListener, View.OnClickListener {
 
-    public static final String GAME_KEY = "game";
+    public static final String TAG = "GameFragment";
 
     private List<Quiz> quizzes;
 
@@ -47,11 +44,15 @@ public class GameFragment extends Fragment implements QuizListener,
 
     private QuizSolutionDialog quizSolutionDialog;
 
-    private QuizApi quizApi;
-
     private GameCache gameCache;
 
     private UIHelper uiHelper;
+
+    /**
+     * A pointer to the current callbacks instance (the Activity).
+     */
+    private GameCallbacks callbacks;
+
 
     @Nullable
     @Override
@@ -60,11 +61,7 @@ public class GameFragment extends Fragment implements QuizListener,
         // Enables menu
         setHasOptionsMenu(true);
 
-        final Activity activity = getActivity();
-        quizApi = new QuizApi(activity, this);
-        quizApi.setUp();
-
-        gameCache = new GameCache(getSharedPreferences());
+        gameCache = new GameCache(getActivity());
 
         final View mainView = inflater.inflate(R.layout.fragment_game, container, false);
         uiHelper = new UIHelper(mainView);
@@ -92,6 +89,16 @@ public class GameFragment extends Fragment implements QuizListener,
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            callbacks = (GameCallbacks) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Activity must implement GameCallbacks.");
+        }
+    }
+
+    @Override
     public void onPause() {
         if (quizSolutionDialog != null && quizSolutionDialog.isVisible()) {
             AppUtil.closeDialog(quizSolutionDialog);
@@ -105,13 +112,12 @@ public class GameFragment extends Fragment implements QuizListener,
         if (game != null) {
             if (game.isGameOver()) {
                 // Remove all cached entries if the game is over
-                gameCache.clearCache();
+                gameCache.deleteGame();
             } else {
                 // Save state when the game is in progress
                 gameCache.saveGame(game);
             }
         }
-        quizApi.tearDown();
         super.onDestroyView();
     }
 
@@ -175,10 +181,17 @@ public class GameFragment extends Fragment implements QuizListener,
         }
     }
 
+    public void saveAndResetGame() {
+        GameHistory history = game.getHistory();
+        callbacks.saveGameResult(game.getRound(), game.getScore(), game.getPowerUps(),
+                history.getOneTimeAttempts(), history.getTwoTimeAttempts());
+        resetGame();
+    }
+
     private void loadGame() {
 
         if (quizzes == null || quizzes.isEmpty()) {
-            quizApi.loadQuizzes();
+            callbacks.loadQuizzes();
             return;
         }
 
@@ -197,10 +210,6 @@ public class GameFragment extends Fragment implements QuizListener,
             loadQuiz(quizzes.get(round == 0 ? round : round - 1));
         }
 
-    }
-
-    private SharedPreferences getSharedPreferences() {
-        return getActivity().getSharedPreferences(GAME_KEY, 0);
     }
 
     private void loadQuiz(Quiz quiz) {
@@ -244,32 +253,18 @@ public class GameFragment extends Fragment implements QuizListener,
     }
 
     private void nextQuiz() {
-        if (quizzes != null && game.getRound() < quizzes.size()) {
+        if (game.isGameOver()) {
+            saveAndResetGame();
+        } else if (quizzes != null && game.getRound() < quizzes.size()) {
             loadQuiz(quizzes.get(game.nextRound() - 1));
         } else {
             resetGame();
         }
     }
 
-    @Override
-    public void onGetAllSuccess(List<Quiz> quizzes) {
+    public void setQuizzes(List<Quiz> quizzes) {
         this.quizzes = quizzes;
         loadGame();
-    }
-
-    @Override
-    public void onGetAllError(Exception ex) {
-        // TODO
-    }
-
-    @Override
-    public void onRateSuccess(QuizRating quizRating) {
-        // TODO persist the rating
-    }
-
-    @Override
-    public void onRateError(Exception ex) {
-        // TODO
     }
 
     private void toast(String msg) {
@@ -280,7 +275,7 @@ public class GameFragment extends Fragment implements QuizListener,
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
         if (game.isGameOver()) {
-            resetGame();
+            saveAndResetGame();
             return;
         }
 
@@ -292,7 +287,7 @@ public class GameFragment extends Fragment implements QuizListener,
             game.subtractAttempt();
 
             if (game.isGameOver()) {
-                resetGame();
+                saveAndResetGame();
             } else {
                 updateGameUI();
                 toast("Please try again");
@@ -321,7 +316,7 @@ public class GameFragment extends Fragment implements QuizListener,
     }
 
     private void rateQuiz(boolean liked) {
-        quizApi.rateQuiz(liked, currentQuiz.getId());
+        callbacks.rateQuiz(liked, currentQuiz.getId());
         Toast.makeText(this.getActivity(), "Thanks for your vote", Toast.LENGTH_SHORT).show();
     }
 
@@ -340,8 +335,20 @@ public class GameFragment extends Fragment implements QuizListener,
     }
 
     public void resetGame() {
-        gameCache.clearCache();
+        gameCache.deleteGame();
         game = null;
         loadGame();
+    }
+
+    /**
+     *  Callbacks interface allowing to handle game data asynchronously.
+     */
+    public static interface GameCallbacks {
+
+        void loadQuizzes();
+
+        void saveGameResult(int round, int score, int powerUps, int oneTimeAttempts, int twoTimeAttempts);
+
+        void rateQuiz(boolean liked, String quizId);
     }
 }

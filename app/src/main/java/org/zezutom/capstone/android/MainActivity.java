@@ -23,9 +23,20 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
-import org.zezutom.capstone.android.api.GameApi;
-import org.zezutom.capstone.android.api.GameResultListener;
+import org.zezutom.capstone.android.api.GetGameResultStatsTask;
+import org.zezutom.capstone.android.api.GetQuizzesTask;
+import org.zezutom.capstone.android.api.RateQuizTask;
+import org.zezutom.capstone.android.api.ResponseListener;
+import org.zezutom.capstone.android.api.SaveGameResultTask;
+import org.zezutom.capstone.android.dao.BaseDataSource;
+import org.zezutom.capstone.android.dao.GameResultDataSource;
+import org.zezutom.capstone.android.dao.GameResultStatsDataSource;
+import org.zezutom.capstone.android.dao.QuizDataSource;
+import org.zezutom.capstone.android.dao.QuizRatingDataSource;
 import org.zezutom.capstone.android.fragment.GameExitDialog;
 import org.zezutom.capstone.android.fragment.GameFragment;
 import org.zezutom.capstone.android.fragment.HomeFragment;
@@ -33,25 +44,36 @@ import org.zezutom.capstone.android.fragment.MyScoreFragment;
 import org.zezutom.capstone.android.fragment.NavigationDrawerFragment;
 import org.zezutom.capstone.android.fragment.QuizRatingFragment;
 import org.zezutom.capstone.android.model.Game;
-import org.zezutom.capstone.android.model.GameHistory;
 import org.zezutom.capstone.android.model.NavigationItem;
 import org.zezutom.capstone.android.model.UserProfile;
 import org.zezutom.capstone.android.util.AppUtil;
+import org.zezutom.capstone.android.util.AuthCache;
 
-import zezutom.org.gameService.model.GameResult;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import zezutom.org.quizzer.Quizzer;
+import zezutom.org.quizzer.model.GameResult;
+import zezutom.org.quizzer.model.GameResultStats;
+import zezutom.org.quizzer.model.Quiz;
+import zezutom.org.quizzer.model.QuizRating;
 
 /**
  * Don't forget to add a link to:
  * http://www.icons4android.com
  * http://www.iconarchive.com
+ *
+ * http://rominirani.com/2014/02/25/google-cloud-endpoints-tutorial-part-7/
  */
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         HomeFragment.HomeMenuCallbacks,
-        View.OnClickListener,
-        GameResultListener {
+        GameFragment.GameCallbacks,
+        MyScoreFragment.MyScoreCallbacks,
+        View.OnClickListener {
 
     public static final String TAG = "MainActivity";
 
@@ -71,6 +93,11 @@ public class MainActivity extends Activity implements
      * Request code for signing a user in.
      */
     public static final int REQUEST_CODE_SIGN_IN = 2;
+
+    /**
+     * Activity result indicating a return from the authorization approval intent.
+     */
+    private static final int ACTIVITY_RESULT_FROM_REQUEST_AUTH = 3;
 
     /**
      * Profile picture image size in pixels.
@@ -120,6 +147,9 @@ public class MainActivity extends Activity implements
      */
     private GameFragment gameFragment;
 
+
+    private MyScoreFragment myScoreFragment;
+
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
@@ -136,9 +166,15 @@ public class MainActivity extends Activity implements
     private int menuItemIndex;
 
     /**
-     * Captures game results and provides game stats.
+     * Google App Engine API providing server-side services
      */
-    private GameApi gameApi;
+    private Quizzer.QuizzerApi quizzerApi;
+
+    private Map<Class<? extends BaseDataSource>, BaseDataSource> dataSourceMap;
+
+    private AuthCache authCache;
+
+    private GoogleAccountCredential credential;
 
     /**
      * Called when the activity is starting. Restores the activity state.
@@ -146,14 +182,37 @@ public class MainActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Authentication cache - stores the selected account
+        authCache = new AuthCache(this);
+
+        // Authorization
+        credential = GoogleAccountCredential.usingAudience(this, "server:client_id:" + AppUtil.WEB_CLIENT_ID);
+        credential.setSelectedAccountName(authCache.getSelectedAccountName());
+
+        /*if (credential.getSelectedAccountName() == null) {
+            chooseAccount();
+        }*/
+
+        // Initialize the API, incl. authentication credentials
+        quizzerApi = new Quizzer.Builder(
+                AndroidHttp.newCompatibleTransport(),
+                new AndroidJsonFactory(),
+                credential).build().quizzerApi();
+
+        // Set up the local storage
+        initDb();
+
+
         if (savedInstanceState != null) {
             mIsInResolution = savedInstanceState.getBoolean(KEY_IN_RESOLUTION, false);
         }
         setContentView(R.layout.activity_main_navigation);
-        gameApi = new GameApi(this, this);
-        gameApi.setUp();
 
         gameFragment = new GameFragment();
+
+        myScoreFragment = new MyScoreFragment();
+
         navigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -166,10 +225,8 @@ public class MainActivity extends Activity implements
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        gameApi.tearDown();
+    private void chooseAccount() {
+        startActivityForResult(credential.newChooseAccountIntent(), REQUEST_CODE_SIGN_IN);
     }
 
     @Override
@@ -253,7 +310,7 @@ public class MainActivity extends Activity implements
                 break;
             case R.string.label_stats_score:
                 title = getString(R.string.label_stats_score);
-                fragment = new MyScoreFragment();
+                fragment = myScoreFragment;
                 break;
             case R.string.label_stats_rating:
                 title = getString(R.string.label_stats_rating);
@@ -300,7 +357,7 @@ public class MainActivity extends Activity implements
                     .addOnConnectionFailedListener(this)
                     .build();
         }
-        googleApiClient.connect();
+        if (!googleApiClient.isConnected()) googleApiClient.connect();
     }
 
     /**
@@ -320,6 +377,7 @@ public class MainActivity extends Activity implements
         if (gameExitDialog != null) {
             AppUtil.closeDialog(gameExitDialog);
         }
+        tearDownDb();
         super.onPause();
     }
 
@@ -432,11 +490,7 @@ public class MainActivity extends Activity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.save_score:
-                Game game = gameFragment.getGame();
-                GameHistory history = game.getHistory();
-                gameApi.saveGameResult(game.getRound(), game.getScore(), game.getPowerUps(),
-                        history.getOneTimeAttempts(), history.getTwoTimeAttempts());
-                gameFragment.resetGame();
+                gameFragment.saveAndResetGame();
                 break;
             case R.id.exit_game:
                 gameFragment.resetGame();
@@ -463,6 +517,10 @@ public class MainActivity extends Activity implements
         if (isSignedIn) {
             final Person person = Plus.PeopleApi.getCurrentPerson(googleApiClient);
             final String email = Plus.AccountApi.getAccountName(googleApiClient);
+
+            // Save the id of the logged-in user, so that it can be accessed from other parts of the app
+            authCache.setSelectedAccountName(email);
+            credential.setSelectedAccountName(email);
 
             if (person != null) {
                 final String url = person.getImage().getUrl();
@@ -497,7 +555,7 @@ public class MainActivity extends Activity implements
                 connectionResult.startResolutionForResult(this, REQUEST_CODE_SIGN_IN);
             } catch (IntentSender.SendIntentException e) {
                 isIntentInProgress = false;
-                googleApiClient.connect();
+                if(!googleApiClient.isConnected()) googleApiClient.connect();
             }
         }
     }
@@ -507,16 +565,6 @@ public class MainActivity extends Activity implements
         gameExitDialog.setOnClickListener(this);
         gameExitDialog.setCancelable(false);
         gameExitDialog.show(getFragmentManager(), null);
-    }
-
-    @Override
-    public void onSuccess(GameResult gameResult) {
-        Toast.makeText(this, "yupee", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onError(Exception ex) {
-        Toast.makeText(this, "nope", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -536,6 +584,135 @@ public class MainActivity extends Activity implements
         // Delegates the action to the sidebar menu
         position = navigationDrawerFragment.getNavigationItemPosition(itemId);
         navigationDrawerFragment.selectItem(position);
+    }
+
+    @Override
+    public void loadQuizzes() {
+
+        final QuizDataSource db = getDb(QuizDataSource.class);
+
+        List<Quiz> quizzes = db.getAll();
+
+        if (quizzes != null && !quizzes.isEmpty()) {
+            gameFragment.setQuizzes(quizzes);
+            return;
+        }
+
+        new GetQuizzesTask(this, quizzerApi, new ResponseListener<List<Quiz>>() {
+            @Override
+            public void onSuccess(List<Quiz> data) {
+                gameFragment.setQuizzes(data);
+
+                // Cache results
+                db.addAll(data);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                handleError(e, "Quizzes couldn't be loaded. Please try again.");
+            }
+        }).execute();
+    }
+
+    @Override
+    public void saveGameResult(int round, int score, int powerUps, int oneTimeAttempts, int twoTimeAttempts) {
+        SaveGameResultTask task = new SaveGameResultTask(this, quizzerApi, new ResponseListener<GameResult>() {
+            @Override
+            public void onSuccess(GameResult data) {
+                showMessage("Your score has been successfully saved");
+
+                // Cache results
+                getDb(GameResultDataSource.class).addOne(data);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                handleError(e, "Your score couldn't be saved");
+            }
+        });
+        task.setScore(score);
+        task.setRound(round);
+        task.setOneTimeAttempts(oneTimeAttempts);
+        task.setTwoTimeAttempts(twoTimeAttempts);
+        task.execute();
+    }
+
+    @Override
+    public void rateQuiz(boolean liked, String quizId) {
+        RateQuizTask task = new RateQuizTask(this, quizzerApi, new ResponseListener<QuizRating>() {
+            @Override
+            public void onSuccess(QuizRating data) {
+                showMessage("Thanks for your vote");
+            }
+
+            @Override
+            public void onError(Exception e) {
+                handleError(e, "Your rating couldn't be saved");
+            }
+        });
+        task.setLiked(liked);
+        task.setQuizId(quizId);
+        task.execute();
+    }
+
+    private void initDb() {
+        dataSourceMap = new HashMap<>();
+        dataSourceMap.put(GameResultDataSource.class, new GameResultStatsDataSource(this));
+        dataSourceMap.put(GameResultStatsDataSource.class, new GameResultStatsDataSource(this));
+        dataSourceMap.put(QuizDataSource.class, new QuizDataSource(this));
+        dataSourceMap.put(QuizRatingDataSource.class, new QuizRatingDataSource(this));
+    }
+
+    private void tearDownDb() {
+        if (dataSourceMap == null) return;
+
+        for (BaseDataSource dataSource : dataSourceMap.values()) {
+            if (dataSource != null) dataSource.close();
+        }
+        dataSourceMap.clear();
+        dataSourceMap = null;
+    }
+
+    private<T extends BaseDataSource> T getDb(Class<T> clazz) {
+        if (dataSourceMap == null) initDb();
+        return (T) dataSourceMap.get(clazz);
+    }
+
+    private void handleError(Exception e, String message) {
+        Log.e(TAG, message, e);
+        showMessage(message);
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void loadGameResultsStats() {
+
+        final GameResultStatsDataSource db = getDb(GameResultStatsDataSource.class);
+
+        GameResultStats stats = db.getOne();
+
+        if (stats != null) {
+            myScoreFragment.showStats(stats);
+            return;
+        }
+
+        new GetGameResultStatsTask(this, quizzerApi, new ResponseListener<GameResultStats>() {
+            @Override
+            public void onSuccess(GameResultStats data) {
+                myScoreFragment.showStats(data);
+
+                // Cache results - TODO this should be an update by username
+                db.addOne(data);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                handleError(e, "Your score couldn't be loaded. Please try again later.");
+            }
+        }).execute();
     }
 
     /**

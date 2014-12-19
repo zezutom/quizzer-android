@@ -28,9 +28,11 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.1.11'
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.google.api-client:google-api-client:1.18.0-rc'
+    compile 'com.google.api-client:google-api-client-android:1.18.0-rc'
     compile 'com.google.http-client:google-http-client-android:1.18.0-rc'
     compile files('libs/volley.jar')
     compile files('libs/statsService-v2-1.19.0-SNAPSHOT.jar')
     compile files('libs/quizService-v2-1.19.0-SNAPSHOT.jar')
     compile files('libs/gameService-v2-1.19.0-SNAPSHOT.jar')
+    compile files('libs/quizzer-v3-1.19.0-SNAPSHOT.jar')
 }

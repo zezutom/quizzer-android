@@ -1,13 +1,13 @@
 package org.zezutom.capstone.android.util;
 
+import android.content.Context;
 import android.content.SharedPreferences;
-
 import org.zezutom.capstone.android.model.Game;
 import org.zezutom.capstone.android.model.GameHistory;
 
-import static org.zezutom.capstone.android.fragment.GameFragment.GAME_KEY;
-
 public class GameCache {
+
+    public static final String GAME_KEY = "game";
 
     protected static final String GAME_HISTORY_KEY = GAME_KEY + ".history";
 
@@ -27,10 +27,11 @@ public class GameCache {
 
     protected static final String TWO_TIME_CORRECT_ATTEMPTS_TOTAL = GAME_HISTORY_KEY + ".twoTimeCorrectAttempts";
 
+
     private SharedPreferences sharedPreferences;
 
-    public GameCache(SharedPreferences sharedPreferences) {
-        this.sharedPreferences = sharedPreferences;
+    public GameCache(Context context) {
+        this.sharedPreferences = context.getSharedPreferences(GAME_KEY, 0);
     }
 
     public void saveGame(Game game) {
@@ -76,7 +77,7 @@ public class GameCache {
         return game;
     }
 
-    public void clearCache() {
+    public void deleteGame() {
         SharedPreferences.Editor edit = sharedPreferences.edit();
 
         edit.remove(SCORE_KEY);

@@ -3,10 +3,8 @@ package org.zezutom.capstone.android.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-
 import org.zezutom.capstone.android.util.DateTimeUtil;
-
-import zezutom.org.gameService.model.GameResult;
+import zezutom.org.quizzer.model.GameResult;
 
 public class GameResultDataSource extends BaseDataSource<GameResult, GameResultDataHelper> {
 

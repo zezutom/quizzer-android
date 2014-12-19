@@ -3,8 +3,7 @@ package org.zezutom.capstone.android.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-
-import zezutom.org.quizService.model.Quiz;
+import zezutom.org.quizzer.model.Quiz;
 
 public class QuizDataSource extends BaseDataSource<Quiz, QuizDataHelper> {
 

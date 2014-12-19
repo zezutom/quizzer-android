@@ -1,9 +1,15 @@
 package org.zezutom.capstone.android.util;
 
-import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
+
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+
+import java.lang.reflect.Array;
 
 public class AppUtil {
+
+    public static final String WEB_CLIENT_ID = "98684777677-s35ecnri1p85ve9amp2ehm5nf3v9orfm.apps.googleusercontent.com";
 
     public static final String NUMBER_FORMAT = "%01d";
 
@@ -13,6 +19,44 @@ public class AppUtil {
         if (dialogFragment != null) {
             dialogFragment.dismiss();
         }
+    }
+
+    public static GoogleAccountCredential getCredential(Context context) {
+        final GoogleAccountCredential credential = GoogleAccountCredential.usingAudience(context, "server:client_id:" + WEB_CLIENT_ID);
+        final String accountName = new AuthCache(context).getSelectedAccountName();
+        credential.setSelectedAccountName(accountName);
+        return credential;
+    }
+
+    /*public static GoogleAccountCredential getCredential(Context context) {
+        final GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(context,
+                Arrays.asList("https://www.googleapis.com/auth/userinfo.email"));
+        credential.setSelectedAccountName(new AuthCache(context).getSelectedAccountName());
+        return credential;
+    }*/
+
+    /**
+     * Generate the OAuth2 scope string accepted by the client libraries.
+     *
+     * @param scopes to be encoded in the OAuth2 string
+     * @return OAuth2 scope string
+     */
+    public static String getOAuth2ScopeString(String[] scopes) {
+        if (scopes==null || Array.getLength(scopes) < 1) {
+            return null;
+        }
+
+        StringBuilder scopeString = null;
+        for (String scope : scopes) {
+            if (scopeString == null) {
+                scopeString = new StringBuilder("oauth2: ").append(scope);
+            } else {
+                scopeString.append(" ")
+                        .append(scope);
+            }
+        }
+
+        return scopeString.toString();
     }
 
     public static String numberToString(int value) {
