@@ -19,9 +19,9 @@ public class SaveGameResultTask extends BaseApiTask<GameResult> {
 
     private int twoTimeAttempts;
 
-    public SaveGameResultTask(Activity activity, Quizzer.QuizzerApi api,
+    public SaveGameResultTask(Activity activity,
                               ResponseListener<GameResult> listener) {
-        super(activity, api, listener);
+        super(activity, listener);
     }
 
     public void setScore(int score) {
@@ -45,7 +45,7 @@ public class SaveGameResultTask extends BaseApiTask<GameResult> {
     }
 
     @Override
-    protected GameResult execute() throws IOException {
-        return api.saveGameResult(round, score, powerUps, oneTimeAttempts, twoTimeAttempts).execute();
+    protected GameResult execute(Quizzer.QuizzerApi api) throws IOException {
+        return api.saveGameResult(round, score, powerUps, oneTimeAttempts, twoTimeAttempts, getEmail()).execute();
     }
 }

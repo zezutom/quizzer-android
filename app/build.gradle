@@ -1,15 +1,23 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        mykeystore {
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storeFile file('/Users/tom/.android/debug.keystore')
+            storePassword 'android'
+        }
+    }
     compileSdkVersion 19
     buildToolsVersion "20.0.0"
-
     defaultConfig {
         applicationId "org.zezutom.capstone.android"
         minSdkVersion 19
         targetSdkVersion 19
         versionCode 1
         versionName "1.0"
+        signingConfig signingConfigs.mykeystore
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -20,6 +28,8 @@ android {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 

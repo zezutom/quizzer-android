@@ -3,13 +3,20 @@ package org.zezutom.capstone.android.util;
 import android.app.DialogFragment;
 import android.content.Context;
 
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.Scope;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AppUtil {
 
-    public static final String WEB_CLIENT_ID = "98684777677-s35ecnri1p85ve9amp2ehm5nf3v9orfm.apps.googleusercontent.com";
+    public static final String WEB_CLIENT_ID = "98684777677-2rsfk0ht84vn00pph1kjr87ud0587cfi.apps.googleusercontent.com";
+
+    public static final String ANDROID_CLIENT_ID = "98684777677-4ev0ir13ce5ri23q8eupnl3jtvml5u4c.apps.googleusercontent.com";
 
     public static final String NUMBER_FORMAT = "%01d";
 
@@ -29,8 +36,10 @@ public class AppUtil {
     }
 
     /*public static GoogleAccountCredential getCredential(Context context) {
-        final GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(context,
-                Arrays.asList("https://www.googleapis.com/auth/userinfo.email"));
+        List<String> scopes = new ArrayList<>();
+        scopes.add("https://www.googleapis.com/auth/userinfo.email");
+
+        final GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(context, scopes);
         credential.setSelectedAccountName(new AuthCache(context).getSelectedAccountName());
         return credential;
     }*/

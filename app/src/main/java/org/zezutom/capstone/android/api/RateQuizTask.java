@@ -13,9 +13,9 @@ public class RateQuizTask extends BaseApiTask<QuizRating> {
 
     private boolean liked;
 
-    public RateQuizTask(Activity activity, Quizzer.QuizzerApi api,
+    public RateQuizTask(Activity activity,
                         ResponseListener<QuizRating> listener) {
-        super(activity, api, listener);
+        super(activity, listener);
     }
 
     public void setQuizId(String quizId) {
@@ -27,7 +27,7 @@ public class RateQuizTask extends BaseApiTask<QuizRating> {
     }
 
     @Override
-    protected QuizRating execute() throws IOException {
-        return api.rateQuiz(liked, quizId).execute();
+    protected QuizRating execute(Quizzer.QuizzerApi api) throws IOException {
+        return api.rateQuiz(getEmail(), liked, quizId).execute();
     }
 }

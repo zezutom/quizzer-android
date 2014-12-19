@@ -23,9 +23,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 
 import org.zezutom.capstone.android.api.GetGameResultStatsTask;
 import org.zezutom.capstone.android.api.GetQuizzesTask;
@@ -53,7 +50,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import zezutom.org.quizzer.Quizzer;
 import zezutom.org.quizzer.model.GameResult;
 import zezutom.org.quizzer.model.GameResultStats;
 import zezutom.org.quizzer.model.Quiz;
@@ -87,17 +83,17 @@ public class MainActivity extends Activity implements
     /**
      * Request code for auto Google Play Services error resolution.
      */
-    public static final int REQUEST_CODE_RESOLUTION = 1;
+    public static final int REQUEST_CODE_RESOLUTION = 1111;
 
     /**
      * Request code for signing a user in.
      */
-    public static final int REQUEST_CODE_SIGN_IN = 2;
+    public static final int REQUEST_CODE_SIGN_IN = 2222;
 
     /**
      * Activity result indicating a return from the authorization approval intent.
      */
-    private static final int ACTIVITY_RESULT_FROM_REQUEST_AUTH = 3;
+    private static final int ACTIVITY_RESULT_FROM_REQUEST_AUTH = 4444;
 
     /**
      * Profile picture image size in pixels.
@@ -165,16 +161,9 @@ public class MainActivity extends Activity implements
      */
     private int menuItemIndex;
 
-    /**
-     * Google App Engine API providing server-side services
-     */
-    private Quizzer.QuizzerApi quizzerApi;
-
     private Map<Class<? extends BaseDataSource>, BaseDataSource> dataSourceMap;
 
     private AuthCache authCache;
-
-    private GoogleAccountCredential credential;
 
     /**
      * Called when the activity is starting. Restores the activity state.
@@ -186,20 +175,6 @@ public class MainActivity extends Activity implements
         // Authentication cache - stores the selected account
         authCache = new AuthCache(this);
 
-        // Authorization
-        credential = GoogleAccountCredential.usingAudience(this, "oauth2:server:client_id:" + AppUtil.WEB_CLIENT_ID);
-        credential.setSelectedAccountName(authCache.getSelectedAccountName());
-
-        /*if (credential.getSelectedAccountName() == null) {
-            chooseAccount();
-        }*/
-
-        // Initialize the API, incl. authentication credentials
-        quizzerApi = new Quizzer.Builder(
-                AndroidHttp.newCompatibleTransport(),
-                new AndroidJsonFactory(),
-                null).build().quizzerApi();
-
         // Set up the local storage
         initDb();
 
@@ -209,7 +184,7 @@ public class MainActivity extends Activity implements
         }
         setContentView(R.layout.activity_main_navigation);
 
-        gameFragment = new GameFragment();
+        if (gameFragment == null) gameFragment = new GameFragment();
 
         myScoreFragment = new MyScoreFragment();
 
@@ -223,10 +198,6 @@ public class MainActivity extends Activity implements
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-    }
-
-    private void chooseAccount() {
-        startActivityForResult(credential.newChooseAccountIntent(), REQUEST_CODE_SIGN_IN);
     }
 
     @Override
@@ -491,6 +462,7 @@ public class MainActivity extends Activity implements
         switch (view.getId()) {
             case R.id.save_score:
                 gameFragment.saveAndResetGame();
+                navigationDrawerFragment.selectItem(menuItemIndex);
                 break;
             case R.id.exit_game:
                 gameFragment.resetGame();
@@ -501,6 +473,11 @@ public class MainActivity extends Activity implements
                 break;
         }
         AppUtil.closeDialog(gameExitDialog);
+    }
+
+    @Override
+    public void setGameFragment(GameFragment gameFragment) {
+        this.gameFragment = gameFragment;
     }
 
     private boolean isGameInProgress() {
@@ -518,9 +495,9 @@ public class MainActivity extends Activity implements
             final Person person = Plus.PeopleApi.getCurrentPerson(googleApiClient);
             final String email = Plus.AccountApi.getAccountName(googleApiClient);
 
+
             // Save the id of the logged-in user, so that it can be accessed from other parts of the app
             authCache.setSelectedAccountName(email);
-            credential.setSelectedAccountName(email);
 
             if (person != null) {
                 final String url = person.getImage().getUrl();
@@ -598,7 +575,7 @@ public class MainActivity extends Activity implements
             return;
         }
 
-        new GetQuizzesTask(this, quizzerApi, new ResponseListener<List<Quiz>>() {
+        new GetQuizzesTask(this, new ResponseListener<List<Quiz>>() {
             @Override
             public void onSuccess(List<Quiz> data) {
                 gameFragment.setQuizzes(data);
@@ -616,7 +593,7 @@ public class MainActivity extends Activity implements
 
     @Override
     public void saveGameResult(int round, int score, int powerUps, int oneTimeAttempts, int twoTimeAttempts) {
-        SaveGameResultTask task = new SaveGameResultTask(this, quizzerApi, new ResponseListener<GameResult>() {
+        SaveGameResultTask task = new SaveGameResultTask(this, new ResponseListener<GameResult>() {
             @Override
             public void onSuccess(GameResult data) {
                 showMessage("Your score has been successfully saved");
@@ -639,7 +616,7 @@ public class MainActivity extends Activity implements
 
     @Override
     public void rateQuiz(boolean liked, String quizId) {
-        RateQuizTask task = new RateQuizTask(this, quizzerApi, new ResponseListener<QuizRating>() {
+        RateQuizTask task = new RateQuizTask(this, new ResponseListener<QuizRating>() {
             @Override
             public void onSuccess(QuizRating data) {
                 showMessage("Thanks for your vote");
@@ -657,7 +634,7 @@ public class MainActivity extends Activity implements
 
     private void initDb() {
         dataSourceMap = new HashMap<>();
-        dataSourceMap.put(GameResultDataSource.class, new GameResultStatsDataSource(this));
+        dataSourceMap.put(GameResultDataSource.class, new GameResultDataSource(this));
         dataSourceMap.put(GameResultStatsDataSource.class, new GameResultStatsDataSource(this));
         dataSourceMap.put(QuizDataSource.class, new QuizDataSource(this));
         dataSourceMap.put(QuizRatingDataSource.class, new QuizRatingDataSource(this));
@@ -699,7 +676,7 @@ public class MainActivity extends Activity implements
             return;
         }
 
-        new GetGameResultStatsTask(this, quizzerApi, new ResponseListener<GameResultStats>() {
+        new GetGameResultStatsTask(this, new ResponseListener<GameResultStats>() {
             @Override
             public void onSuccess(GameResultStats data) {
                 myScoreFragment.showStats(data);

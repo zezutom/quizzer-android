@@ -10,13 +10,13 @@ import zezutom.org.quizzer.model.Quiz;
 
 public class GetQuizzesTask extends BaseApiTask<List<Quiz>> {
 
-    public GetQuizzesTask(Activity activity, Quizzer.QuizzerApi api,
+    public GetQuizzesTask(Activity activity,
                           ResponseListener<List<Quiz>> listener) {
-        super(activity, api, listener);
+        super(activity, listener);
     }
 
     @Override
-    protected List<Quiz> execute() throws IOException {
+    protected List<Quiz> execute(Quizzer.QuizzerApi api) throws IOException {
         return api.getQuizzes().execute().getItems();
     }
 }

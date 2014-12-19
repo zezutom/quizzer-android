@@ -9,13 +9,13 @@ import zezutom.org.quizzer.model.GameResultStats;
 
 public class GetGameResultStatsTask extends BaseApiTask<GameResultStats> {
 
-    public GetGameResultStatsTask(Activity activity, Quizzer.QuizzerApi api,
+    public GetGameResultStatsTask(Activity activity,
                                   ResponseListener<GameResultStats> listener) {
-        super(activity, api, listener);
+        super(activity, listener);
     }
 
     @Override
-    protected GameResultStats execute() throws IOException {
-        return api.getGameResultStats().execute();
+    protected GameResultStats execute(Quizzer.QuizzerApi api) throws IOException {
+        return api.getGameResultStats(getEmail()).execute();
     }
 }

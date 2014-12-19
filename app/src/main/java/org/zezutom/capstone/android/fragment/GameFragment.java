@@ -53,7 +53,6 @@ public class GameFragment extends Fragment implements
      */
     private GameCallbacks callbacks;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,6 +92,7 @@ public class GameFragment extends Fragment implements
         super.onAttach(activity);
         try {
             callbacks = (GameCallbacks) activity;
+            callbacks.setGameFragment(this);
         } catch (ClassCastException e) {
             throw new ClassCastException("Activity must implement GameCallbacks.");
         }
@@ -130,6 +130,73 @@ public class GameFragment extends Fragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return ((MainActivity) getActivity()).onMenuItemSelected(item);
+    }
+
+
+    public void saveAndResetGame() {
+        GameHistory history = game.getHistory();
+        callbacks.saveGameResult(game.getRound(), game.getScore(), game.getPowerUps(),
+                history.getOneTimeAttempts(), history.getTwoTimeAttempts());
+        resetGame();
+    }
+
+    public void  setQuizzes(List<Quiz> quizzes) {
+        this.quizzes = quizzes;
+        loadGame();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        if (game.isGameOver()) {
+            saveAndResetGame();
+            return;
+        }
+
+        // Quiz answers are 1-based, whereas the index is 0-based
+        if ((i + 1) == currentQuiz.getAnswer()) {
+            game.score();
+            showQuizSolutionDialog();
+        } else {
+            game.subtractAttempt();
+
+            if (game.isGameOver()) {
+                saveAndResetGame();
+            } else {
+                updateGameUI();
+                toast("Please try again");
+            }
+        }
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        final int viewId = view.getId();
+        switch (viewId) {
+            case R.id.next_quiz:
+                game.subtractPowerUps();
+                break;
+            case R.id.vote_up:
+            case R.id.vote_down:
+            case R.id.close_dialog:
+                if (viewId != R.id.close_dialog) {
+                    rateQuiz(viewId == R.id.vote_up);
+                }
+                AppUtil.closeDialog(quizSolutionDialog);
+                break;
+        }
+        nextQuiz();
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void resetGame() {
+        gameCache.deleteGame();
+        game = null;
+        loadGame();
     }
 
     private void updateGameUI() {
@@ -179,13 +246,6 @@ public class GameFragment extends Fragment implements
         } else {
             nextQuizButton.setVisibility(View.INVISIBLE);
         }
-    }
-
-    public void saveAndResetGame() {
-        GameHistory history = game.getHistory();
-        callbacks.saveGameResult(game.getRound(), game.getScore(), game.getPowerUps(),
-                history.getOneTimeAttempts(), history.getTwoTimeAttempts());
-        resetGame();
     }
 
     private void loadGame() {
@@ -262,62 +322,12 @@ public class GameFragment extends Fragment implements
         }
     }
 
-    public void setQuizzes(List<Quiz> quizzes) {
-        this.quizzes = quizzes;
-        loadGame();
-    }
-
     private void toast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-        if (game.isGameOver()) {
-            saveAndResetGame();
-            return;
-        }
-
-        // Quiz answers are 1-based, whereas the index is 0-based
-        if ((i + 1) == currentQuiz.getAnswer()) {
-            game.score();
-            showQuizSolutionDialog();
-        } else {
-            game.subtractAttempt();
-
-            if (game.isGameOver()) {
-                saveAndResetGame();
-            } else {
-                updateGameUI();
-                toast("Please try again");
-            }
-        }
-
-    }
-
-    @Override
-    public void onClick(View view) {
-        final int viewId = view.getId();
-        switch (viewId) {
-            case R.id.next_quiz:
-                game.subtractPowerUps();
-                break;
-            case R.id.vote_up:
-            case R.id.vote_down:
-            case R.id.close_dialog:
-                if (viewId != R.id.close_dialog) {
-                    rateQuiz(viewId == R.id.vote_up);
-                }
-                AppUtil.closeDialog(quizSolutionDialog);
-                break;
-        }
-        nextQuiz();
-    }
-
     private void rateQuiz(boolean liked) {
         callbacks.rateQuiz(liked, currentQuiz.getId());
-        Toast.makeText(this.getActivity(), "Thanks for your vote", Toast.LENGTH_SHORT).show();
     }
 
     private void showQuizSolutionDialog() {
@@ -330,15 +340,6 @@ public class GameFragment extends Fragment implements
         quizSolutionDialog.show(getFragmentManager(), null);
     }
 
-    public Game getGame() {
-        return game;
-    }
-
-    public void resetGame() {
-        gameCache.deleteGame();
-        game = null;
-        loadGame();
-    }
 
     /**
      *  Callbacks interface allowing to handle game data asynchronously.
@@ -350,5 +351,7 @@ public class GameFragment extends Fragment implements
         void saveGameResult(int round, int score, int powerUps, int oneTimeAttempts, int twoTimeAttempts);
 
         void rateQuiz(boolean liked, String quizId);
+
+        void setGameFragment(GameFragment gameFragment);
     }
 }
