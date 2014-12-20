@@ -12,16 +12,30 @@ Features
 
 Screenshots
 -----------
-
-![Home](https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/home.png "Home")
-![Slider Menu](https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/slider_menu.png "Slider Menu")
-![Home - landscape](https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/home_landscape.png "Home - landscape")
-![Game](https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/game.png "Game")
-![Game - landscape](https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/game_landscape.png "Game - landscape")
-![Game - explanation popup](https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/game_explanation_popup.png "Game - explanation popup")
-![My Score](https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/my_score.png "My Score")
-![Game History](https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/game_results.png "Game History")
-
+<a href="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/home.png" target="_blank">
+<img border="0" alt="Home" src="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/home.png">
+</a>
+<a href="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/slider_menu.png" target="_blank">
+<img border="0" alt="Slider Menu" src="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/slider_menu.png">
+</a>
+<a href="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/home_landscape.png" target="_blank">
+<img border="0" alt="Home - landscape" src="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/home_landscape.png">
+</a>
+<a href="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/game.png" target="_blank">
+<img border="0" alt="Game" src="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/game.png">
+</a>
+<a href="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/game_landscape.png" target="_blank">
+<img border="0" alt="Game - landscape" src="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/game_landscape.png">
+</a>
+<a href="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/game_explanation_popup.png" target="_blank">
+<img border="0" alt="Game - explanation popup" src="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/game_explanation_popup.png">
+</a>
+<a href="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/my_score.png" target="_blank">
+<img border="0" alt="My Score" src="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/my_score.png">
+</a>
+<a href="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/game_results.png" target="_blank">
+<img border="0" alt="Game History" src="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/game_results.png">
+</a>
 
 
 
