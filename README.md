@@ -42,5 +42,6 @@ Resources
  * [Icons for Android](http://www.icons4android.com)
  * [Icon Archive](http://www.iconarchive.com)
  * [IndiaBix - Java quiz Q&A](http://www.indiabix.com/java-programming/questions-and-answers/)
+ * [Android Hive - excellent tutorials](http://www.androidhive.info/)
 
 
