@@ -37,6 +37,10 @@ Screenshots
 <img border="0" alt="Game History" src="https://github.com/zezutom/zezutom.github.io/blob/master/img/quizzer-android/thumbnails/game_results.png">
 </a>
 
-
+Resources
+---------
+ * [Icons for Android](http://www.icons4android.com)
+ * [Icon Archive](http://www.iconarchive.com)
+ * [IndiaBix - Java quiz Q&A](http://www.indiabix.com/java-programming/questions-and-answers/)
 
 
