@@ -18,6 +18,8 @@ public class GameResultDataHelper extends BaseDataHelper {
 
     public static final String COLUMN_ROUND_THREE_RATIO = "round_three_ratio";
 
+    public static final String COLUMN_EMAIL = "email";
+
     private String[] columns = {
             COLUMN_ID,
             COLUMN_CREATED_AT,
@@ -26,7 +28,8 @@ public class GameResultDataHelper extends BaseDataHelper {
             COLUMN_POWER_UPS,
             COLUMN_ROUND_ONE_RATIO,
             COLUMN_ROUND_TWO_RATIO,
-            COLUMN_ROUND_THREE_RATIO
+            COLUMN_ROUND_THREE_RATIO,
+            COLUMN_EMAIL
     };
 
     public GameResultDataHelper(Context context) {
@@ -47,11 +50,13 @@ public class GameResultDataHelper extends BaseDataHelper {
     protected String dbCreate() {
         return "create table " + TABLE_NAME +
                 "(" + COLUMN_ID + " integer primary key autoincrement" +
+                "," + COLUMN_CREATED_AT + " text not null" +
                 "," + COLUMN_SCORE + " integer not null" +
                 "," + COLUMN_ROUND + " integer not null" +
                 "," + COLUMN_POWER_UPS + " integer not null" +
                 "," + COLUMN_ROUND_ONE_RATIO + " integer not null" +
                 "," + COLUMN_ROUND_TWO_RATIO + " integer not null" +
-                "," + COLUMN_ROUND_THREE_RATIO + " integer not null);";
+                "," + COLUMN_ROUND_THREE_RATIO + " integer not null" +
+                "," + COLUMN_EMAIL + " text not null);";
     }
 }

@@ -70,7 +70,7 @@ public class MyScoreFragment extends Fragment {
         return ((MainActivity) getActivity()).onMenuItemSelected(item);
     }
 
-    public void showStats(GameResultStats stats) {
+    public void setStats(GameResultStats stats) {
         TextView bestScoreView = uiHelper.getView(R.id.best_score);
         bestScoreView.setText(AppUtil.numberToString(stats.getScore()));
 

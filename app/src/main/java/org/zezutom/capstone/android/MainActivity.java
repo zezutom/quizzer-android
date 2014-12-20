@@ -25,6 +25,7 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
 import org.zezutom.capstone.android.api.GetGameResultStatsTask;
+import org.zezutom.capstone.android.api.GetGameResultsTask;
 import org.zezutom.capstone.android.api.GetQuizzesTask;
 import org.zezutom.capstone.android.api.RateQuizTask;
 import org.zezutom.capstone.android.api.ResponseListener;
@@ -47,6 +48,7 @@ import org.zezutom.capstone.android.model.UserProfile;
 import org.zezutom.capstone.android.util.AppUtil;
 import org.zezutom.capstone.android.util.AuthCache;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +72,7 @@ public class MainActivity extends Activity implements
         HomeFragment.HomeMenuCallbacks,
         GameFragment.GameCallbacks,
         MyScoreFragment.MyScoreCallbacks,
+        GameResultsFragment.GameResultsCallbacks,
         View.OnClickListener {
 
     public static final String TAG = "MainActivity";
@@ -144,8 +147,15 @@ public class MainActivity extends Activity implements
      */
     private GameFragment gameFragment;
 
-
+    /**
+     * Fragment showing the best achieved scores.
+     */
     private MyScoreFragment myScoreFragment;
+
+    /**
+     * Fragment showing a history of game results.
+     */
+    private GameResultsFragment gameResultsFragment;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -165,6 +175,7 @@ public class MainActivity extends Activity implements
     private Map<Class<? extends BaseDataSource>, BaseDataSource> dataSourceMap;
 
     private AuthCache authCache;
+
 
     /**
      * Called when the activity is starting. Restores the activity state.
@@ -515,7 +526,6 @@ public class MainActivity extends Activity implements
 
                 UserProfile userProfile = new UserProfile(person.getDisplayName(), email, url);
 
-
                 // Set up the sign-in / sign-out menu
                 navigationDrawerFragment.setSignedInView(userProfile);
             }
@@ -583,7 +593,7 @@ public class MainActivity extends Activity implements
 
         List<Quiz> quizzes = db.getAll();
 
-        if (quizzes != null && !quizzes.isEmpty()) {
+        if (!AppUtil.isEmptyOrNull(quizzes)) {
             gameFragment.setQuizzes(quizzes);
             return;
         }
@@ -685,14 +695,14 @@ public class MainActivity extends Activity implements
         GameResultStats stats = db.getOne();
 
         if (stats != null) {
-            myScoreFragment.showStats(stats);
+            myScoreFragment.setStats(stats);
             return;
         }
 
         new GetGameResultStatsTask(this, new ResponseListener<GameResultStats>() {
             @Override
             public void onSuccess(GameResultStats data) {
-                myScoreFragment.showStats(data);
+                myScoreFragment.setStats(data);
 
                 // Cache results - TODO this should be an update by username
                 db.addOne(data);
@@ -703,6 +713,41 @@ public class MainActivity extends Activity implements
                 handleError(e, "Your score couldn't be loaded. Please try again later.");
             }
         }).execute();
+    }
+
+    @Override
+    public void loadGameResults() {
+
+        final GameResultDataSource db = getDb(GameResultDataSource.class);
+
+        List<GameResult> results = db.getAll(); // TODO by user's email ordered by date desc
+
+        if (!AppUtil.isEmptyOrNull(results)) {
+            gameResultsFragment.setResults(results);
+            return;
+        }
+
+        GetGameResultsTask task = new GetGameResultsTask(this, new ResponseListener<List<GameResult>>() {
+            @Override
+            public void onSuccess(List<GameResult> data) {
+                gameResultsFragment.setResults(data);
+
+                // Cache results
+                db.addAll(data);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                handleError(e, "Your game results couldn't be loaded. Please try again later.");
+            }
+        });
+        task.setEmail(authCache.getSelectedAccountName());
+        task.execute();
+    }
+
+    @Override
+    public void setGameResultsFragment(GameResultsFragment gameResultsFragment) {
+        this.gameResultsFragment = gameResultsFragment;
     }
 
     /**

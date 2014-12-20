@@ -22,6 +22,7 @@ public class GameResultStatsDataSource extends BaseDataSource<GameResultStats, G
         values.put(GameResultDataHelper.COLUMN_ROUND_ONE_RATIO, gameResult.getAttemptOneRatio());
         values.put(GameResultDataHelper.COLUMN_ROUND_TWO_RATIO, gameResult.getAttemptTwoRatio());
         values.put(GameResultDataHelper.COLUMN_ROUND_THREE_RATIO, gameResult.getAttemptThreeRatio());
+        values.put(GameResultDataHelper.COLUMN_EMAIL, gameResult.getEmail());
 
         return values;
     }
@@ -36,6 +37,7 @@ public class GameResultStatsDataSource extends BaseDataSource<GameResultStats, G
         stats.setAttemptOneRatio(cursor.getInt(4));
         stats.setAttemptTwoRatio(cursor.getInt(5));
         stats.setAttemptThreeRatio(cursor.getInt(6));
+        stats.setEmail(cursor.getString(7));
 
         return stats;
     }

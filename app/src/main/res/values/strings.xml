@@ -57,6 +57,8 @@
     <string name="label_second_attempt">2nd Attempt</string>
     <string name="label_third_attempt">3rd Attempt</string>
 
+    <!-- Game Results -->
+    <string name="label_success_rate">Success Rate</string>
 
     <!-- Misc -->
     <integer name="pair_cols">2</integer>

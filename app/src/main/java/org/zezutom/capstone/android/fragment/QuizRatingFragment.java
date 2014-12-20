@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 import org.zezutom.capstone.android.MainActivity;
 import org.zezutom.capstone.android.R;

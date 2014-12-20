@@ -10,13 +10,12 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public class AppUtil {
 
     public static final String WEB_CLIENT_ID = "98684777677-2rsfk0ht84vn00pph1kjr87ud0587cfi.apps.googleusercontent.com";
-
-    public static final String ANDROID_CLIENT_ID = "98684777677-4ev0ir13ce5ri23q8eupnl3jtvml5u4c.apps.googleusercontent.com";
 
     public static final String NUMBER_FORMAT = "%01d";
 
@@ -70,5 +69,9 @@ public class AppUtil {
 
     public static String numberToString(int value) {
         return String.format(NUMBER_FORMAT, value);
+    }
+
+    public static boolean isEmptyOrNull(List list) {
+        return list == null || list.isEmpty();
     }
 }
