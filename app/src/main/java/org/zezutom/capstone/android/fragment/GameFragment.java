@@ -64,7 +64,7 @@ public class GameFragment extends Fragment implements
 
         final View mainView = inflater.inflate(R.layout.fragment_game, container, false);
         uiHelper = new UIHelper(mainView);
-        uiHelper.addView(R.id.list_movies)
+        uiHelper.addView(R.id.quiz_list)
                 .addView(R.id.question)
                 .addView(R.id.round)
                 .addView(R.id.score)
@@ -76,8 +76,8 @@ public class GameFragment extends Fragment implements
                 .addView(R.id.next_quiz)
                 .addView(R.id.category);
 
-        GridView moviesView = uiHelper.getView(R.id.list_movies);
-        moviesView.setOnItemClickListener(this);
+        GridView quizView = uiHelper.getView(R.id.quiz_list);
+        quizView.setOnItemClickListener(this);
 
         Button nextQuizButton = uiHelper.getView(R.id.next_quiz);
         nextQuizButton.setOnClickListener(this);
@@ -277,11 +277,11 @@ public class GameFragment extends Fragment implements
 
         ImageView imageView = uiHelper.getView(R.id.category);
         TextView questionView = uiHelper.getView(R.id.question);
-        GridView moviesView = uiHelper.getView(R.id.list_movies);
+        GridView quizView = uiHelper.getView(R.id.quiz_list);
 
         imageView.setImageResource(getCategoryImage(quiz.getCategory()));
         questionView.setText(quiz.getQuestion());
-        moviesView.setAdapter(
+        quizView.setAdapter(
                 new OptionItemAdapter(getActivity(),
                         Arrays.asList(
                                 quiz.getOptionOne(),

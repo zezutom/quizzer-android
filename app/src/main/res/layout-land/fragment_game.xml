@@ -33,7 +33,7 @@
                 android:textAppearance="?android:attr/textAppearanceListItem" />
         </LinearLayout>
         <org.zezutom.capstone.android.util.NoRowOverlapGridView
-            android:id="@+id/list_movies"
+            android:id="@+id/quiz_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
