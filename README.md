@@ -7,7 +7,7 @@ Features
 * score board and game result history
 * slider menu, adaptive layout
 * sign in via Google Plus
-* powered by Google App Engine (SDK 1.9.17)
+* powered by Google App Engine - see [Backend API](https://github.com/zezutom/quizzer-gae)
 * min. Android SDK: 19
 
 Screenshots
