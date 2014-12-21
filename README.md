@@ -5,6 +5,7 @@ Features
 --------
 * single choice quiz questions with explanation
 * score board and game result history
+* personalized quiz rating
 * slider menu, adaptive layout
 * sign in via Google Plus
 * powered by Google App Engine - see [Backend API](https://github.com/zezutom/quizzer-gae)
