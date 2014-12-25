@@ -1,6 +1,7 @@
 package org.zezutom.capstone.android.fragment;
 
 import android.app.DialogFragment;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -26,20 +27,19 @@ public class QuizSolutionDialog extends DialogFragment {
 
     private View dialogView;
 
+    private WebView explanationView;
+
     private View.OnClickListener onClickListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        dialogView = inflater.inflate(R.layout.fragment_dialog_quiz_solution, container);
+
         setCancelable(false);
 
-        WebView explanationView = (WebView) dialogView.findViewById(R.id.explanation);
-
-        String explanation = getArguments().getString(EXPLANATION_KEY);
-        explanationView.setBackgroundColor(Color.TRANSPARENT);
-        final String color = Integer.toHexString(getResources().getColor(R.color.list_item_title));
-
-        explanationView.loadData(String.format(JUSTIFIED_TEXT, color, explanation), "text/html", "utf-8");
+        if (dialogView == null) {
+            String explanation = getArguments().getString(EXPLANATION_KEY);
+            preLoad(explanation, inflater, getResources());
+        }
 
         if (onClickListener != null) {
             onClick(R.id.vote_up, onClickListener);
@@ -61,6 +61,16 @@ public class QuizSolutionDialog extends DialogFragment {
 
     private void onClick(int id, View.OnClickListener listener) {
         dialogView.findViewById(id).setOnClickListener(listener);
+    }
+
+    public void preLoad(String explanation, LayoutInflater inflater, Resources resources) {
+        dialogView = inflater.inflate(R.layout.fragment_dialog_quiz_solution, null);
+
+        explanationView = (WebView) dialogView.findViewById(R.id.explanation);
+        explanationView.setBackgroundColor(Color.TRANSPARENT);
+
+        String color = Integer.toHexString(resources.getColor(R.color.list_item_title));
+        explanationView.loadData(String.format(JUSTIFIED_TEXT, color, explanation), "text/html", "utf-8");
     }
 
 }

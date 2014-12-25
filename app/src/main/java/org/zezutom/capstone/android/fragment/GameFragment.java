@@ -275,6 +275,8 @@ public class GameFragment extends Fragment implements
     private void loadQuiz(Quiz quiz) {
         currentQuiz = quiz;
 
+        loadQuizDialog(quiz.getExplanation());
+
         ImageView imageView = uiHelper.getView(R.id.category);
         TextView questionView = uiHelper.getView(R.id.question);
         GridView quizView = uiHelper.getView(R.id.quiz_list);
@@ -331,13 +333,19 @@ public class GameFragment extends Fragment implements
     }
 
     private void showQuizSolutionDialog() {
+        if (quizSolutionDialog == null) loadQuizDialog(currentQuiz.getExplanation());
+        quizSolutionDialog.show(getFragmentManager(), null);
+
+    }
+
+    private void loadQuizDialog(String explanation) {
         quizSolutionDialog = new QuizSolutionDialog();
         quizSolutionDialog.setOnClickListener(this);
 
         Bundle args = new Bundle();
         args.putString("explanation", currentQuiz.getExplanation());
         quizSolutionDialog.setArguments(args);
-        quizSolutionDialog.show(getFragmentManager(), null);
+        quizSolutionDialog.preLoad(explanation, getActivity().getLayoutInflater(), getResources());
     }
 
 
